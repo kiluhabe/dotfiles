@@ -1,3 +1,8 @@
+[user]
+  name = jstilo
+  email = warsavv@gmail.com
+[color]
+  ui = auto
 [alias]
   co = checkout
   st = status
