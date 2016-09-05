@@ -39,7 +39,8 @@ setopt hist_ignore_space
 setopt hist_reduce_blanks
 
 
-autoload -U promptinit; promptinit
+autoload -U promptinit
+promptinit
 prompt pure
 
 export PURE_PROMPT_SYMBOL=">>"
