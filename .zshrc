@@ -59,6 +59,4 @@ eval "$(pyenv init -)"
 
 export PATH="$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PYENV_ROOT/bin:$PYENV_ROOT/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH"
 
-git -C $HOME/.dotfiles pull
-
-zsh -c 'for f in `\find $HOME/.dotfiles/.??* -maxdepth 0 -type f`; do; [[ "$f" == ".git" ]] && continue; [[ "$f" == ".DS_Store" ]] && continue; ln -s "$f" "$HOME" ; done;'
+alias dotupdate='git -C $HOME/.dotfiles pull; for f in `\find $HOME/.dotfiles/.??* -maxdepth 0 -type f`; do; [[ "$f" == ".git" ]] && continue; [[ "$f" == ".DS_Store" ]] && continue; ln -s "$f" "$HOME" ; done;'
