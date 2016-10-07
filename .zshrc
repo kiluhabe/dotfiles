@@ -58,7 +58,7 @@ export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
 #go setup
-export $GOPATH=$HOME/.go
+export GOPATH=$HOME/.go
 
 export PATH="$RBENV_ROOT/bin:$RBENV_ROOT/shims:$PYENV_ROOT/bin:$PYENV_ROOT/shims:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/go/bin:$PATH"
 
