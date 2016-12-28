@@ -1,5 +1,8 @@
-
+# set Lang
 set -x LANG ja_JP.UTF-8 $LANG
+
+#peco
+set fish_plugins theme peco
 
 # Path to Oh My Fish install.
 set -gx OMF_PATH "$HOME/.local/share/omf"
@@ -40,5 +43,11 @@ set -x PATH $RBENV_ROOT/bin $RBENV_ROOT/shims $PYENV_ROOT/bin $PYENV_ROOT/shims 
 #tmux plugin path
 set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
 
+#alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
 alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'
+
+#function
+function fish_user_key_bindings
+  bind \cr peco_select_history # Bind for prco history to Ctrl+r
+end
