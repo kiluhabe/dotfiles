@@ -1,5 +1,6 @@
-# set Lang
-set -x LANG ja_JP.UTF-8ja_JP.UTF-8ja_JP.UTF-8 $LANG
+# set LOCAL
+set -x LANG ja_JP.UTF-8
+set -x LC_ALL=$LANG
 
 #peco
 set fish_plugins theme peco
@@ -14,7 +15,7 @@ set -gx OMF_CONFIG "$HOME/.config/omf"
 source $OMF_PATH/init.fish
 
 # homebrew
-set -U fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/local/go/bin $fish_user_paths
+set -U fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin $fish_user_paths
 
 # rbenv setup
 #eval "$(rbenv init -)"
