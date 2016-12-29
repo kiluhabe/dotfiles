@@ -1,5 +1,5 @@
 # set Lang
-set -x LANG ja_JP.UTF-8 $LANG
+set -x LANG ja_JP.UTF-8ja_JP.UTF-8ja_JP.UTF-8 $LANG
 
 #peco
 set fish_plugins theme peco
@@ -33,12 +33,12 @@ set -x GOPATH $HOME/.go $GOPATH
 
 #node
 #eval "$(nodenv init -)"
-set -x NODENV_ROOT $HOME/.nodenv/ $NODENV_ROOT
+set -x NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
 set -x PATH $NODENV_ROOT/bin $NODENV_ROOT/shims $PATH
 nodenv rehash >/dev/null ^&1
 
 #PATH
-set -x PATH $RBENV_ROOT/bin $RBENV_ROOT/shims $PYENV_ROOT/bin $PYENV_ROOT/shims /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/local/go/bin $PATH
+set -x PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/local/go/bin $PATH
 
 #tmux plugin path
 set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
