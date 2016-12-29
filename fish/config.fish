@@ -1,6 +1,6 @@
 # set LOCAL
 set -x LANG ja_JP.UTF-8
-set -x LC_ALL=$LANG
+set -x LC_ALL $LANG
 
 #peco
 set fish_plugins theme peco
