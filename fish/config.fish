@@ -37,9 +37,6 @@ set -x NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
 set -x PATH $NODENV_ROOT/bin $NODENV_ROOT/shims $PATH
 nodenv rehash >/dev/null ^&1
 
-#PATH
-set -x PATH /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin /usr/local/go/bin $PATH
-
 #tmux plugin path
 set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
 
