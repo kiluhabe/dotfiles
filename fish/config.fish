@@ -42,6 +42,9 @@ nodenv rehash >/dev/null ^&1
 #tmux plugin path
 set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
 
+#set up z.fis
+. $HOME/.z/z.fish
+
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
 alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'
