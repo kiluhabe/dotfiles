@@ -30,7 +30,8 @@ set -x PATH $PYENV_ROOT/bin $PYENV_ROOT/shims $PATH
 pyenv rehash >/dev/null ^&1
 
 #go setup
-set -x GOPATH $HOME/.go $GOPATH
+set -x GOPATH $HOME/.go 
+set -x PATH $GOPATH/bin $PATH
 
 #node
 #eval "$(nodenv init -)"
