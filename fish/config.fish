@@ -50,4 +50,5 @@ alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tp
 #function
 function fish_user_key_bindings
   bind \cr peco_select_history # Bind for prco history to Ctrl+r
+  bind \c] peco_change_directory # Bind for prco change directory to Ctrl+]
 end
