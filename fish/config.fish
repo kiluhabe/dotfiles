@@ -29,10 +29,6 @@ set -x PYENV_ROOT $HOME/.pyenv $PYENV_ROOT
 set -x PATH $PYENV_ROOT/bin $PYENV_ROOT/shims $PATH
 pyenv rehash >/dev/null ^&1
 
-#go setup
-set -x GOPATH $HOME/.go 
-set -x PATH $GOPATH/bin $PATH
-
 #node
 #eval "$(nodenv init -)"
 set -x NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
@@ -41,9 +37,6 @@ nodenv rehash >/dev/null ^&1
 
 #tmux plugin path
 set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
-
-#set up z.fis
-. $HOME/.z/z.fish
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
@@ -57,3 +50,6 @@ function fish_user_key_bindings
   bind \c] peco_change_directory # Bind for prco change directory to Ctrl+]
 end
 source ~/.rsvm/rsvm.fish
+
+#gcp
+sh $HOME/.config/.gcp
