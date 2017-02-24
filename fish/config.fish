@@ -51,5 +51,5 @@ function fish_user_key_bindings
 end
 source ~/.rsvm/rsvm.fish
 
-#gcp
-sh $HOME/.config/.gcp
+# The next line enables shell command completion for gcloud.
+set -x PATH $HOME/google-cloud-sdk/bin $PATH
