@@ -53,3 +53,7 @@ source ~/.rsvm/rsvm.fish
 
 # The next line enables shell command completion for gcloud.
 set -x PATH $HOME/google-cloud-sdk/bin $PATH
+
+#gopath
+set -x GOPATH ~/gocode $GOPATH
+set -x PATH $GOPATH/bin $PATH
