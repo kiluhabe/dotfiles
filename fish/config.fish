@@ -1,10 +1,14 @@
 #reset path
 set -u PATH
 set -u GOPATH
+set -u RBENV_ROOT
+set -u PYENV_ROOT
+set -u NODENV_ROOT
+set -u TMUX_PLUGIN_PATH
 
 # set LOCAL
-set -x LANG ja_JP.UTF-8 $LANG
-set -x LC_ALL $LANG $LC_ALL
+set -x LANG ja_JP.UTF-8 
+set -x LC_ALL $LANGN
 
 #peco
 set fish_plugins theme peco
@@ -23,24 +27,24 @@ set -U fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /
 
 # rbenv setup
 #eval "$(rbenv init -)"
-set -x RBENV_ROOT $HOME/.rbenv $RBENV_ROOT
+set -U RBENV_ROOT $HOME/.rbenv $RBENV_ROOT
 set -U fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims $fish_user_paths
 rbenv rehash >/dev/null ^&1
 
 # pyenv setup
 #eval "$(pyenv init -)"
-set -x PYENV_ROOT $HOME/.pyenv $PYENV_ROOT
+set -U PYENV_ROOT $HOME/.pyenv $PYENV_ROOT
 set -U fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims $fish_user_paths
 pyenv rehash >/dev/null ^&1
 
 #node
 #eval "$(nodenv init -)"
-set -x NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
+set -U NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
 set -U fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims $fish_user_paths
 nodenv rehash >/dev/null ^&1
 
 #tmux plugin path
-set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
+set -U TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
