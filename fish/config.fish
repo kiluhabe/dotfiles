@@ -1,3 +1,7 @@
+#reset path
+set -u PATH
+set -u GOPATH
+
 # set LOCAL
 set -x LANG ja_JP.UTF-8
 set -x LC_ALL $LANG
