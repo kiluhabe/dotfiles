@@ -1,6 +1,14 @@
+#reset path
+set -u PATH
+set -u GOPATH
+set -u RBENV_ROOT
+set -u PYENV_ROOT
+set -u NODENV_ROOT
+set -u TMUX_PLUGIN_PATH
+
 # set LOCAL
-set -x LANG ja_JP.UTF-8
-set -x LC_ALL $LANG
+set -x LANG ja_JP.UTF-8 
+set -x LC_ALL $LANGN
 
 #peco
 set fish_plugins theme peco
@@ -19,30 +27,31 @@ set -U fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /
 
 # rbenv setup
 #eval "$(rbenv init -)"
-set -x RBENV_ROOT $HOME/.rbenv $RBENV_ROOT
-set -x PATH $RBENV_ROOT/bin $RBENV_ROOT/shims $PATH
+set -U RBENV_ROOT $HOME/.rbenv $RBENV_ROOT
+set -U fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims $fish_user_paths
 rbenv rehash >/dev/null ^&1
 
 # pyenv setup
 #eval "$(pyenv init -)"
-set -x PYENV_ROOT $HOME/.pyenv $PYENV_ROOT
-set -x PATH $PYENV_ROOT/bin $PYENV_ROOT/shims $PATH
+set -U PYENV_ROOT $HOME/.pyenv $PYENV_ROOT
+set -U fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims $fish_user_paths
 pyenv rehash >/dev/null ^&1
 
 #node
 #eval "$(nodenv init -)"
-set -x NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
-set -x PATH $NODENV_ROOT/bin $NODENV_ROOT/shims $PATH
+set -U NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
+set -U fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims $fish_user_paths
 nodenv rehash >/dev/null ^&1
 
 #tmux plugin path
-set -x TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
+set -U TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
 alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'
 alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null; docker rm (docker ps -aqf "status=exited") 2> /dev/null'
 alias refish='exec fish -l'
+alias co='code'
 
 #function
 function fish_user_key_bindings
@@ -52,4 +61,8 @@ end
 source ~/.rsvm/rsvm.fish
 
 # The next line enables shell command completion for gcloud.
-set -x PATH $HOME/google-cloud-sdk/bin $PATH
+set -U fish_user_paths $HOME/google-cloud-sdk/bin $fish_user_paths
+
+#gopath
+set -U GOPATH ~/gocode $GOPATH
+set -U fish_user_paths $GOPATH/bin $fish_user_paths
