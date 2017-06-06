@@ -46,8 +46,9 @@ set -gx GOPATH ~/gocode
 set -gx fish_user_paths $fish_user_paths $GOPATH/bin
 
 #rust path
-set -gx CARGO_PATH $HOME/.cargo
-set -gx fish_user_paths $fish_user_paths $CARGO_PATH/bin
+set -gx CARGO_HOME $HOME/.cargo
+set -gx RUSTUP_HOME $HOME/.rustup
+set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
