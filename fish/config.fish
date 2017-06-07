@@ -1,14 +1,6 @@
-#reset path
-set -u PATH
-set -u GOPATH
-set -u RBENV_ROOT
-set -u PYENV_ROOT
-set -u NODENV_ROOT
-set -u TMUX_PLUGIN_PATH
-
 # set LOCAL
-set -x LANG ja_JP.UTF-8 
-set -x LC_ALL $LANGN
+set -gx LANG ja_JP.UTF-8 
+set -gx LC_ALL $LANG
 
 #peco
 set fish_plugins theme peco
@@ -23,28 +15,40 @@ set -gx OMF_CONFIG "$HOME/.config/omf"
 source $OMF_PATH/init.fish
 
 # homebrew
-set -U fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin $fish_user_paths
+set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 # rbenv setup
 #eval "$(rbenv init -)"
-set -U RBENV_ROOT $HOME/.rbenv $RBENV_ROOT
-set -U fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims $fish_user_paths
+set -gx RBENV_ROOT $HOME/.rbenv
+set -gx fish_user_paths $fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims
 rbenv rehash >/dev/null ^&1
 
 # pyenv setup
 #eval "$(pyenv init -)"
-set -U PYENV_ROOT $HOME/.pyenv $PYENV_ROOT
-set -U fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims $fish_user_paths
+set -gx PYENV_ROOT $HOME/.pyenv
+set -gx fish_user_paths $fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims
 pyenv rehash >/dev/null ^&1
 
 #node
 #eval "$(nodenv init -)"
-set -U NODENV_ROOT $HOME/.nodenv $NODENV_ROOT
-set -U fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims $fish_user_paths
+set -gx NODENV_ROOT $HOME/.nodenv
+set -gx fish_user_paths  $fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims
 nodenv rehash >/dev/null ^&1
 
 #tmux plugin path
-set -U TMUX_PLUGIN_PATH $HOME/.tmux/plugins/ $TMUX_PLUGIN_PATH
+set -gx TMUX_PLUGIN_PATH $HOME/.tmux/plugins/
+
+# The next line enables shell command completion for gcloud.
+set -gx fish_user_paths $fish_user_paths $HOME/google-cloud-sdk/bin
+
+#gopath
+set -gx GOPATH ~/gocode
+set -gx fish_user_paths $fish_user_paths $GOPATH/bin
+
+#rust path
+set -gx CARGO_HOME $HOME/.cargo
+set -gx RUSTUP_HOME $HOME/.rustup
+set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
@@ -58,11 +62,3 @@ function fish_user_key_bindings
   bind \cr peco_select_history # Bind for prco history to Ctrl+r
   bind \c] peco_change_directory # Bind for prco change directory to Ctrl+]
 end
-source ~/.rsvm/rsvm.fish
-
-# The next line enables shell command completion for gcloud.
-set -U fish_user_paths $HOME/google-cloud-sdk/bin $fish_user_paths
-
-#gopath
-set -U GOPATH ~/gocode $GOPATH
-set -U fish_user_paths $GOPATH/bin $fish_user_paths
