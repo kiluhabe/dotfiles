@@ -56,6 +56,7 @@ alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tp
 alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null; docker rm (docker ps -aqf "status=exited") 2> /dev/null'
 alias refish='exec fish -l'
 alias co='code'
+alias docker-kill-all='docker stop $(docker ps -a -q'
 
 #function
 function fish_user_key_bindings
