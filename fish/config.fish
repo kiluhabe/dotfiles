@@ -48,7 +48,9 @@ set -gx fish_user_paths $fish_user_paths $GOPATH/bin
 #rust path
 set -gx CARGO_HOME $HOME/.cargo
 set -gx RUSTUP_HOME $HOME/.rustup
+set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
 set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
+
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
