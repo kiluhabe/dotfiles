@@ -6,14 +6,12 @@ set ambiwidth=double
 set tabstop=2
 " insert tab as spaces
 set expandtab
-" vimが自動で生成する（読み込み時など）tab幅をスペース4つ文にする
-set shiftwidth=2
 " 改行時などに、自動でインデントを設定してくれる
 set smartindent
 " 空白文字の可視化
 set list
 " 可視化した空白文字の表示形式
-set listchars=tab:»-,trail:-,eol:↲,extends:»,precedes:«,nbsp:%
+set listchars=tab:»-,trail:-,extends:»,precedes:«,nbsp:%
 " 0で始まる数値を、8進数として扱わないようにする
 set nrformats-=octal
 " ファイルの保存をしていなくても、べつのファイルを開けるようにする
@@ -24,6 +22,7 @@ set virtualedit=block
 set whichwrap=b,s,[,],<,>
 " カーソルの回り込みができるようになる
 set backspace=indent,eol,start
+
 
 "文字コードをUFT-8に設定
 set fenc=utf-8
@@ -41,7 +40,46 @@ set showmatch
 " コマンドラインの補完
 set wildmode=list:longest
 
-" key map
-noremap <S-Left> ^
-noremap <S-Right> $
-noremap <M-Right> w
+set mouse=v
+
+" vim-plugin
+call plug#begin()
+
+" color scheme
+Plug 'tomasiser/vim-code-dark'
+
+" nerdtree
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+
+Plug 'jistr/vim-nerdtree-tabs'
+
+Plug 'Shougo/neocomplete'
+
+Plug 'Townk/vim-autoclose'
+
+call plug#end()
+
+colorscheme codedark
+
+map <C-l> :NERDTreeTabsToggle<CR>
+map <C-w> :tabclose<CR>
+map <C-q> :q<CR>
+map <C-z> :u<CR>
+map <C-y> <C-r>
+
+fun! Alias(from, to)
+  exec 'cnoreabbrev <expr> '.a:from
+  \ .' ((getcmdtype() is# ":" && getcmdline() is# "'.a:from.'")'
+  \ .'? ("'.a:to.'") : ("'.a:from.'"))'
+endfun
+
+call Alias('reload', 'source\ ~/.vimrc')
+call Alias('tn', 'tabnext')
+call Alias('tb', 'tabprevious')
+call Alias('pi', 'PlugInstall')
+
+autocmd vimenter * NERDTreeToggle
+autocmd StdinReadPre * let s:std_in=1
+autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+autocmd vimenter * NeoCompleteEnable
