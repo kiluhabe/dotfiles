@@ -6,23 +6,23 @@ set -gx LC_ALL $LANG
 set fish_plugins theme peco
 
 # Path to Oh My Fish install.
-#if test -d $HOME/.local/share/omf
-#  set -gx OMF_PATH "$HOME/.local/share/omf"
-#else
-#  echo "Oh My Fish "
-#end
+if test -d $HOME/.local/share/omf
+  set -gx OMF_PATH "$HOME/.local/share/omf"
+else
+  echo "Oh My Fish was not found."
+end
 
 # Customize Oh My Fish configuration path.
-#if test -d $HOME/.config/omf
-#  set -gx OMF_CONFIG "$HOME/.config/omf"
-#else
-#  echo "Oh My Fish Configration File was not found."
-#end
+if test -d $HOME/.config/omf
+  set -gx OMF_CONFIG "$HOME/.config/omf"
+else
+  echo "Oh My Fish Configration File was not found."
+end
 
 # Load oh-my-fish configuration.
-#if test -e $OMF_PATH/init.fish
-#  source $OMF_PATH/init.fish
-#end
+if test -e $OMF_PATH/init.fish
+  source $OMF_PATH/init.fish
+end
 
 # homebrew
 set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
