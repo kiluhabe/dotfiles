@@ -73,6 +73,7 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 
 call plug#end()
 
+
 colorscheme codedark
 
 map <C-l> :NERDTreeTabsToggle<CR>R
@@ -91,6 +92,7 @@ call Alias('reload', 'source\ ~/.vimrc')
 call Alias('tn', 'tabnext')
 call Alias('tb', 'tabprevious')
 call Alias('pi', 'PlugInstall')
+call Alias('gst', 'Gstatus')
 
 autocmd vimenter * NERDTreeToggle
 autocmd StdinReadPre * let s:std_in=1
