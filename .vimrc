@@ -42,6 +42,9 @@ set wildmode=list:longest
 
 set mouse=v
 
+set clipboard^=unnamed
+
+
 " vim-plugin
 call plug#begin()
 
