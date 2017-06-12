@@ -57,6 +57,13 @@ Plug 'Shougo/neocomplete'
 
 Plug 'Townk/vim-autoclose'
 
+Plug 'slim-template/vim-slim'
+
+Plug 'tpope/vim-fugitive'
+
+Plug 'othree/yajs.vim'
+
+Plug 'leafgarland/typescript-vim'
 call plug#end()
 
 colorscheme codedark
