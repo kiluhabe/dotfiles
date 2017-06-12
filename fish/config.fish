@@ -6,51 +6,88 @@ set -gx LC_ALL $LANG
 set fish_plugins theme peco
 
 # Path to Oh My Fish install.
-set -gx OMF_PATH "$HOME/.local/share/omf"
+#if test -d $HOME/.local/share/omf
+#  set -gx OMF_PATH "$HOME/.local/share/omf"
+#else
+#  echo "Oh My Fish "
+#end
 
 # Customize Oh My Fish configuration path.
-set -gx OMF_CONFIG "$HOME/.config/omf"
+#if test -d $HOME/.config/omf
+#  set -gx OMF_CONFIG "$HOME/.config/omf"
+#else
+#  echo "Oh My Fish Configration File was not found."
+#end
 
 # Load oh-my-fish configuration.
-source $OMF_PATH/init.fish
+#if test -e $OMF_PATH/init.fish
+#  source $OMF_PATH/init.fish
+#end
 
 # homebrew
 set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 # rbenv setup
 #eval "$(rbenv init -)"
-set -gx RBENV_ROOT $HOME/.rbenv
-set -gx fish_user_paths $fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims
-rbenv rehash >/dev/null ^&1
+if test -d $HOME/.rbenv
+  set -gx RBENV_ROOT $HOME/.rbenv
+  set -gx fish_user_paths $fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims
+  rbenv rehash >/dev/null ^&1
+else
+  echo "rbenv was not found."
+end
 
 # pyenv setup
 #eval "$(pyenv init -)"
-set -gx PYENV_ROOT $HOME/.pyenv
-set -gx fish_user_paths $fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims
-pyenv rehash >/dev/null ^&1
+if test -d $HOME/.pyenv
+  set -gx PYENV_ROOT $HOME/.pyenv
+  set -gx fish_user_paths $fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims
+  pyenv rehash >/dev/null ^&1
+else
+  echo "pyenv was not found."
+end
 
 #node
 #eval "$(nodenv init -)"
-set -gx NODENV_ROOT $HOME/.nodenv
-set -gx fish_user_paths  $fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims
-nodenv rehash >/dev/null ^&1
+if test -d $HOME/.nodenv
+  set -gx NODENV_ROOT $HOME/.nodenv
+  set -gx fish_user_paths  $fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims
+  nodenv rehash >/dev/null ^&1
+else
+  echo "nodenv was not found."
+end
 
 #tmux plugin path
-set -gx TMUX_PLUGIN_PATH $HOME/.tmux/plugins/
+if test -d $HOME/.tmux/plugins/
+  set -gx TMUX_PLUGIN_PATH $HOME/.tmux/plugins/
+else
+  echo "tmux plugings directory was not found."
+end
 
 # The next line enables shell command completion for gcloud.
-set -gx fish_user_paths $fish_user_paths $HOME/google-cloud-sdk/bin
+if test -d $HOME/google-cloud-sdk/bin
+  set -gx fish_user_paths $fish_user_paths $HOME/google-cloud-sdk/bin
+else
+  echo "gcloud sdk was not found."
+end
 
 #gopath
-set -gx GOPATH ~/gocode
-set -gx fish_user_paths $fish_user_paths $GOPATH/bin
+if test -d $HOME/gocode
+  set -gx GOPATH $HOME/gocode
+  set -gx fish_user_paths $fish_user_paths $GOPATH/bin
+else
+  echo "gocode directory was not found."
+end
 
 #rust path
-set -gx CARGO_HOME $HOME/.cargo
-set -gx RUSTUP_HOME $HOME/.rustup
-set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
-set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
-
+if test -d $HOME/.cargo; and test -d $HOME/.rustup
+  set -gx CARGO_HOME $HOME/.cargo
+  set -gx RUSTUP_HOME $HOME/.rustup
+  set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
+  set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
+else
+  echo "cargo or rustup was not found."
+end
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull'
