@@ -1,3 +1,6 @@
+
+set shell=sh
+
 " shoe line number
 set number
 " 文脈によって解釈が異なる全角文字の幅を、2に固定する
@@ -6,8 +9,6 @@ set ambiwidth=double
 set tabstop=2
 " insert tab as spaces
 set expandtab
-" 改行時などに、自動でインデントを設定してくれる
-set smartindent
 " 空白文字の可視化
 set list
 " 可視化した空白文字の表示形式
@@ -67,11 +68,14 @@ Plug 'tpope/vim-fugitive'
 Plug 'othree/yajs.vim'
 
 Plug 'leafgarland/typescript-vim'
+
+Plug 'Xuyuanp/nerdtree-git-plugin'
+
 call plug#end()
 
 colorscheme codedark
 
-map <C-l> :NERDTreeTabsToggle<CR>
+map <C-l> :NERDTreeTabsToggle<CR>R
 map <C-w> :tabclose<CR>
 map <C-q> :q<CR>
 map <C-z> :u<CR>
@@ -91,5 +95,7 @@ call Alias('pi', 'PlugInstall')
 autocmd vimenter * NERDTreeToggle
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+
+let NERDTreeShowHidden=1
 
 autocmd vimenter * NeoCompleteEnable
