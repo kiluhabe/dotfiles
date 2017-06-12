@@ -1,4 +1,4 @@
-set-option -g default-shell /usr/local/bin/fish
+set-option -g default-shell /usr/bin/fish
 
 ## set status bar
 set -g status-bg "#373b41"
