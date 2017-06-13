@@ -76,7 +76,7 @@ call plug#end()
 
 colorscheme codedark
 
-map <C-l> :NERDTreeTabsToggle<CR>R
+map <C-l> :NERDTreeTabsToggle<CR>
 map <C-w> :tabclose<CR>
 map <C-q> :q<CR>
 map <C-z> :u<CR>
