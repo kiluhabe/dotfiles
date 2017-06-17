@@ -1,0 +1,12 @@
+[user]
+  name = lvs-haruki-watanabe 
+  email = haruki.watanabe@livesense.co.jp
+[color]
+  ui = auto
+[alias]
+  co = checkout
+  st = status
+  br = branch
+  ga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
+[core]
+	excludesfile = /Users/vvasravv/.dotfiles/.gitignore_global
