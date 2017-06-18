@@ -96,7 +96,7 @@ alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null
 alias refish='exec fish -l'
 if test -e /usr/local/bin/code
   alias co='code'
-if test -e $HOME/.rbenv/shims/rmate
+else if test -e $HOME/.rbenv/shims/rmate
   alias co='rmate -p 52698'
 end
 alias docker-kill-all='docker stop (docker ps -a -q)'
