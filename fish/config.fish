@@ -94,7 +94,11 @@ alias dotupdate='git -C $HOME/.dotfiles pull'
 alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'
 alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null; docker rm (docker ps -aqf "status=exited") 2> /dev/null'
 alias refish='exec fish -l'
-alias co='code'
+if test -e /usr/local/bin/code
+  alias co='code'
+if test -e $HOME/.rbenv/shims/rmate
+  alias co='rmate -p 52698'
+end
 alias docker-kill-all='docker stop (docker ps -a -q)'
 alias vi='vim'
 
