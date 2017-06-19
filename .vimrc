@@ -71,6 +71,14 @@ Plug 'leafgarland/typescript-vim'
 
 Plug 'Xuyuanp/nerdtree-git-plugin'
 
+Plug 'rust-lang/rust.vim'
+
+Plug 'mattn/webapi-vim'
+
+Plug 'vim-syntastic/syntastic'
+
+Plug 'timonv/vim-cargo'
+
 call plug#end()
 
 
@@ -101,3 +109,20 @@ autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 let NERDTreeShowHidden=1
 
 autocmd vimenter * NeoCompleteEnable
+
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_auto_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+" rust syntastic setting
+call Alias('rstrun', 'RustRun')
+call Alias('rstfmt', 'RustFmt')
+call Alias('rstcheck', 'SyntasticCheck rustc')
+
+" cargo command
+call Alias('ctest', 'CargoTest')
