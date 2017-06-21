@@ -102,6 +102,13 @@ end
 alias docker-kill-all='docker stop (docker ps -a -q)'
 alias vi='vim'
 
+if test -d $HOME/google-cloud-sdk/bin
+  alias gcestart="gcloud compute instances start"
+  alias gcels="gcloud compute instances list"
+  alias gcekill="gcloud compute instances stop"
+end
+
+
 #function
 function fish_user_key_bindings
   bind \cr peco_select_history # Bind for prco history to Ctrl+r
