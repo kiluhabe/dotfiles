@@ -10,6 +10,7 @@
   ga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
 [core]
 	excludesfile = /Users/vvasravv/.dotfiles/.gitignore_global
+  editor = vim
 [ghq]
     root = ~/.ghq
     root = ~/.go/src
