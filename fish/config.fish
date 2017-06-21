@@ -118,7 +118,12 @@ function fish_user_key_bindings
   bind \c] peco_change_directory # Bind for prco change directory to Ctrl+]
 end
 
-if test -z '$NOT_FOUNDS'
+if test -n "$NOT_FOUNDS"
   echo 'these are not found.'
   echo $NOT_FOUNDS
+end
+
+set dotcheck_source (functions dotcheck)
+if test -n "$dotcheck_source"
+  dotcheck
 end

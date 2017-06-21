@@ -3,6 +3,7 @@ function syncsshconf
   if test ! -e "$script_dir/main.sh"
     echo "please run this command."
     echo "git clone https://github.com/kiluhabe/ssh_config_script.git $script_dir"
+    return 0
   end
 
   sh $script_dir/main.sh $argv
