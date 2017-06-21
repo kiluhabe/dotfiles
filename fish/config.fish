@@ -106,6 +106,9 @@ if test -d $HOME/google-cloud-sdk/bin
   alias gcestart="gcloud compute instances start"
   alias gcels="gcloud compute instances list"
   alias gcekill="gcloud compute instances stop"
+  alias gpjktls="gcloud projects list"
+  alias gconfls="gcloud config list"
+  alias gconfset="gcloud config set"
 end
 
 
