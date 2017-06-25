@@ -79,6 +79,11 @@ Plug 'vim-syntastic/syntastic'
 
 Plug 'timonv/vim-cargo'
 
+Plug 'pangloss/vim-javascript'
+
+Plug 'kchmck/vim-coffee-script'
+
+Plug 'digitaltoad/vim-pug'
 call plug#end()
 
 
