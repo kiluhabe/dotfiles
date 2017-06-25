@@ -27,6 +27,7 @@ function dotcheck
 
   if test $remote_newest_commit != $local_newest_commit
     echo "the new version of dotfiles is available."
+    return 1
   end
 
   echo "dotfiles are latest."
