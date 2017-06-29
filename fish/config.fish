@@ -24,9 +24,6 @@ if test -e $OMF_PATH/init.fish
   source $OMF_PATH/init.fish
 end
 
-# homebrew
-set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
-
 # rbenv setup
 #eval "$(rbenv init -)"
 if test -d $HOME/.rbenv
@@ -88,6 +85,9 @@ if test -d $HOME/.cargo; and test -d $HOME/.rustup
 else
   set -gx NOT_FOUNDS $NOT_FOUNDS "cargo or rustup"
 end
+
+# homebrew
+set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull origin master'
