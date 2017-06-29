@@ -102,7 +102,7 @@ end
 alias docker-kill-all='docker stop (docker ps -a -q)'
 alias vi='vim'
 
-if test -d /usr/local/tmux-2.3/bin/tmux
+if test -d /usr/local/tmux-2.3/bin
   alias tmux="/usr/local/tmux-2.3/bin/tmux"
 end
 
