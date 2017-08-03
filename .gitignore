@@ -1,2 +1,4 @@
 fish/fishd.*
 fish/functions/shell_scripts/
+.emacs.d/elpa
+.emacs.d/auto-save-list
