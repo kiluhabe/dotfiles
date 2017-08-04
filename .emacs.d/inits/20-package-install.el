@@ -8,19 +8,26 @@
 (defvar installing-package-list
   '(
     markdown-mode
+    
     ruby-mode
+    ruby-electric-mode
+    inf-ruby
+    rspec-mode
+
     typescript-mode
     rust-mode
     slime
 
-    neotree
-    powerline
+    fly-check
 
-    rainbow-delimiters
+    neotree
     auto-complete
-    smartparens
-    smooth-scroll
-    ))
+    popup
+    elscreen
+    
+    doom-themes
+    all-the-icons
+   ))
 
 (let ((not-installed (loop for x in installing-package-list
                             when (not (package-installed-p x))
