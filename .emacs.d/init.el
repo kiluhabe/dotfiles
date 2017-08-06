@@ -26,7 +26,7 @@
 (require 'cl)
 
 (defvar installing-package-list
-  '(    
+  '(
     ruby-mode
     inf-ruby
     rspec-mode
@@ -41,6 +41,7 @@
     elscreen
     doom-themes
     smart-mode-line
+    highlight-indentation
    ))
 
 (let ((not-installed (loop for x in installing-package-list

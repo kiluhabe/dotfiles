@@ -10,3 +10,15 @@
             (eldoc-mode t)
             (company-mode-on)))
 
+(require 'flycheck)
+(flycheck-define-checker typescript-checker
+"A TypeScript syntax checker using tsc command."
+  :command ("tsc" "--out" "/dev/null" source)
+  :error-patterns
+  ((error line-start (file-name) "(" line "," column "): error " (message) line-end))
+    :mode (typescript-mode))
+   (add-hook 'typescript-mode-hook
+     (lambda ()
+       (flycheck-select-checker 'typescript-checker)
+         (flycheck-mode t)
+      ))
