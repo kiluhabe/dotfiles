@@ -72,7 +72,7 @@ end
 set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
 #alias
-alias dotupdate='git -C $HOME/.dotfiles pull origin master'
+alias dotupdate='git -C $HOME/.dotfiles pull origin master; fish_update_completions'
 alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'
 alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null; docker rm (docker ps -aqf "status=exited") 2> /dev/null'
 alias refish='exec fish -l'
