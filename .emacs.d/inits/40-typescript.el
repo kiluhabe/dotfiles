@@ -1,5 +1,6 @@
 (require 'typescript-mode)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 
 (require 'tide)
 (add-hook 'typescript-mode-hook
@@ -8,7 +9,8 @@
             (flycheck-mode t)
             (setq flycheck-check-syntax-automatically '(save mode-enabled))
             (eldoc-mode t)
-            (company-mode-on)))
+            (company-mode-on)
+            (setq typescript-indent-level 2)))
 
 (require 'flycheck)
 (flycheck-define-checker typescript-checker

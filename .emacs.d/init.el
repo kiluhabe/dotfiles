@@ -41,7 +41,7 @@
     elscreen
     doom-themes
     smart-mode-line
-    highlight-indentation
+    helm
    ))
 
 (let ((not-installed (loop for x in installing-package-list

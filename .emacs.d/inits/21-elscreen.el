@@ -1,7 +1,6 @@
 ;;; elscreenの設定
 ;;; プレフィクスキーはC-z
 (setq elscreen-prefix-key (kbd "C-z"))
-(elscreen-start)
 ;;; タブの先頭に[X]を表示しない
 (setq elscreen-tab-display-kill-screen nil)
 ;;; header-lineの先頭に[<->]を表示しない
@@ -30,3 +29,8 @@
 
 ;; キーバインド
 (global-set-key (kbd "<f9>") 'elscreen-toggle)
+
+(require 'helm-config)
+(helm-mode 1)
+
+(elscreen-start)

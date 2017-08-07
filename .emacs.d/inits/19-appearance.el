@@ -25,10 +25,13 @@
 (require 'whitespace)
 ;; タブの色
 (set-face-foreground 'whitespace-tab "DarkRed")
-(set-face-underline  'whitespace-tab t)
 (set-face-background 'whitespace-tab nil)
 ;; spaceの色
-(set-face-foreground 'whitespace-space "DarkBlue")
-(set-face-underline  'whitespace-space t)
+(set-face-foreground 'whitespace-space "Black")
 (set-face-background 'whitespace-space nil)
 (global-whitespace-mode 1)
+;; 末尾のスペース
+(set-face-foreground 'whitespace-trailing "DarkYellow")
+(set-face-background 'whitespace-trailing nil)
+;; 160字以上の行をハイライト
+(setq whitespace-line-column 160)
