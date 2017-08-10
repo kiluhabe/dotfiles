@@ -35,6 +35,9 @@
     company
     flycheck
     rust-mode
+    racer
+    flycheck-rust
+    company-racer
     slime
     neotree
     popup
