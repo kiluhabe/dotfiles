@@ -45,6 +45,9 @@
     doom-themes
     smart-mode-line
     helm
+    counsel
+    easy-repeat
+    magit
    ))
 
 (let ((not-installed (loop for x in installing-package-list

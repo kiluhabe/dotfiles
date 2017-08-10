@@ -4,3 +4,5 @@
 (electric-pair-mode 1)
 ;; インデント設定
 (electric-indent-mode -1)
+
+(require 'easy-repeat)
