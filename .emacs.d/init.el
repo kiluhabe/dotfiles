@@ -28,6 +28,7 @@
 (defvar installing-package-list
   '(
     ruby-mode
+    slim-mode
     inf-ruby
     rspec-mode
     typescript-mode
