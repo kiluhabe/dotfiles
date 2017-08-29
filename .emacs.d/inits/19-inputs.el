@@ -6,3 +6,10 @@
 (electric-indent-mode -1)
 
 (require 'easy-repeat)
+
+
+(require 'xclip)
+(xclip-mode 1)
+(cond (window-system
+  (setq x-select-enable-clipboard t)
+))
