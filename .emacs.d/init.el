@@ -53,7 +53,7 @@
     faust-mode
     js2-mode
     dockerfile-mode
-
+    yaml-mode
    ))
 
 (let ((not-installed (loop for x in installing-package-list
