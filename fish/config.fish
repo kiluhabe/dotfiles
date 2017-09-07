@@ -69,7 +69,7 @@ if test -d $HOME/.cargo; and test -d $HOME/.rustup
 end
 
 if test -e $HOME/.emacs/bin/emacs
-  set -gx fish_user_paths $fish_user_paths $HOME/.emacs/bin/emacs
+  set -gx fish_user_paths $fish_user_paths $HOME/.emacs/bin
 end
 
 # homebrew
