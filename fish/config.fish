@@ -68,6 +68,10 @@ if test -d $HOME/.cargo; and test -d $HOME/.rustup
   set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
 end
 
+if test -e $HOME/.emacs/bin/emacs
+  set -gx fish_user_paths $fish_user_paths $HOME/.emacs/bin/emacs
+end
+
 # homebrew
 set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
 
@@ -84,11 +88,7 @@ end
 alias docker-kill-all='docker stop (docker ps -a -q)'
 alias vi='vim'
 
-if test -e $HOME/.emacs/bin/emacs
-  alias es='$HOME/.emacs/bin/emacs'
-else
-  alias es='emacs'
-end
+alias es='emacs'
 
 if test -d /usr/local/tmux-2.3/bin
   alias tmux="/usr/local/tmux-2.3/bin/tmux"
