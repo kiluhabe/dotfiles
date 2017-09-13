@@ -2,7 +2,6 @@
 (add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
 
 ;; Setting up configurations when you load rust-mode
-(add-hook 'racer-mode-hook #'company-mode)
 (add-hook 'rust-mode-hook #'racer-mode)
 (add-hook 'racer-mode-hook #'eldoc-mode)
 (add-hook 'racer-mode-hook #'company-mode)

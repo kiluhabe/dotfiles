@@ -87,7 +87,7 @@ else if test -e $HOME/.rbenv/shims/rmate
 end
 alias docker-kill-all='docker stop (docker ps -a -q)'
 alias vi='vim'
-
+alias rust='cargo-script'
 alias es='emacs'
 
 if test -d /usr/local/tmux-2.3/bin
