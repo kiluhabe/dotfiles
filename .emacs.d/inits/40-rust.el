@@ -1,4 +1,5 @@
 (add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
+(require 'company)
 (require 'company-racer)
 (require 'flycheck-rust)
 (with-eval-after-load 'company
@@ -8,5 +9,9 @@
 (set-face-attribute 'flycheck-error nil :background "DarkRed")
 (add-hook 'rust-mode-hook #'flycheck-rust-setup)
 (add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
+(add-hook 'racer-mode-hook (lambda ()
+                             (company-mode)
+                             ;;; この辺の設定はお好みで
+                             (set (make-variable-buffer-local 'company-idle-delay) 0.1)
+                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 0)))
 (add-hook 'after-init-hook #'global-flycheck-mode)
