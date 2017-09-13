@@ -1,9 +1,13 @@
-;; Load rust-mode when you open `.rs` files
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
-
-;; Setting up configurations when you load rust-mode
-(add-hook 'rust-mode-hook #'racer-mode)
+;;; racerやrustfmt、コンパイラにパスを通す
+(add-to-list 'exec-path (expand-file-name "~/.cargo/bin/"))
+;;; rust-modeでrust-format-on-saveをtにすると自動でrustfmtが走る
+(eval-after-load "rust-mode"
+  '(setq-default rust-format-on-save t))
+;;; rustのファイルを編集するときにracerとflycheckを起動する
+(add-hook 'rust-mode-hook (lambda ()
+                            (racer-mode)
+                            (flycheck-rust-setup)))
+;;; racerのeldocサポートを使う
 (add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-(global-set-key (kbd "TAB") #'company-indent-or-complete-common) ;
-(setq company-tooltip-align-annotations t)
+;;; racerの補完サポートを使う
+(add-hook 'racer-mode-hook (lambda () (company-mode))
