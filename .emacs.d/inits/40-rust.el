@@ -1,13 +1,12 @@
-;;; racerやrustfmt、コンパイラにパスを通す
-(add-to-list 'exec-path (expand-file-name "~/.cargo/bin/"))
-;;; rust-modeでrust-format-on-saveをtにすると自動でrustfmtが走る
-(eval-after-load "rust-mode"
-  '(setq-default rust-format-on-save t))
-;;; rustのファイルを編集するときにracerとflycheckを起動する
-(add-hook 'rust-mode-hook (lambda ()
-                            (racer-mode)
-                            (flycheck-rust-setup)))
-;;; racerのeldocサポートを使う
+(add-to-list 'exec-path (expand-file-name "~/.cargo/bin"))
+(require 'company-racer)
+(require 'flycheck-rust)
+(with-eval-after-load 'company
+  (add-to-list 'company-backends 'company-racer))
+(add-hook 'rust-mode-hook #'racer-mode)
+(setq flycheck-check-syntax-automatically '(save mode-enabled))
+(set-face-attribute 'flycheck-error nil :background "DarkRed")
+(add-hook 'rust-mode-hook #'flycheck-rust-setup)
 (add-hook 'racer-mode-hook #'eldoc-mode)
-;;; racerの補完サポートを使う
-(add-hook 'racer-mode-hook (lambda () (company-mode))
+(add-hook 'racer-mode-hook #'company-mode)
+(add-hook 'after-init-hook #'global-flycheck-mode)
