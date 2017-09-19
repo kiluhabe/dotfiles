@@ -29,6 +29,7 @@
   '(
     ruby-mode
     slim-mode
+    robe
     inf-ruby
     rspec-mode
     typescript-mode
