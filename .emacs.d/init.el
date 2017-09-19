@@ -54,6 +54,7 @@
     js2-mode
     dockerfile-mode
     yaml-mode
+    haskell-mode
    ))
 
 (let ((not-installed (loop for x in installing-package-list
@@ -63,6 +64,10 @@
     (package-refresh-contents)
     (dolist (pkg not-installed)
         (package-install pkg))))
+
+(setq load-path (cons "~/.emacs.d/tidal/" load-path))
+(require 'tidal)
+(setq tidal-interpreter "/usr/local/bin/ghci")
 
 (require 'init-loader)
 (setq init-loader-show-log-after-init nil)
