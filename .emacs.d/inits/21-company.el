@@ -1,5 +1,5 @@
 (require 'company)
-(global-company-mode +1)
+;;;(global-company-mode +1)
 
 ;;; 1つしか候補がなかったらtabで補完、複数候補があればtabで次の候補へ行くように
 (define-key company-active-map (kbd "<tab>") 'company-complete-common-or-cycle)
@@ -8,6 +8,7 @@
  ;;; 候補の一番上でselect-previousしたら一番下に、一番下でselect-nextしたら一番上に行くように
 (setq company-selection-wrap-around t)
 (setq company-idle-delay nil)
+(setq company-auto-complete t)
 ;;; 色の設定。出来るだけ奇抜にならないように
 (set-face-attribute 'company-tooltip nil
                     :foreground "black"
