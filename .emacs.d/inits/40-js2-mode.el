@@ -12,7 +12,7 @@
   (set-face-attribute 'flycheck-error nil :background "DarkRed")
   (company-mode +1)
   (setq company-idle-delay 0.1)
-  (setq company-minimum-prefix-length 1)
+  (setq company-minimum-prefix-length 2)
 )
 
 (add-hook 'js2-mode-hook #'setup-js2-mode)
