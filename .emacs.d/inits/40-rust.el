@@ -13,5 +13,5 @@
                              (company-mode)
                              ;;; この辺の設定はお好みで
                              (set (make-variable-buffer-local 'company-idle-delay) 0.1)
-                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 2)))
+                             (set (make-variable-buffer-local 'company-minimum-prefix-length) 3)))
 (add-hook 'after-init-hook #'global-flycheck-mode)
