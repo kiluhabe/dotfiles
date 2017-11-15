@@ -56,6 +56,8 @@
     dockerfile-mode
     yaml-mode
     haskell-mode
+    scala-mode
+    ensime
    ))
 
 (let ((not-installed (loop for x in installing-package-list
