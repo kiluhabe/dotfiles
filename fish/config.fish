@@ -110,8 +110,3 @@ function fish_user_key_bindings
   bind \cr peco_select_history # Bind for prco history to Ctrl+r
   bind \c] peco_change_directory # Bind for prco change directory to Ctrl+]
 end
-
-set dotcheck_source (functions dotcheck)
-if test -n "$dotcheck_source"
-  dotcheck
-end
