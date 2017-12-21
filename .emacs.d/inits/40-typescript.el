@@ -1,4 +1,6 @@
 (require 'typescript-mode)
+(require 'company)
+
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
 (add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
 
@@ -16,7 +18,10 @@
   ;; company is an optional dependency. You have to
   ;; install it separately via package-install
   ;; `M-x package-install [ret] company`
-  (company-mode +1))
+  (company-mode +1)
+  (setq company-idle-delay 0.1)
+  (setq company-minimum-prefix-length 2)
+)
 
 ;; aligns annotation to the right hand side
 (setq company-tooltip-align-annotations t)
