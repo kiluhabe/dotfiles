@@ -1,3 +1,6 @@
+# direnv
+eval (direnv hook fish)
+
 # set LOCAL
 set -gx LANG ja_JP.UTF-8
 set -gx LC_ALL $LANG
@@ -70,6 +73,9 @@ end
 
 if test -e $HOME/.emacs/bin/emacs
   set -gx fish_user_paths $fish_user_paths $HOME/.emacs/bin
+  set -gx EDITOR $HOME/.emacs/bin
+else
+  set -gx EDITOR emacs
 end
 
 # homebrew
