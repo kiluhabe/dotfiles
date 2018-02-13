@@ -1,5 +1,8 @@
 # direnv
-eval (direnv hook fish)
+if test (type direnv; echo $status) -eq 0
+   echo "hoge"
+   eval (direnv hook fish)
+end
 
 # set LOCAL
 set -gx LANG ja_JP.UTF-8
