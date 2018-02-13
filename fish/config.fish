@@ -1,6 +1,6 @@
 # direnv
-if test (type direnv; echo $status) -eq 0
-   echo "hoge"
+type direnv > /dev/null ^&1
+if test 0 -eq $status
    eval (direnv hook fish)
 end
 
@@ -82,7 +82,10 @@ else
 end
 
 # homebrew
-set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+string match -r '^Darwin' (uname -a) > /dev/null ^&1;
+if test 0 -eq $status
+   set -gx fish_user_paths $fish_user_paths /usr/local/sbin /usr/local/bin /usr/sbin /usr/bin /sbin /bin
+end
 
 #alias
 alias dotupdate='git -C $HOME/.dotfiles pull origin master; fish_update_completions'
