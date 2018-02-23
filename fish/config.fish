@@ -28,7 +28,7 @@ end
 
 # rbenv setup
 if test -d $HOME/.rbenv
-   status --is-interactive; and source (rbenv init -|psub)
+  # status --is-interactive; and source (rbenv init -|psub)
   set -gx RBENV_ROOT $HOME/.rbenv
   set -gx fish_user_paths $fish_user_paths $RBENV_ROOT/bin $RBENV_ROOT/shims
   rbenv rehash >/dev/null ^&1
@@ -36,7 +36,7 @@ end
 
 # pyenv setup
 if test -d $HOME/.pyenv
-  status --is-interactive; and source (pyenv init -|psub)
+  # status --is-interactive; and source (pyenv init -|psub)
   set -gx PYENV_ROOT $HOME/.pyenv
   set -gx fish_user_paths $fish_user_paths $PYENV_ROOT/bin $PYENV_ROOT/shims
   pyenv rehash >/dev/null ^&1
@@ -44,7 +44,7 @@ end
 
 #node
 if test -d $HOME/.nodenv
-  status --is-interactive; and source (nodenv init -|psub)
+  # status --is-interactive; and source (nodenv init -|psub)
   set -gx NODENV_ROOT $HOME/.nodenv
   set -gx fish_user_paths  $fish_user_paths $NODENV_ROOT/bin $NODENV_ROOT/shims
   nodenv rehash >/dev/null ^&1
