@@ -58,6 +58,7 @@
     haskell-mode
     scala-mode
     ensime
+    multiple-cursors
    ))
 
 (let ((not-installed (loop for x in installing-package-list
