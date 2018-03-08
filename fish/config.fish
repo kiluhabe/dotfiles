@@ -50,6 +50,10 @@ if test -d $HOME/.nodenv
   nodenv rehash >/dev/null ^&1
 end
 
+if test -e (which npm) -a -d (npm -g root)
+   set -gx NODE_PATH (npm root -g)
+end
+
 #tmux plugin path
 if test -d $HOME/.tmux/plugins/
   set -gx TMUX_PLUGIN_PATH $HOME/.tmux/plugins/
