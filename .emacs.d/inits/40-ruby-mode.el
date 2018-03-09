@@ -23,7 +23,7 @@
     '(push 'company-robe company-backends))
   (company-mode +1)
   (setq company-idle-delay 0.1)
-  (setq company-minimum-prefix-length 1)
+  (setq company-minimum-prefix-length 3)
 
   (robe-mode +1)
   (rspec-mode +1)
