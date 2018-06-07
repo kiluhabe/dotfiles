@@ -8,7 +8,7 @@
 
   ;; 背景・文字・カーソル
   '(cursor ((t (:foreground "#4682b4"))))
-  '(default ((t (:background "#1B1D1E" :foreground "#dcdcdc" :fringe (:width 50)))))
+  '(default ((t (:background "#1B1D1E" :foreground "#dcdcdc"))))
 
   ;; 選択範囲
   '(region ((t (:background "#4682b4"))))
@@ -42,6 +42,7 @@
   '(dired-symlink ((t (:foreground "#ff00ff"))))
 
   '(vertical-border ((t (:foreground "#3b3b3b" :box (:line-width 0)))))
+  '(show-paren-match ((t (:background "#696969" :foreground "#dcdcdc"))))
 )
 
 (custom-theme-set-variables

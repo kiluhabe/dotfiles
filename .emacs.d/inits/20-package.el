@@ -15,7 +15,7 @@
   '(
     tabbar
     treemacs
-    magit
+    git-gutter
   )
 )
 
