@@ -46,7 +46,7 @@ function fish_prompt
 
   set -l cyan (set_color -o '#4292BC')
   set -l yellow (set_color -o '#eeb373')
-  set -l red (set_color -o '#AE4E50')
+  set -l red (set_color -o '#EB514A')
   set -l blue (set_color -o '#576674')
   set -l normal (set_color normal)
 

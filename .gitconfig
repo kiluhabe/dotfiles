@@ -8,6 +8,9 @@
   untracked = "#F2A851"
   changed = "#F34E4F"
   added = "#55A654"
+[color "diff"]
+  old = "#AE4E50" bold
+  new = "#55A654" bold
 [alias]
   co = checkout
   st = status
