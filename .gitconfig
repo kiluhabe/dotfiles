@@ -3,6 +3,11 @@
   email =  kiluhabe@users.noreply.github.com
 [color]
   ui = auto
+
+[color "status"]
+  untracked = "#F2A851"
+  changed = "#F34E4F"
+  added = "#55A654"
 [alias]
   co = checkout
   st = status
