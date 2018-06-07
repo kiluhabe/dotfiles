@@ -16,7 +16,7 @@
   ;; モードライン
   '(mode-line ((t (:foreground "#F8F8F2" :background "#27408b" :box (:line-width 0)))))
   '(mode-line-buffer-id ((t (:foreground nil :background nil))))
-  '(mode-line-inactive ((t (:foreground "#F8F8F2" :background "#708090" :box (:line-width 0)))))
+  '(mode-line-inactive ((t (:foreground "#F8F8F2" :background "#1B1D1E" :box (:line-width 0)))))
 
   ;; ハイライト
   '(highlight ((t (:foreground "#000000" :background "#C4BE89"))))
@@ -40,6 +40,8 @@
   '(dired-header ((t (:foreground "#1874cd"))))
   '(dired-directory ((t (:foreground "#87ceff"))))
   '(dired-symlink ((t (:foreground "#ff00ff"))))
+
+  '(vertical-border ((t (:foreground "#3b3b3b" :box (:line-width 0)))))
 )
 
 (custom-theme-set-variables
@@ -51,4 +53,6 @@
   '(show-paren-style 'parenthesis)
 )
 
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?┃))
+(set-face-inverse-video-p 'vertical-border nil)
 (provide-theme 'super-cool)

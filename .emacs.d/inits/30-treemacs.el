@@ -1,0 +1,5 @@
+(treemacs)
+(treemacs-follow-mode t)
+(treemacs-filewatch-mode t)
+(setq treemacs-width 30)
+(setq treemacs-file-event-delay 500)

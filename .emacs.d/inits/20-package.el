@@ -12,7 +12,11 @@
 (require 'cl)
 
 (defvar installing-package-list
-  '()
+  '(
+    tabbar
+    treemacs
+    magit
+  )
 )
 
 (let ((not-installed (loop for x in installing-package-list

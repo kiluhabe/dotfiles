@@ -54,11 +54,6 @@ if test -e (which npm) -a -d (npm -g root)
    set -gx NODE_PATH (npm root -g)
 end
 
-#tmux plugin path
-if test -d $HOME/.tmux/plugins/
-  set -gx TMUX_PLUGIN_PATH $HOME/.tmux/plugins/
-end
-
 # The next line enables shell command completion for gcloud.
 if test -d $HOME/google-cloud-sdk/bin
   set -gx fish_user_paths $fish_user_paths $HOME/google-cloud-sdk/bin
@@ -92,8 +87,6 @@ if test 0 -eq $status
 end
 
 #alias
-alias dotupdate='git -C $HOME/.dotfiles pull origin master; fish_update_completions'
-alias tpm-init='git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm'
 alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null; docker rm (docker ps -aqf "status=exited") 2> /dev/null'
 alias refish='exec fish -l'
 if test -e /usr/local/bin/code
@@ -118,11 +111,4 @@ if test -d $HOME/google-cloud-sdk/bin
   alias gpjktls="gcloud projects list"
   alias gconfls="gcloud config list"
   alias gconfset="gcloud config set"
-end
-
-
-#function
-function fish_user_key_bindings
-  bind \cr peco_select_history # Bind for prco history to Ctrl+r
-  bind \c] peco_change_directory # Bind for prco change directory to Ctrl+]
 end
