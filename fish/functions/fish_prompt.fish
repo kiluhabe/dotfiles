@@ -44,10 +44,10 @@ function fish_prompt
     end
   end
 
-  set -l cyan (set_color -o cyan)
-  set -l yellow (set_color -o yellow)
-  set -l red (set_color -o red)
-  set -l blue (set_color -o blue)
+  set -l cyan (set_color -o '#4292BC')
+  set -l yellow (set_color -o '#eeb373')
+  set -l red (set_color -o '#AE4E50')
+  set -l blue (set_color -o '#576674')
   set -l normal (set_color normal)
 
   set -l arrow "$red➜ "
