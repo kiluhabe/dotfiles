@@ -6,7 +6,7 @@
 
 [color "status"]
   untracked = "#F2A851"
-  changed = "#F34E4F"
+  changed = "#AE4E50"
   added = "#55A654"
 [color "diff"]
   old = "#AE4E50" bold
