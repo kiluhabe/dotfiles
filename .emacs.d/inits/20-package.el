@@ -25,6 +25,7 @@
     counsel
     swiper
     wgrep
+    multiple-cursors
   )
 )
 
