@@ -17,6 +17,7 @@
     treemacs
     git-gutter
     projectile
+    magit
     treemacs-projectile
     smooth-scroll
     easy-repeat

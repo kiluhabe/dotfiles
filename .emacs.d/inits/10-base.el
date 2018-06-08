@@ -13,3 +13,5 @@
 
 (require 'easy-repeat)
 (easy-repeat-mode t)
+
+(setq vc-handled-backends ())
