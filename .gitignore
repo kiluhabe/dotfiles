@@ -7,6 +7,7 @@ fish/functions/shell_scripts/
 .emacs.d/projectile-bookmarks.eld
 .emacs.d/recentf
 .emacs.d/company-statistics-cache.el
+.emacs.d/.mc-lists.el
 fish/conf.d/
 fish/functions/fish_prompt.*
 *.dat
