@@ -18,6 +18,8 @@
     git-gutter
     projectile
     treemacs-projectile
+    diminish
+    smooth-scroll
   )
 )
 
