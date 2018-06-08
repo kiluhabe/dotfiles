@@ -29,6 +29,7 @@
     company
     company-statistics
     expand-region
+    undo-tree
   )
 )
 
