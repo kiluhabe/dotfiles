@@ -31,6 +31,8 @@
     expand-region
     undo-tree
     visual-regexp
+    which-key
+    fiplr
   )
 )
 
