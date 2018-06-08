@@ -8,9 +8,9 @@
 
 (setq-default mode-line-format
   (list
-    "    "
+    "      "
     (propertize (my/update-git-branch-mode-line))
-    "                                                                                 "
+    "                                                                           "
     ;; line and column
     "L:" ;; '%02' to set to 2 chars at least; prevents flickering
     (propertize "%02l")

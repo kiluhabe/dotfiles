@@ -21,6 +21,9 @@
     treemacs-projectile
     smooth-scroll
     easy-repeat
+    ivy
+    counsel
+    swiper
   )
 )
 

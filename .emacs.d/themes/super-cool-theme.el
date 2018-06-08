@@ -60,3 +60,8 @@
 (set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?┃))
 (set-face-inverse-video-p 'vertical-border nil)
 (provide-theme 'super-cool)
+
+(add-hook 'minibuffer-setup-hook
+          (lambda ()
+            (make-local-variable 'face-remapping-alist)
+            (add-to-list 'face-remapping-alist '(default (:background "#262626")))))
