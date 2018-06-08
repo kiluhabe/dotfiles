@@ -4,6 +4,7 @@ fish/functions/shell_scripts/
 .emacs.d/auto-save-list
 .emacs.d/network-security.data
 .emacs.d/.cache
+.emacs.d/projectile-bookmarks.eld
 fish/conf.d/
 fish/functions/fish_prompt.*
 *.dat

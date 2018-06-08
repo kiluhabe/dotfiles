@@ -10,7 +10,8 @@
                  (cons "" nil))))
 
 (custom-set-variables
-'(tabbar-separator (quote (0.5))))
+'(tabbar-separator (quote (1))))
+
 
 ;; trim overflow tabs
 (setq tabbar-auto-scroll-flag nil)
@@ -36,6 +37,8 @@ That is, a string used to represent it on the tab bar."
  'tabbar-default nil
  :background "#121212"
  :foreground "#696969"
+ :box nil
+ :underline nil
  )
 (set-face-attribute
  'tabbar-selected nil
