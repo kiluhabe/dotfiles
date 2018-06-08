@@ -29,13 +29,16 @@
   '(font-lock-string-face ((t (:foreground "#dcdcdc"))))
 
   ;; 特定キーワード
-  '(font-lock-keyword-face ((t (:foreground "#1874cd"))))
+  '(font-lock-keyword-face ((t (:foreground "#cd96cd"))))
 
   ;; Boolean
   '(font-lock-constant-face((t (:foreground "#1874cd"))))
 
   ;; コメント
   '(font-lock-comment-face ((t (:foreground "#698b69"))))
+
+  '(font-lock-type-face ((t (:foreground "#00cdcd"))))
+  '(font-lock-builtin-face ((t (:foreground "#1874cd"))))
 
   '(dired-header ((t (:foreground "#1874cd"))))
   '(dired-directory ((t (:foreground "#87ceff"))))

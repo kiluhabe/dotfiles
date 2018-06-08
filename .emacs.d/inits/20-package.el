@@ -16,6 +16,8 @@
     tabbar
     treemacs
     git-gutter
+    projectile
+    treemacs-projectile
   )
 )
 

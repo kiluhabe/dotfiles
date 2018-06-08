@@ -1,3 +1,10 @@
+(require 'projectile)
+(require 'treemacs)
+(require 'treemacs-projectile)
+
+(projectile-global-mode +1)
+(setq projectile-enable-caching t)
+
 (treemacs)
 (treemacs-follow-mode t)
 (treemacs-filewatch-mode t)
@@ -5,10 +12,10 @@
 (setq treemacs-file-event-delay 500)
 (setq treemacs-collapse-dirs 3)
 
-;; (treemacs-git-mode 'simple)
-(treemacs-follow-mode t)
-(treemacs-filewatch-mode t)
+(treemacs-git-mode 'simple)
 
 (set-face-foreground 'treemacs-directory-face "#dcdcdc")
 
 (global-set-key [f8] 'treemacs)
+(projectile-discover-projects-in-directory)
+(treemacs-projectile)
