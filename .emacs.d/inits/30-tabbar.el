@@ -48,8 +48,8 @@ That is, a string used to represent it on the tab bar."
  )
 (set-face-attribute
  'tabbar-modified nil
- :background "brightred"
- :foreground "brightwhite"
+ :background "#121212"
+ :foreground "#696969"
  :box nil
  )
 
