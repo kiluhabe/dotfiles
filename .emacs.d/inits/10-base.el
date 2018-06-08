@@ -17,3 +17,5 @@
 (setq vc-handled-backends ())
 
 (require 'wgrep nil t)
+
+(electric-pair-mode t)
