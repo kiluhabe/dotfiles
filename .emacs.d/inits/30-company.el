@@ -1,5 +1,9 @@
 (require 'company)
+(require 'company-statistics)
+
 (global-company-mode)
+(company-statistics-mode)
+
 (setq company-idle-delay 0)
 (setq company-minimum-prefix-length 2)
 (setq company-selection-wrap-around t)

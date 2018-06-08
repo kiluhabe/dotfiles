@@ -27,6 +27,8 @@
     wgrep
     multiple-cursors
     company
+    company-statistics
+    expand-region
   )
 )
 
