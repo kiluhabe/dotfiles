@@ -30,6 +30,7 @@
     company-statistics
     expand-region
     undo-tree
+    visual-regexp
   )
 )
 
