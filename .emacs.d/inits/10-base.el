@@ -15,3 +15,5 @@
 (easy-repeat-mode t)
 
 (setq vc-handled-backends ())
+
+(require 'wgrep nil t)

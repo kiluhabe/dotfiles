@@ -24,6 +24,7 @@
     ivy
     counsel
     swiper
+    wgrep
   )
 )
 
