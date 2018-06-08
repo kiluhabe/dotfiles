@@ -10,3 +10,6 @@
 
 (setq indent-tabs-mode nil)
 (setq-default indent-tabs-mode nil)
+
+(require 'easy-repeat)
+(easy-repeat-mode t)

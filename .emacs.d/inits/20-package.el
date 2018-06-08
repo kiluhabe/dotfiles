@@ -20,6 +20,7 @@
     treemacs-projectile
     diminish
     smooth-scroll
+    easy-repeat
   )
 )
 
