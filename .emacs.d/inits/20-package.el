@@ -26,6 +26,7 @@
     swiper
     wgrep
     multiple-cursors
+    company
   )
 )
 
