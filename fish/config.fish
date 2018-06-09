@@ -8,9 +8,6 @@ end
 set -gx LANG ja_JP.UTF-8
 set -gx LC_ALL $LANG
 
-#peco
-set fish_plugins theme peco
-
 # Path to Oh My Fish install.
 if test -d $HOME/.local/share/omf
   set -gx OMF_PATH "$HOME/.local/share/omf"
@@ -87,28 +84,12 @@ if test 0 -eq $status
 end
 
 #alias
-alias docker-clean='docker rmi (docker images -aqf "dangling=true") 2> /dev/null; docker rm (docker ps -aqf "status=exited") 2> /dev/null'
 alias refish='exec fish -l'
 if test -e /usr/local/bin/code
   alias co='code'
-else if test -e $HOME/.rbenv/shims/rmate
-  alias co='rmate -p 52698'
 end
-alias docker-kill-all='docker stop (docker ps -a -q)'
-alias vi='vim'
-alias rust='cargo script'
 alias es='emacs'
-alias be='bundle exec'
 
 if test -d /usr/local/tmux-2.3/bin
   alias tmux="/usr/local/tmux-2.3/bin/tmux"
-end
-
-if test -d $HOME/google-cloud-sdk/bin
-  alias gcestart="gcloud compute instances start"
-  alias gcels="gcloud compute instances list"
-  alias gcekill="gcloud compute instances stop"
-  alias gpjktls="gcloud projects list"
-  alias gconfls="gcloud config list"
-  alias gconfset="gcloud config set"
 end
