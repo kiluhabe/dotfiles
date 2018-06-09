@@ -20,6 +20,7 @@
 
   ;; ハイライト
   '(highlight ((t (:foreground "#000000" :background "#C4BE89"))))
+  '(hl-line ((t (:foreground "#dcdcdc" :background "#27408b"))))
 
   ;; 関数名
   '(font-lock-function-name-face ((t (:foreground "#C4BE89"))))
