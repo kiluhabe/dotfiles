@@ -24,3 +24,11 @@
 (which-key-setup-side-window-bottom)
 (which-key-mode t)
 (setq which-key-idle-delay 0.5)
+
+(defun custom-new-buffer-frame ()
+  "Create a new frame with a new empty buffer."
+  (interactive)
+  (let ((buffer (generate-new-buffer "untitled")))
+    (set-buffer-major-mode buffer)
+    (display-buffer buffer '(display-buffer-pop-up-frame . nil))))
+(global-set-key (kbd "C-c n") #'custom-new-buffer-frame)

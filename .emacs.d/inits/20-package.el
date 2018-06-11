@@ -33,6 +33,7 @@
     visual-regexp
     which-key
     fiplr
+    markdown-mode
   )
 )
 
