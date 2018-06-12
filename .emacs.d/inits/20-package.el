@@ -36,6 +36,7 @@
     markdown-mode
     yaml-mode
     json-mode
+    tide
   )
 )
 
