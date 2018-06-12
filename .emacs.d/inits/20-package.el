@@ -34,6 +34,8 @@
     which-key
     fiplr
     markdown-mode
+    yaml-mode
+    json-mode
   )
 )
 
