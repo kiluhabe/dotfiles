@@ -37,6 +37,7 @@
     yaml-mode
     json-mode
     tide
+    dockerfile-mode
   )
 )
 
