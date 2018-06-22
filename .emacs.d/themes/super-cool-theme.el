@@ -14,7 +14,7 @@
   '(region ((t (:background "#4682b4"))))
 
   ;; モードライン
-  '(mode-line ((t (:foreground "#F8F8F2" :background "#cd5555" :box (:line-width 0)))))
+  '(mode-line ((t (:foreground "#F8F8F2" :background "#27408b" :box (:line-width 0)))))
   '(mode-line-buffer-id ((t (:foreground nil :background nil))))
   '(mode-line-inactive ((t (:foreground "#F8F8F2" :background "#1B1D1E" :box (:line-width 0)))))
 
