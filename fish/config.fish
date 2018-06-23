@@ -66,8 +66,17 @@ end
 if test -d $HOME/.cargo; and test -d $HOME/.rustup
   set -gx CARGO_HOME $HOME/.cargo
   set -gx RUSTUP_HOME $HOME/.rustup
-  set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
+  set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
   set -gx fish_user_paths $fish_user_paths $CARGO_HOME/bin
+
+  function set_rust_src_path
+    if [ $argv[1] = "stable" ]
+       set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
+    end
+    if [ $argv[1] = "nightly" ]
+       set -gx RUST_SRC_PATH $HOME/.rustup/toolchains/nightly-x86_64-apple-darwin/lib/rustlib/src/rust/src
+    end
+  end
 end
 
 if test -e $HOME/.emacs/bin/emacs

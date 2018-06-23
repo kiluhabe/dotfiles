@@ -38,6 +38,10 @@
     json-mode
     tide
     dockerfile-mode
+    rust-mode
+    racer
+    flycheck-rust
+    company-racer
   )
 )
 
