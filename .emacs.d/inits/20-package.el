@@ -43,6 +43,7 @@
     flycheck-rust
     company-racer
     terraform-mode
+    nginx-mode
   )
 )
 
