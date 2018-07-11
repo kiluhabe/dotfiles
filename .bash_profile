@@ -10,7 +10,6 @@ export LC_ALL=$LANG
 
 # rbenv setup
 if [ -d $HOME/.rbenv ]; then
-  # status --is-interactive; and source (rbenv init -|psub)
   export RBENV_ROOT=$HOME/.rbenv
   export PATH=$PATH:$RBENV_ROOT/bin:$RBENV_ROOT/shims
   rbenv rehash >/dev/null
@@ -18,7 +17,6 @@ fi
 
 # pyenv setup
 if [ -d $HOME/.pyenv ]; then
-  # status --is-interactive; and source (pyenv init -|psub)
   export PYENV_ROOT=$HOME/.pyenv
   export PATH=$PATH:$PYENV_ROOT/bin:$PYENV_ROOT/shims
   pyenv rehash >/dev/null
@@ -26,7 +24,6 @@ fi
 
 #node
 if [ -d $HOME/.nodenv ]; then
-  # status --is-interactive; and source (nodenv init -|psub)
   export NODENV_ROOT=$HOME/.nodenv
   export PATH=$PATH:$NODENV_ROOT/bin:$NODENV_ROOT/shims
   nodenv rehash >/dev/null
