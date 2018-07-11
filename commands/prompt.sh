@@ -40,23 +40,43 @@ _repo_type() {
     fi
 }
 
-prompt() {
-    arrow="➜ "
+#colors
+bl="$(tput setaf 4)";
+wh="$(tput setaf 7)";
+yl="$(tput setaf 3)";
+rd="$(tput setaf 1)";
+cy="$(tput setaf 6)";
+rs="$(tput sgr0)";
+
+_arrow() {
     if [ $USER = 'root' ]; then
-       arrow="# "
+        echo "$rd # "
+    else
+        echo "$rd ➜ "
     fi
+}
 
-    cwd=$(basename $PWD)
+_cwd() {
+    if [ $PWD = $HOME ]; then
+        echo "$bl~"
+    else
+        echo "$bl$(basename $PWD)"
+    fi
+}
+
+_repo_info() {
     repo_type=$(_repo_type)
-
     if [ $repo_type ]; then
         repo_branch=$(_repo_branch_name $repo_type)
-        repo_info="$repo_type:($repo_branch)"
+        repo_info="$cy$repo_type:($rd$repo_branch$cy)"
     fi
     if [ $repo_type ] && [ "$(_is_repo_dirty $repo_type)" ]; then
-        dirty=" ✗"
+        dirty="$yl ✗"
         repo_info="$repo_info$dirty"
     fi
+    echo $repo_info
+}
 
-    echo "$arrow $cwd $repo_info "
+prompt() {
+    export PS1="\[\$(_arrow) \$(_cwd) \$(_repo_info)\] $rs"
 }
