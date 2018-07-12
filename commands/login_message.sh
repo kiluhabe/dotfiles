@@ -9,11 +9,11 @@ _terminal_program() {
 }
 
 _wallpaper() {
-    if [ ! -d $HOME/.wallpapers ] || [ -z "$(ls -A $HOME/.wallpapers)" ]; then
+    if [ ! -d $HOME/wallpapers ] || [ -z "$(ls -A $HOME/wallpapers)" ]; then
         return 0
     fi
     images=()
-    for image in $(find $HOME/.wallpapers -name '*.jpg' -o -name '*.jpeg' -o -name '*.png'); do
+    for image in $(find $HOME/wallpapers -name '*.jpg' -o -name '*.jpeg' -o -name '*.png'); do
         images+=($image)
     done
     echo ${images[RANDOM % ${#images[@]}]}
@@ -27,14 +27,14 @@ _set_colorscheme() {
 }
 
 _copy_wallpaper() {
-    if [ ! -d $HOME/.wallpapers ]; then
-        mkdir $HOME/.wallpapers
+    if [ ! -d $HOME/wallpapers ]; then
+        mkdir $HOME/wallpapers
     fi
-    if [ ! -z "$(ls -A $HOME/.wallpapers)" ]; then
+    if [ ! -z "$(ls -A $HOME/wallpapers)" ]; then
         return 0
     fi
 
-    cp $HOME/.dotfiles/.wallpapers/* $HOME/.wallpapers/
+    cp $HOME/.dotfiles/wallpapers/* $HOME/wallpapers/
 }
 
 login_message() {
