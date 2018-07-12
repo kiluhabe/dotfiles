@@ -52,5 +52,5 @@ login_message() {
     fi
 
     _set_colorscheme $wallpaper
-    eval "neofetch --$(_terminal_program) $(_wallpaper) --crop_mode fill"
+    eval "neofetch --$(_terminal_program) $(_wallpaper) --size 50%"
 }
