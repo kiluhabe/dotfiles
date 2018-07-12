@@ -1,4 +1,4 @@
 #! /bin/bash
 
 cd $HOME
-curl https://sdk.cloud.google.com
+curl https://sdk.cloud.google.com | bash
