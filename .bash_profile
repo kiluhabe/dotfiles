@@ -1,3 +1,5 @@
+test -r ~/.bashrc && . ~/.bashrc
+
 # direnv
 type direnv > /dev/null
 if [ 0 = $? ]; then
