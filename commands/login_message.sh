@@ -20,8 +20,7 @@ _wallpaper() {
 }
 
 _set_colorscheme() {
-    type wal > /dev/null
-    if [ 1 = $? ] || [ -z $1 ]; then
+    if [ -z $(which wal) ] || [ -z $1 ]; then
         return 0
     fi
     wal -i $1
@@ -39,8 +38,7 @@ _copy_wallpaper() {
 }
 
 login_message() {
-    type neofetch >/dev/null
-    if [ 1 = $? ] || [ ! -z $TMUX ]; then
+    if [ -z $(which neofetch) ] || [ ! -z $TMUX ]; then
         return 0
     fi
 
