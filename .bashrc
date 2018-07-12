@@ -6,6 +6,9 @@ done
 #prompt
 prompt
 
+#login message
+login_message
+
 #aliases
 alias es="emacs"
 
