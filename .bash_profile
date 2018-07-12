@@ -15,6 +15,7 @@ if [ -d $HOME/.rbenv ]; then
   export RBENV_ROOT=$HOME/.rbenv
   export PATH=$PATH:$RBENV_ROOT/bin:$RBENV_ROOT/shims
   rbenv rehash >/dev/null
+  eval "$(rbenv init -)"
 fi
 
 # pyenv setup
@@ -22,6 +23,7 @@ if [ -d $HOME/.pyenv ]; then
   export PYENV_ROOT=$HOME/.pyenv
   export PATH=$PATH:$PYENV_ROOT/bin:$PYENV_ROOT/shims
   pyenv rehash >/dev/null
+  eval "$(pyenv init -)"
 fi
 
 #node
@@ -29,6 +31,7 @@ if [ -d $HOME/.nodenv ]; then
   export NODENV_ROOT=$HOME/.nodenv
   export PATH=$PATH:$NODENV_ROOT/bin:$NODENV_ROOT/shims
   nodenv rehash >/dev/null
+  eval "$(nodenv init -)"
 fi
 
 # The next line enables shell command completion for gcloud.
@@ -53,5 +56,5 @@ fi
 
 # homebrew
 if [[ $(uname -a) =~ ^Darwin ]]; then
-   export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+   export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/.local/bin
 fi

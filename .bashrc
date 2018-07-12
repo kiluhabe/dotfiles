@@ -11,6 +11,7 @@ login_message
 
 #aliases
 alias es="emacs"
+alias mpd="ncmpcpp"
 
 #pywal
 setup_pywal
