@@ -39,7 +39,7 @@ _copy_wallpaper() {
 }
 
 login_message() {
-    type neofetch > /dev/null
+    type neofetch >/dev/null
     if [ 1 = $? ] || [ ! -z $TMUX ]; then
         return 0
     fi
