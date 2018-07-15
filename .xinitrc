@@ -9,4 +9,8 @@ if [ -e $(which light 2>/dev/null) ]; then
     light -S 10
 fi
 
+if [ -e $(which kr 2>/dev/null) ]; then
+    kr restart
+fi
+
 exec i3
