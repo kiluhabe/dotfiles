@@ -1,10 +1,12 @@
 #!/bin/bash
 
 _terminal_program() {
-    if [ $TERM_PROGRAM = "iTerm.app" ]; then
+    if [ "$TERM_PROGRAM" = "iTerm.app" ]; then
         echo "iterm2"
+    elif [ -e "$(which w3m 2>/dev/null)" ]; then
+        echo "w3m"
     else
-        return 0
+        echo "none"
     fi
 }
 
@@ -20,7 +22,7 @@ _wallpaper() {
 }
 
 _set_colorscheme() {
-    if [ -z $(which wal) ] || [ -z $1 ]; then
+    if [ -z "$(which wal 2>/dev/null)" ] || [ -z $1 ]; then
         return 0
     fi
     wal -i $1
@@ -38,11 +40,12 @@ _copy_wallpaper() {
 }
 
 login_message() {
-    if [ -z $(which neofetch) ] || [ ! -z $TMUX ]; then
+    if [ -z "$(which neofetch 2>/dev/null)" ] || [ ! -z $TMUX ]; then
         return 0
     fi
 
     _copy_wallpaper
+
     terminal_program=$(_terminal_program)
     wallpaper=$(_wallpaper)
 

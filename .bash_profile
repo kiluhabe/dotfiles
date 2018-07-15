@@ -1,9 +1,13 @@
 test -r ~/.bashrc && . ~/.bashrc
 
 # direnv
-type direnv > /dev/null
-if [ 0 = $? ]; then
+if [ -d "$(which direnv 2>/dev/null)" ]; then
    eval "$(direnv hook bash)"
+fi
+
+# go
+if [ -e "$(which go 2>/dev/null)" ] && [ -e "$HOME/.go" ]; then
+    export GOPATH=$HOME/.go
 fi
 
 # set LOCAL
@@ -56,5 +60,7 @@ fi
 
 # homebrew
 if [[ $(uname -a) =~ ^Darwin ]]; then
-   export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$HOME/.local/bin
+   export PATH=$PATH:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 fi
+
+export PATH=$PATH:$HOME/.local/bin

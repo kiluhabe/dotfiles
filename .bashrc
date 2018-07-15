@@ -4,10 +4,10 @@ for command in $(find $HOME/.dotfiles/commands/*.sh); do
 done
 
 #prompt
-prompt
-
-#login message
-login_message
+if [ $TERM != linux ]; then
+    prompt
+    login_message
+fi
 
 #aliases
 alias es="emacs"

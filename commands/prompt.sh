@@ -78,5 +78,6 @@ _repo_info() {
 }
 
 prompt() {
+    unset PROMPT_COMMAND
     export PS1="\[\$(_arrow) \$(_cwd) \$(_repo_info)\] $rs"
 }
