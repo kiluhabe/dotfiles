@@ -47,6 +47,8 @@
 
   '(vertical-border ((t (:foreground "#3b3b3b" :box (:line-width 0)))))
   '(show-paren-match ((t (:background "#696969" :foreground "#dcdcdc"))))
+
+  '(flycheck-error ((t (:foreground "#b22222"))))
 )
 
 (custom-theme-set-variables
