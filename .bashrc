@@ -6,7 +6,6 @@ done
 #prompt
 if [ $TERM != linux ]; then
     prompt
-    login_message
 fi
 
 #aliases

@@ -7,7 +7,7 @@ main() {
     fi
 
     git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-    cd pyenv/plugins/python-build && ./install.sh
+    cd $HOME/.pyenv/plugins/python-build && ./install.sh
     cd $HOME
 }
 
