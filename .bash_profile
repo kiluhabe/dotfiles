@@ -38,6 +38,11 @@ if [ -d $HOME/.nodenv ]; then
   eval "$(nodenv init -)"
 fi
 
+# global npm module
+if [ -d "$(which npm 2>/dev/null)" ]; then
+    export PATH=$PATH:$(npm bin -g)
+fi
+
 # The next line enables shell command completion for gcloud.
 if [ -d $HOME/google-cloud-sdk/bin ]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
