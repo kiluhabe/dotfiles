@@ -13,3 +13,4 @@ ln -s ~/.dotfiles/.tmux/.tmux.conf.local  ~/.tmux.conf.local
 ln -s ~/.dotfiles/.tmux/.tmux.conf ~/.tmux.conf
 ln -s ~/.dotfiles/.gitignore_global ~/.gitignore_global
 ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/.inputrc ~/.inputrc

@@ -1,0 +1,6 @@
+set completion-ignore-case on
+set bell-style none
+set visible-stats on
+
+# keybinds
+"\C-t": "fh\C-m"
