@@ -44,6 +44,9 @@
     company-racer
     terraform-mode
     nginx-mode
+    tidal
+    haskell-mode
+    company-ghc
   )
 )
 

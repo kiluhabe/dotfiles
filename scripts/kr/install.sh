@@ -4,32 +4,27 @@ _check_dependencies () {
     if [ ! -e "$(which cargo 2>/dev/null)" ]; then
         echo "kr needs cargo"
         echo "run: curl https://sh.rustup.rs -sSf | sh"
-        return 1
     fi
     if [ ! -e "$(which cargo-web 2>/dev/null)" ]; then
         echo "kr needs cargo-web"
-        return 1
     fi
     if [ ! -e "$(which go 2>/dev/null)" ]; then
         echo "kr needs go"
-        return 1
     fi
     if [ ! -e "$GOPATH" ]; then
         echo "please set GOPATH"
-        return 1
     fi
     if [ ! -e "$(which node 2>/dev/null)" ]; then
         echo "kr needs node"
-        return 1
     fi
     if [ ! -e "$(which rsync 2>/dev/null)" ]; then
         echo "kr needs rsync"
-        return 1
     fi
 }
 
 main () {
-    if [ ! _check_dependencies ]; then
+    if [ ! -n _check_dependencies ]; then
+        _check_dependencies
         return 1
     fi
 
@@ -40,5 +35,6 @@ main () {
 
     make install
     make start
-    kr pair
 }
+
+main

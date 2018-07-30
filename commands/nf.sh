@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 _terminal_program() {
     if [ "$TERM_PROGRAM" = "iTerm.app" ]; then
@@ -39,7 +39,7 @@ _copy_wallpaper() {
     cp $HOME/.dotfiles/wallpapers/* $HOME/wallpapers/
 }
 
-login_message() {
+nf() {
     if [ -z "$(which neofetch 2>/dev/null)" ] || [ ! -z $TMUX ]; then
         return 0
     fi
