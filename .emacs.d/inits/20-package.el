@@ -47,6 +47,7 @@
     tidal
     haskell-mode
     company-ghc
+    writeroom-mode
   )
 )
 

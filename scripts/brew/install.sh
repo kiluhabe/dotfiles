@@ -5,3 +5,6 @@ fi
 
 brew install cask docker-compose neofetch imagemagick fzf tmux emacs direnv yarn bash
 brew cask install firefox google-chrome iterm2 docker visual-studio-code google-japanese-ime notion pd dropbox postman clipy
+
+brew tap httpu/httpu
+brew install httpu
