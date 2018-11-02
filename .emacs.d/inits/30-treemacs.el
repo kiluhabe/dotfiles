@@ -18,7 +18,6 @@
 (set-face-foreground 'treemacs-git-ignored-face "#696969")
 (set-face-foreground 'treemacs-git-modified-face "#ffd39b")
 (set-face-foreground 'treemacs-git-added-face "#696969")
-(set-face-foreground 'treemacs-git-deleted-face "#b22222")
 
 (global-set-key [f8] 'treemacs)
 (projectile-discover-projects-in-directory)
