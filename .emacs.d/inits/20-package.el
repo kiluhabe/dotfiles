@@ -49,6 +49,7 @@
     company-ghc
     writeroom-mode
     mustache-mode
+    plantuml-mode
   )
 )
 
