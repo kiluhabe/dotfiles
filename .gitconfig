@@ -23,3 +23,5 @@
 [ghq]
     root = ~/.ghq
     root = ~/.go/src
+[credential "https://source.developers.google.com"]
+	helper = gcloud.sh

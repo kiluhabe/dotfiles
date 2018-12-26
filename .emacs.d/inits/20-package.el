@@ -48,6 +48,7 @@
     haskell-mode
     company-ghc
     writeroom-mode
+    mustache-mode
   )
 )
 
