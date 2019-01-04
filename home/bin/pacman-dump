@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+main() {
+       pacman -Qqen > $HOME/.dotfiles/pkglist.txt
+}
+
+main
