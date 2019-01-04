@@ -5,12 +5,12 @@ all:;
 clean:
 	for dir in */; do \
 	   for a in $$(ls -aA $$dir); do \
-		rm $(HOME)/$$a; \
+		rm -rf $(HOME)/$$a; \
 	   done \
 	done
 
 .PHONY: install
 install:
 	for dir in */; do \
-	    stow $$dir; \
+	    [ -d $$dir ] && stow $$dir; \
 	done
