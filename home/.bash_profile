@@ -68,6 +68,8 @@ if [[ $(uname -a) =~ ^Darwin ]]; then
    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
 fi
 
+export BROWSER=$(which firefox)
+
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/bin:$PATH
 export PATH="$HOME/.cargo/bin:$PATH"
