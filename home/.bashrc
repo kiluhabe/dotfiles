@@ -1,11 +1,16 @@
+# path
+if [[ $(uname -a) =~ ^Darwin ]]; then
+   export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+fi
+export PATH=$HOME/.local/bin:$HOME/bin:$PATH
+
+#prompt
+PS1="\$(prompt)"
+
 # direnv
 if [ -d "$(which direnv 2>/dev/null)" ]; then
    eval "$(direnv hook bash)"
 fi
-
-# go
-
-
 
 # set LOCAL
 export LANG=ja_JP.UTF-8
@@ -45,12 +50,6 @@ if [ -d $HOME/google-cloud-sdk/bin ]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
 fi
 
-# path
-if [[ $(uname -a) =~ ^Darwin ]]; then
-   export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
-fi
-export PATH=$HOME/.local/bin:$HOME/bin:$PATH
-
 export EDITOR=emacs
 
 # go
@@ -59,13 +58,8 @@ export GOPATH=$HOME/.go
 # rust
 export CARGO_HOME=$HOME/.cargo
 export RUSTUP_HOME=$HOME/.rustup
-export RUST_SRC_PATH=$HOME/.rustup/toolchains/stable-x86_64-apple-darwin/lib/rustlib/src/rust/src
+export RUST_SRC_PATH=$(rustc --print sysroot 2> /dev/null)/lib/rustlib/src/rust/src
 export PATH=$PATH:$CARGO_HOME/bin
-
-#prompt
-unset PROMPT_COMMAND
-source $HOME/.dotfiles/prompt.sh
-export PS1=$(prompt)
 
 #aliases
 alias es="emacs"
