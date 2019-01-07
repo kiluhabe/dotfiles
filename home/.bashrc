@@ -5,6 +5,7 @@ fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
 #prompt
+unset PROMPT_COMMAND
 PS1="\$(prompt)"
 
 # direnv
