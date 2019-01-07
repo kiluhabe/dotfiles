@@ -8,5 +8,3 @@ emacs/.emacs.d/recentf
 emacs/.emacs.d/company-statistics-cache.el
 emacs/.emacs.d/.mc-lists.el
 *.dat
-openbox/.config/openbox/autostart
-openbox/.config/openbox/environment
