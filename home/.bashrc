@@ -64,3 +64,4 @@ export PATH=$PATH:$CARGO_HOME/bin
 
 #aliases
 alias es="emacs"
+alias reload-x="xrdb $HOME/.Xresources "

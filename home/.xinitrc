@@ -11,7 +11,6 @@ usermodmap=$HOME/.Xmodmap
 xrdb "$userresources"
 xmodmap "$usermodmap"
 
-update-theme
 compton -b
 
 # start some nice programs
