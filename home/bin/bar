@@ -41,12 +41,13 @@ vol() {
     esac
 }
 
-# for ((;;)); {
-#     dat; vol; wif; bat
-#     printf '%b\n' "   $dat %{r}$vol  $wif $bat   "
-#     sleep 1
-# } | lemonbar -B "#55${color0/\#}" \
-#              -F "#FFFFFF" \
-#              -f "Roboto Mono:size=12" \
-#              -f "Font Awesome:size=12" \
-#              -g "250x30"
+for ((;;)); {
+    # dat; vol; wif; bat
+        # printf '%b\n' "   $dat %{r}$vol  $wif $bat   "
+    printf "\xef\x89\x84"
+    sleep 1
+} | lemonbar -B "#55${color0/\#}" \
+             -F "#FFFFFF" \
+             -f "Roboto Mono:size=12" \
+             -f "Font Awesome:size=12" \
+             -g "250x30"

@@ -64,5 +64,3 @@ export PATH=$PATH:$CARGO_HOME/bin
 
 #aliases
 alias es="emacs"
-
-wal -qR

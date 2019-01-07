@@ -2,3 +2,4 @@ sleep 5s && kalu &
 nitrogen --restore &
 volumeicon &
 lxpolkit &
+wal -qR
