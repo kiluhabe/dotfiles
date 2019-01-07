@@ -3,3 +3,4 @@ nitrogen --restore &
 volumeicon &
 lxpolkit &
 wal -qR
+$HOME/bin/bar

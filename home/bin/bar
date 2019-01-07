@@ -7,47 +7,41 @@ source ~/.cache/wal/colors.sh
 enable -f /usr/lib64/bash/sleep sleep
 
 dat() {
-    printf -v dat '%(%r)T' '-1'
-    dat="${dat/:?? / }"
+    dat="$(date "+%Y/%m/%d-%H:%M:%S")"
 }
 
 wif() {
-    cur="$(iwgetid  -r)"
-    wif="${cur:+ }"
+    wif="$(iwgetid  -r)"
 }
 
 bat() {
     cur="$(< /sys/class/power_supply/BAT0/capacity)"
     sta="$(< /sys/class/power_supply/BAT0/status)"
 
-    case "$cur" in
-        [0-9]|1[0-9])         bat="" ;;
-        2[0-9]|3[0-9]|4[0-9]) bat="" ;;
-        5[0-9]|6[0-9])        bat="" ;;
-        7[0-9]|8[0-9])        bat="" ;;
-        *)                    bat="" ;;
-    esac
-
-    [[ "$sta" == "Charging" ]] && bat+=" "
+    bat="$cur($sta)"
 }
 
 vol() {
-    cur="$(amixer get Master |grep % |awk '{print $5}'|sed 's/[^0-9]//g')"
-
-    case "${cur//%}" in
-        [0-9]|1[0-9]|2[0-9]) vol="" ;;
-        3[0-9]|4[0-9])       vol="" ;;
-        *)                   vol="" ;;
-    esac
+    vol="$(amixer get Master |grep % |awk '{print $5}'|sed 's/[^0-9]//g'|head -n 1)"
 }
 
+bar_width=540
+bar_height=64
+
+center() {
+    width="$(xdpyinfo | grep dimensions | sed -r 's/^[^0-9]*([0-9]+[0-9]+).*$/\1/')"
+    echo "$((($width / 2) - ($bar_width / 2)))"
+}
+
+echo $background
+
 for ((;;)); {
-    # dat; vol; wif; bat
-        # printf '%b\n' "   $dat %{r}$vol  $wif $bat   "
-    printf "\xef\x89\x84"
-    sleep 1
-} | lemonbar -B "#55${color0/\#}" \
-             -F "#FFFFFF" \
-             -f "Roboto Mono:size=12" \
-             -f "Font Awesome:size=12" \
-             -g "250x30"
+        dat; vol; wif; bat
+        echo "%{c}VOL:$vol BATTERY:$bat $wif $dat"
+        sleep 1
+} | lemonbar -B "$color1" \
+             -F "$foreground" \
+             -f "Roboto Mono:size=10" \
+             -f "DejaVu Sans:size=10" \
+             -g "540x64+$(center)+80" \
+             -b

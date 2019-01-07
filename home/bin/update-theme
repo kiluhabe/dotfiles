@@ -7,4 +7,7 @@ sed -i"" --follow-symlinks \
         -e "s/image.color: #.*/image.color: ${background:-#000000}/" \
         $HOME/.themes/thicc/openbox-3/themerc
 
+pkill bar
+bar &
+
 openbox --restart
