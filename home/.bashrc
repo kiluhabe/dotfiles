@@ -6,7 +6,7 @@ export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
 #prompt
 unset PROMPT_COMMAND
-PS1="\$(prompt)"
+PS1="\$(prompt) "
 
 # direnv
 if [ -d "$(which direnv 2>/dev/null)" ]; then

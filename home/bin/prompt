@@ -21,7 +21,7 @@ main() {
 
     dirty=$([ -n "$is_git_dirty" ] && echo "$yl ✗" || echo "")
 
-    echo "$arrow$dirty $rs"
+    printf "$arrow$dirty $rs"
 }
 
 main

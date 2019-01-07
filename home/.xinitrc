@@ -38,7 +38,9 @@ if [ -d /etc/X11/xinit/xinitrc.d ] ; then
     unset f
 fi
 
-[ -d $(which wal 2> /dev/null) ] && wal -R
+[ -d $(which wal 2> /dev/null) ] && wal -R -o wal-set
+compton -b
+
 
 get_session(){
 	local dbus_args=(--sh-syntax --exit-with-session)

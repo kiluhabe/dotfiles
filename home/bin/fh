@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 
 main() {
-    eval $( ([ -n "$ZSH_NAME" ] && fc -l 1 || history) | fzf +s --tac | sed 's/ *[0-9]* *//')
+    local cmd
+    cmd=$(cat $HOME/.bash_history | fzf +s --tac)
+    eval $cmd
 }
 
 main
