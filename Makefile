@@ -5,7 +5,7 @@ all:;
 clean:
 	for dir in */; do \
 	   for a in $$(ls -aA $$dir); do \
-		rm -rf $(HOME)/$$a; \
+		[ "$$a" != ".config" ] && echo $(HOME)/$$a; \
 	   done \
 	done
 
