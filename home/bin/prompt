@@ -12,7 +12,7 @@ main() {
     cy="$(tput setaf 6)";
     rs="$(tput sgr0)";
 
-    arrow=$([ "$USER" = '"root"' ] && echo "$rd # " || echo "$rd ➜ ")
+    arrow=$([ "$USER" = '"root"' ] && echo "$rd #" || echo "$rd ➜")
     cwd=$([ "$PWD" = "$HOME" ] && echo "$bl~" || echo "$bl$(basename $PWD)")
 
     repo_type="git"
@@ -21,7 +21,7 @@ main() {
 
     dirty=$([ -n "$is_git_dirty" ] && echo "$yl ✗" || echo "")
 
-    echo "$arrow $cwd $repo_info$dirty $rs "
+    echo "$arrow$dirty $rs"
 }
 
 main

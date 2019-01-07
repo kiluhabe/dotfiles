@@ -10,7 +10,7 @@ border.width: 0
 
 # Title
 padding.width: 50
-padding.height: 20
+padding.height: 10
 window.*.title.bg: Solid Flat
 window.*.*.bg: Parentrelative
 window.label.text.justify: center

@@ -1,3 +1,6 @@
+*font: xft:Fira Code:size=12, xft:DejaVu Sans:size=12
+XTerm.vt100.faceName: xft:Fira Code:size=12, xft:DejaVu Sans:size=12
+
 Xft.dpi:       96
 Xft.antialias: true
 Xft.hinting:   true
@@ -6,64 +9,14 @@ Xft.autohint:  false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
-XTerm*background:        #black
-XTerm*foreground:        #d8d8d8
-XTerm*pointerColor:      #1ABB9B
 XTerm*faceName:          Fixed
 XTerm*faceSize:          11
 XTerm*reverseVideo:      on
 XTerm*selectToClipboard: true
 
-*.foreground:  #bbbbbb
-*.background:  #000000
-*.cursorColor: #fca02f
-*fading:                          8
-*fadeColor:                       black
-*pointerColorBackground:          #2B2C2B
-*pointerColorForeground:          #16A085
-
-! Black
-*.color0:      #4f4f4f
-*.color8:      #7c7c7c
-!
-! Red
-*.color1:      #ff6c60
-*.color9:      #ffb6b0
-!
-! Green
-*.color2:      #a8ff60
-*.color10:     #ceffac
-!
-! Yellow
-*.color3:      #ffffb6
-*.color11:     #ffffcc
-!
-! Blue
-*.color4:      #96cbfe
-*.color12:     #b5dcff
-!
-! Magenta
-*.color5:      #ff73fd
-*.color13:     #ff9cfe
-!
-! Cyan
-*.color6:      #c6c5fe
-*.color14:     #dfdffe
-!
-! White
-*.color7:      #eeeeee
-*.color15:     #ffffff
-!
-! Bold, Italic, Underline
-*.colorBD:     #ffffff
-!*.colorIT:
-!*.colorUL:
-
+Xcursor.color: #ff8300
 Xcursor.theme: xcursor-breeze
-Xcursor.size:                     0
-
-URxvt.font:                       xft:Deja\\ Vu\\ Sans\\ Mono:Retina:size=12
-URxvt.letterSpace:                -1
+Xcursor.size:  0
 
 URxvt.termName: screen-256color
 
@@ -71,14 +24,11 @@ URxvt.termName: screen-256color
 ! URxvt.font:      -xos4-terminus-medium-r-normal--16-160-72-72-c-80-iso10646-1
 ! URxvt.bold.font: -xos4-terminus-bold-r-normal--16-160-72-72-c-80-iso10646-1
 !! terminus names see end of file!
-
+URxvt.font: xft:Fira Code:size=12, xft:DejaVu Sans:size=12
 URxvt.depth:                      32
-URxvt.background:                 [100]#222D31
 URxvt*scrollBar:                  false
 URxvt*mouseWheelScrollPage:       false
 URxvt*cursorBlink:                true
-URxvt*background:                 black
-URxvt*foreground:                 grey
 URxvt*saveLines:                  5000
 
 ! for 'fake' transparency (without Compton) uncomment the following three lines
@@ -88,8 +38,8 @@ URxvt*saveLines:                  5000
 
 ! Normal copy-paste keybindings without perls
 URxvt.iso14755:                   false
-URxvt.keysym.Shift-Control-V:     eval:paste_clipboard
-URxvt.keysym.Shift-Control-C:     eval:selection_to_clipboard
+URxvt.keysym.Control-V:     eval:paste_clipboard
+URxvt.keysym.Control-C:     eval:selection_to_clipboard
 !Xterm escape codes, word by word movement
 URxvt.keysym.Control-Left:        \033[1;5D
 URxvt.keysym.Shift-Control-Left:  \033[1;6D
