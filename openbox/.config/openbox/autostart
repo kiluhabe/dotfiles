@@ -2,6 +2,7 @@ sleep 5s && kalu &
 nitrogen --restore &
 volumeicon &
 lxpolkit &
+libinput-gestures &
 compton -b
 wal -qR
 $HOME/bin/bar
