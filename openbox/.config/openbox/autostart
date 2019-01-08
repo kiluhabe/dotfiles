@@ -2,6 +2,7 @@ sleep 5s && kalu &
 nitrogen --restore &
 volumeicon &
 lxpolkit &
+fcitx-autostart &
 libinput-gestures &
 compton -b
 wal -qR
