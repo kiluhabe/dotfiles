@@ -16,7 +16,7 @@ configuration {
 
 #window {
     // Default font
-    font: "Roboto 18";
+    font: "Roboto 16";
     fullscreen: true;
     transparency: "background";
 
