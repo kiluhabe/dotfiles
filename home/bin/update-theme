@@ -1,11 +1,9 @@
 #!/usr/bin/env bash
 
 . $HOME/.cache/wal/colors.sh
-sed -i"" --follow-symlinks \
-        -e "s/bg.color: #.*/bg.color: ${background:-#FFFFFF}/" \
-        -e "s/text.color: #.*/text.color: ${foreground:-#000000}/" \
-        -e "s/image.color: #.*/image.color: ${background:-#000000}/" \
-        $HOME/.themes/thicc/openbox-3/themerc
+
+echo "$(BACKGROUND=$background FOREGROUND=$foreground HIGHLIGHT=$color4 mo $HOME/.themes/thicc/openbox-3/themerc.mo)" > $HOME/.themes/thicc/openbox-3/themerc
+echo "$(BACKGROUND=$background FOREGROUND=$foreground HIGHLIGHT=$color4 mo $HOME/.config/rofi/config.rasi.mo)" > $HOME/.config/rofi/config.rasi
 
 pkill bar
 bar &

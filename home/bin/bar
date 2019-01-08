@@ -33,8 +33,6 @@ center() {
     echo "$((($width / 2) - ($bar_width / 2)))"
 }
 
-echo $background
-
 for ((;;)); {
         dat; vol; wif; bat
         echo "%{c}VOL:$vol BATTERY:$bat $wif $dat"

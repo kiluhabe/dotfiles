@@ -9,7 +9,7 @@ configuration {
 * {
     // Default bg is transparent.
     background-color: transparent;
-    text-color:       #c4cade;
+    text-color:       {{FOREGROUND}};
     spacing:          8;
 }
 
@@ -19,7 +19,7 @@ configuration {
     fullscreen: true;
     transparency: "background";
 
-    background-color: #15151999;
+    background-color: {{BACKGROUND}}99;
 
     // Add dummy widgets on top and bottom so the sizing
     // nicely centers hdum, independent of resolution.
@@ -36,5 +36,5 @@ configuration {
 }
 
 #element selected {
-    text-color: #748ABB;
+    text-color: {{HIGHLIGHT}};
 }
