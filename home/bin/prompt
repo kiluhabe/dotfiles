@@ -1,27 +1,12 @@
 #!/usr/bin/env bash
 
 main() {
-    git_branch_name=$(git symbolic-ref HEAD 2> /dev/null | sed -e 's,.*/\(.*\),\1,')
     is_git_dirty=$(git status -s --ignore-submodules=dirty 2> /dev/null )
 
-    #colors
-    bl="$(tput setaf 4)";
-    wh="$(tput setaf 7)";
-    yl="$(tput setaf 3)";
-    rd="$(tput setaf 1)";
-    cy="$(tput setaf 6)";
-    rs="$(tput sgr0)";
+    arrow=$([ "$USER" = '"root"' ] && echo "#" || echo "➜")
+    dirty=$([ -n "$is_git_dirty" ] && echo "✗" || echo "")
 
-    arrow=$([ "$USER" = '"root"' ] && echo "$rd #" || echo "$rd ➜")
-    cwd=$([ "$PWD" = "$HOME" ] && echo "$bl~" || echo "$bl$(basename $PWD)")
-
-    repo_type="git"
-
-    repo_info=$([ -n "$(git rev-parse --is-inside-work-tree 2>/dev/null)" ] && echo "$cy$repo_type:($rd$git_branch_name$cy)" || echo "")
-
-    dirty=$([ -n "$is_git_dirty" ] && echo "$yl ✗" || echo "")
-
-    printf "$arrow$dirty $rs"
+    printf "$arrow $dirty"
 }
 
 main

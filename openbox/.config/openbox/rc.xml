@@ -201,7 +201,9 @@
       </action>
     </keybind>
     <keybind key="W-d">
-      <action name="ToggleShowDesktop"/>
+      <action name="Execute">
+        <command>rofi -show run</command>
+      </action>
     </keybind>
     <keybind key="W-z">
       <action name="Close"/>
