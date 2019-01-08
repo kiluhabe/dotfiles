@@ -20,3 +20,4 @@ Xcursor.size:  0
 
 URxvt.scrollBar: false
 URxvt.font: xft:Roboto Mono:size=12, xft:DejaVu Sans:size=12
+URxvt.lineSpace: 2.5
