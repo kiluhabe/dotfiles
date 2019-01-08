@@ -3,6 +3,7 @@ nitrogen --restore &
 volumeicon &
 lxpolkit &
 fcitx-autostart &
+clipmenud &
 libinput-gestures &
 compton -b
 wal -qR

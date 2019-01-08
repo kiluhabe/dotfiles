@@ -66,3 +66,4 @@ export PATH=$PATH:$CARGO_HOME/bin
 alias es="emacs"
 alias reload-x="xrdb $HOME/.Xresources "
 alias xcopy='xsel --clipboard --input'
+alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
