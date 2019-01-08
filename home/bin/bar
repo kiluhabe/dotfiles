@@ -37,7 +37,7 @@ for ((;;)); {
         dat; vol; wif; bat
         echo "%{c}VOL:$vol BATTERY:$bat $wif $dat"
         sleep 1
-} | lemonbar -B "$color1" \
+} | lemonbar -B "$color2" \
              -F "$foreground" \
              -f "Roboto Mono:size=10" \
              -f "DejaVu Sans:size=10" \
