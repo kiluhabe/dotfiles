@@ -50,6 +50,7 @@
     writeroom-mode
     mustache-mode
     plantuml-mode
+    pug-mode
   )
 )
 
