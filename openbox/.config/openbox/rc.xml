@@ -235,7 +235,7 @@
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-        <command>urxvt -b 32</command>
+        <command>urxvt -b 36</command>
         <startupnotify>
           <enabled>yes</enabled>
           <name>urxvt</name>
