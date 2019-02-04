@@ -1,6 +1,7 @@
 # path
 if [[ $(uname -a) =~ ^Darwin ]]; then
-   export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+    export TERM=xterm-256color
 fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
