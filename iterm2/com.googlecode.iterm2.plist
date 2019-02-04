@@ -68,7 +68,7 @@
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>410 381 620 392 0 0 1440 900 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>644 244 796 486 0 0 1440 900 </string>
+	<string>644 283 796 486 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
 	<string>368 156 704 588 0 0 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
@@ -794,9 +794,9 @@
 	<key>TabStyleWithAutomaticOption</key>
 	<integer>1</integer>
 	<key>TerminalMargin</key>
-	<integer>32</integer>
+	<integer>48</integer>
 	<key>TerminalVMargin</key>
-	<integer>20</integer>
+	<integer>30</integer>
 	<key>UseBorder</key>
 	<false/>
 	<key>WindowNumber</key>
