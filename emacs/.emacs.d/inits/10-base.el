@@ -9,6 +9,7 @@
 (setq-default indent-tabs-mode nil)
 
 (setq indent-tabs-mode nil)
+(global-visual-line-mode t)
 (setq-default indent-tabs-mode nil)
 
 (require 'easy-repeat)

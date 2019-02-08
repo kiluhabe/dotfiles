@@ -8,7 +8,7 @@
 (treemacs)
 (treemacs-follow-mode t)
 (treemacs-filewatch-mode t)
-(setq treemacs-width 30)
+(setq treemacs-width 18)
 (setq treemacs-file-event-delay 500)
 (setq treemacs-collapse-dirs 3)
 
