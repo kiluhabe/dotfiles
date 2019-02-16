@@ -45,5 +45,5 @@ for ((;;)); {
              -F "$foreground" \
              -f "Roboto Mono:size=10" \
              -f "DejaVu Sans:size=10" \
-             -g "${bar_width}x${bar_height}+$(center)+80" \
+             -g "${bar_width}x${bar_height}+$(center)+30" \
              -b
