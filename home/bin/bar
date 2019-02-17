@@ -29,7 +29,11 @@ gpu(){
     gpu="$(optimus-manager --print-mode | sed -e 's/Current mode : //g')"
 }
 
-bar_width=640
+bri(){
+    bri="$(light -G)"
+}
+
+bar_width=760
 bar_height=24
 
 center() {
@@ -38,8 +42,8 @@ center() {
 }
 
 for ((;;)); {
-        dat; vol; wif; bat; gpu;
-        echo "%{c}VOL:$vol BATTERY:$bat GPU:$gpu $wif $dat"
+        dat; vol; wif; bat; gpu; bri;
+        echo "%{c}VOL:$vol BATTERY:$bat GPU:$gpu Backlight:$bri $wif $dat"
         sleep 1
 } | lemonbar -B "$color2" \
              -F "$foreground" \
