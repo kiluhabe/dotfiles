@@ -5,6 +5,6 @@ lxpolkit &
 fcitx-autostart &
 clipmenud &
 libinput-gestures &
-compton -b
+compton --config $HOME/.config/compton.conf -b
 wal -qR
 $HOME/bin/bar
