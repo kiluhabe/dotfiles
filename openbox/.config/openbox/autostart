@@ -8,3 +8,4 @@ libinput-gestures &
 compton --config $HOME/.config/compton.conf -b
 wal -qR
 $HOME/bin/bar
+switch-monitor

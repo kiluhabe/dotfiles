@@ -62,6 +62,11 @@ export RUSTUP_HOME=$HOME/.rustup
 export RUST_SRC_PATH=$(rustc --print sysroot 2> /dev/null)/lib/rustlib/src/rust/src
 export PATH=$PATH:$CARGO_HOME/bin
 
+# android sdk
+export _JAVA_AWT_WM_NONREPARENTING=1
+export ANDROID_HOME=$HOME/AndroidTools
+export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
+
 #aliases
 alias es="emacs"
 alias reload-x="xrdb $HOME/.Xresources "
