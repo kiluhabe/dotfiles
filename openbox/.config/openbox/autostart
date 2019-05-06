@@ -1,11 +1,4 @@
-sleep 5s && kalu &
-nitrogen --restore &
-volumeicon &
-lxpolkit &
-fcitx-autostart &
-clipmenud &
-libinput-gestures &
-compton --config $HOME/.config/compton.conf -b
-wal -qR
-$HOME/bin/bar
-switch-monitor
+WALLPAPER="$HOME/wallpapers/monosea.jpg"
+
+(sleep 1s && wal-fill $WALLPAPER) &
+(sleep 1s && $HOME/.config/polybar/launch.sh) &

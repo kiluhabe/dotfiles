@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-main() {
-    neofetch --w3m --shufflle-dir $HOME/.wallpapers --crop_mode fill
-}
-
-main

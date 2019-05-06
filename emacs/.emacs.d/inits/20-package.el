@@ -51,6 +51,7 @@
     mustache-mode
     plantuml-mode
     pug-mode
+    nix-mode
   )
 )
 

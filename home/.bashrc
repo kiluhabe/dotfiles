@@ -5,7 +5,7 @@ fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
 #prompt
-unset PROMPT_COMMAND
+PROMPT_COMMAND='addline'
 PS1="\$(prompt) "
 
 # direnv
@@ -69,6 +69,5 @@ export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 
 #aliases
 alias es="emacs"
-alias reload-x="xrdb $HOME/.Xresources "
 alias xcopy='xsel --clipboard --input'
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+main() {
+    cd $1
+    branchname=$(git rev-parse --abbrev-ref HEAD 2> /dev/null)
+    is_git_dirty=$(git status -s --ignore-submodules=dirty 2> /dev/null)
+    [ -n "$is_git_dirty" ] && echo "◣ $branchname" || echo $branchname
+}
+
+main $1
