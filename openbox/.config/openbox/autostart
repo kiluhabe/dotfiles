@@ -2,3 +2,4 @@ WALLPAPER="$HOME/wallpapers/monosea.jpg"
 
 (sleep 1s && wal-fill $WALLPAPER) &
 (sleep 1s && $HOME/.config/polybar/launch.sh) &
+(sleep 1s && clipmenud) &

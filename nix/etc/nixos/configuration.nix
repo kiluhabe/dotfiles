@@ -41,6 +41,7 @@
 
   environment.systemPackages = with pkgs; [
     bash
+    clipmenu
     curl
     emacs26-nox
     enpass
