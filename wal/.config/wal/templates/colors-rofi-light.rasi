@@ -1,0 +1,60 @@
+configuration {{
+    show-icons:   false;
+    sidebar-mode: false;
+
+}}
+* {{
+    active-background: {color2};
+    active-foreground: @foreground;
+    normal-background: @background;
+    normal-foreground: @foreground;
+    urgent-background: {color1};
+    urgent-foreground: @foreground;
+
+    alternate-active-background: @background;
+    alternate-active-foreground: @foreground;
+    alternate-normal-background: @background;
+    alternate-normal-foreground: @foreground;
+    alternate-urgent-background: @background;
+    alternate-urgent-foreground: @foreground;
+
+    selected-active-background: {color1};
+    selected-active-foreground: @foreground;
+    selected-normal-background: {color2};
+    selected-normal-foreground: @foreground;
+    selected-urgent-background: {color3};
+    selected-urgent-foreground: @foreground;
+
+    background-color: @background;
+    background: {foreground};
+    foreground: {background};
+    border-color: @background;
+    spacing: 2;
+}}
+* {{
+    // Default bg is transparent.
+    background-color: transparent;
+    spacing:          8;
+}}
+#window {{
+    // Default font
+    font: "Roboto Mono 12";
+    fullscreen: true;
+    transparency: "background";
+    background-color: {foreground}99;
+
+    // Add dummy widgets on top and bottom so the sizing
+    // nicely centers hdum, independent of resolution.
+                                        children: [ dummy1, hdum, dummy2 ];
+
+}}
+#hdum {{
+    orientation: horizontal;
+    // Add dummy widgets on left and right so the sizing
+    // nicely centers mainbox, independent of resolution.
+                                           children: [ dummy3, mainbox, dummy4 ];
+
+}}
+#element selected {{
+    background: {color2};
+}}
