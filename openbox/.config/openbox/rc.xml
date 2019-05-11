@@ -174,16 +174,44 @@
       <action name="MoveToEdgeSouth"/>
     </keybind>
     <keybind key="A-W-Up">
-      <action name="GrowToEdgeNorth"/>
+      <action name="ResizeRelative">
+        <top>5</top>
+      </action>
     </keybind>
     <keybind key="A-W-Right">
-      <action name="GrowToEdgeEast"/>
+      <action name="ResizeRelative">
+        <right>5</right>
+      </action>
     </keybind>
     <keybind key="A-W-Down">
-      <action name="GrowToEdgeSouth"/>
+      <action name="ResizeRelative">
+        <bottom>5</bottom>
+      </action>
     </keybind>
     <keybind key="A-W-Left">
-      <action name="GrowToEdgeWest"/>
+      <action name="ResizeRelative">
+        <left>5</left>
+      </action>
+    </keybind>
+    <keybind key="S-W-Up">
+      <action name="ResizeRelative">
+        <bottom>-5</bottom>
+      </action>
+    </keybind>
+    <keybind key="S-W-Right">
+      <action name="ResizeRelative">
+        <left>-5</left>
+      </action>
+    </keybind>
+    <keybind key="S-W-Down">
+      <action name="ResizeRelative">
+        <top>-5</top>
+      </action>
+    </keybind>
+    <keybind key="S-W-Left">
+      <action name="ResizeRelative">
+        <right>-5</right>
+      </action>
     </keybind>
     <keybind key="W-c">
       <action name="MoveToCenter"/>
@@ -211,6 +239,11 @@
     <keybind key="XF86MonBrightnessDown">
       <action name="Execute">
 	<command>xbacklight -dec 10</command>
+      </action>
+    </keybind>
+    <keybind key="S-W-5">
+      <action name="Execute">
+        <command>screenshot</command>
       </action>
     </keybind>
   </keyboard>

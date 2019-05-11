@@ -60,6 +60,7 @@
     gcc
     git
     google-chrome
+    imagemagick
     killall
     libnotify
     libinput-gestures
