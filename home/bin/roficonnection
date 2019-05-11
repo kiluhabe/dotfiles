@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+#
+# connection manager with rofi
+
+# options rofi
+menu='rofi -dmenu -i -p'
+
+# set interfaces
+wifi='wlo1'
+
+onwifi='Enable Wifi'
+selwifi='Wifi Menu'
+reswifi='Restart Wifi'
+offwifi='Disable Wifi'
+onblue='Enable Bluetooth'
+offblue='Disable Bluetooth'
+selblue='Bluetooth Menu'
+
+# create search menu
+conn=$(echo -e "$onwifi\n$offwifi\n$reswifi\n$selwifi\n$onblue\n$offblue\n$selblue"| $menu connection-manager: )
+
+# exit with no input
+if [[ $? -eq 1 ]]; then
+    exit 1
+fi
+
+# select rofi search provider
+case $conn in
+    $onwifi)
+       nmcli device connect $wifi ;;
+    $selwifi)
+        st \
+            -t "nmtui" \
+            -n "nmtui" \
+            -e "nmtui" ;;
+    $reswifi)
+       nmcli device disconnect $wifi && \
+            sleep 3 && \
+            nmcli device connect $wifi ;;
+    $offwifi)
+        nmcli device disconnect $wifi ;;
+    $onblue)
+        bluetoothctl power on ;;
+    $offblue)
+        bluetoothctl power off ;;
+    $selblue)
+        blueman-manager
+esac

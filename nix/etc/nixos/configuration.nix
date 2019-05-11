@@ -16,7 +16,9 @@
   boot.blacklistedKernelModules = ["nouveau"];
 
   networking.hostName = "RazerBladeStealth"; # Define your hostname.
-  networking.wireless.enable = true;
+  networking.networkmanager.enable = true;
+
+  hardware.bluetooth.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -45,6 +47,7 @@
 
   environment.systemPackages = with pkgs; [
     bash
+    blueman
     clipmenu
     curl
     emacs26-nox

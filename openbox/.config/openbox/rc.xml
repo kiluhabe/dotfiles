@@ -150,7 +150,12 @@
     </keybind>
     <keybind key="S-A-v">
       <action name="Execute">
-        <command>rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu</command>
+        <command>roficlip</command>
+      </action>
+    </keybind>
+    <keybind key="W-c">
+      <action name="Execute">
+        <command>roficonnection</command>
       </action>
     </keybind>
     <keybind key="W-a">

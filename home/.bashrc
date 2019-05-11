@@ -70,4 +70,3 @@ export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 #aliases
 alias es="emacs"
 alias xcopy='xsel --clipboard --input'
-alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"

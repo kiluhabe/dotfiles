@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu
