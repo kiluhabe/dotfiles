@@ -113,18 +113,8 @@
 	<command>rofi -show run</command>
       </action>
     </keybind>
-    <keybind key="W-A-v">
-      <action name="Execute">
-	<command>rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu</command>
-      </action>
-    </keybind>
     <keybind key="W-q">
       <action name="Close"/>
-    </keybind>
-    <keybind key="A-Escape">
-      <action name="Lower"/>
-      <action name="FocusToBottom"/>
-      <action name="Unfocus"/>
     </keybind>
     <keybind key="A-Tab">
       <action name="NextWindow">
@@ -139,9 +129,6 @@
           </action>
         </finalactions>
       </action>
-    </keybind>
-    <keybind key="A-S-Tab">
-      <action name="PreviousWindow"/>
     </keybind>
     <keybind key="W-b">
       <action name="Execute">
@@ -160,9 +147,6 @@
 	  <name>st</name>
 	</startupnotify>
       </action>
-    </keybind>
-    <keybind key="W-v">
-      <action name="ToggleMaximizeVert"/>
     </keybind>
     <keybind key="S-A-v">
       <action name="Execute">
@@ -183,9 +167,6 @@
     </keybind>
     <keybind key="W-Down">
       <action name="MoveToEdgeSouth"/>
-    </keybind>
-    <keybind key="W-h">
-      <action name="ToggleMaximizeHorz"/>
     </keybind>
     <keybind key="A-W-Up">
       <action name="GrowToEdgeNorth"/>
@@ -238,16 +219,6 @@
       </mousebind>
     </context>
   </mouse>
-  <menu>
-    <file>menu.xml</file>
-    <hideDelay>200</hideDelay>
-    <middle>no</middle>
-    <submenuShowDelay>100</submenuShowDelay>
-    <submenuHideDelay>400</submenuHideDelay>
-    <applicationIcons>yes</applicationIcons>
-    <manageDesktops>yes</manageDesktops>
-    <showIcons>yes</showIcons>
-  </menu>
   <applications>
     <application class="*">
       <position>
