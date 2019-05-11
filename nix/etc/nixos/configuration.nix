@@ -59,8 +59,9 @@
     killall
     libinput-gestures
     lightlocker
-    minitube
+    mpv
     neofetch
+    python37Packages.mps-youtube
     pywal
     pulseaudio
     rofi
