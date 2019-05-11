@@ -8,3 +8,4 @@ set visible-stats on
 # keybinds
 "\C-t": "fh\C-m"
 "\C-f": "fff\C-m"
+"\C-g": "git-fco\C-m"
