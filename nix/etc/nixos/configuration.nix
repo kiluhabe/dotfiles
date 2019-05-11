@@ -50,6 +50,7 @@
     blueman
     clipmenu
     curl
+    dunst
     emacs26-nox
     enpass
     feh
@@ -60,13 +61,13 @@
     git
     google-chrome
     killall
+    libnotify
     libinput-gestures
     lightlocker
     mpv
     neofetch
     python37Packages.mps-youtube
     pywal
-    pulseaudio
     rofi
     rustup
     spotify

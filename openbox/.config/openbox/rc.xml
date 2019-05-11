@@ -153,7 +153,7 @@
         <command>roficlip</command>
       </action>
     </keybind>
-    <keybind key="W-c">
+    <keybind key="W-S-c">
       <action name="Execute">
         <command>roficonnection</command>
       </action>

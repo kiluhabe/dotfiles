@@ -27,22 +27,32 @@ fi
 # select rofi search provider
 case $conn in
     $onwifi)
-       nmcli device connect $wifi ;;
+       notify-send 'Enabling Wifi...' && \
+           nmcli device connect $wifi && \
+           notify-send 'Wifi Enabled.' ;;
     $selwifi)
         st \
             -t "nmtui" \
             -n "nmtui" \
             -e "nmtui" ;;
     $reswifi)
-       nmcli device disconnect $wifi && \
+       notify-send 'Restarting Wifi...' && \
+            nmcli device disconnect $wifi && \
             sleep 3 && \
-            nmcli device connect $wifi ;;
+            nmcli device connect $wifi
+            notify-send 'Wifi Restarted.' ;;
     $offwifi)
-        nmcli device disconnect $wifi ;;
+        notify-send 'Disabling Wifi...' && \
+            nmcli device disconnect $wifi && \
+            notify-send 'Wifi Disabled.' ;;
     $onblue)
-        bluetoothctl power on ;;
+        notify-send 'Enabling Bluetooth...' && \
+            bluetoothctl power on
+            notify-send 'Bluetooth Enabled.' ;;
     $offblue)
-        bluetoothctl power off ;;
+        notify-send 'Disabling Bluetooth...' && \
+            bluetoothctl power off
+            notify-send 'Bluetooth Disabled.' ;;
     $selblue)
         blueman-manager
 esac
