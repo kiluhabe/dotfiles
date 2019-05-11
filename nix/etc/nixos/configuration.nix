@@ -57,6 +57,7 @@
     git
     google-chrome
     killall
+    libinput-gestures
     lightlocker
     minitube
     neofetch
@@ -182,12 +183,13 @@
     naturalScrolling = true;
     clickMethod = "clickfinger";
     buttonMapping = "1 0 3 4 5 6 7";
+    disableWhileTyping = true;
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kiluhabe = {
     isNormalUser = true;
-    extraGroups = ["wheel" "networkmanager" "docker" "disk" "vboxusers" "audio"];
+    extraGroups = ["wheel" "networkmanager" "docker" "disk" "vboxusers" "audio" "input"];
     createHome = true;
     uid = 1000;
   };
