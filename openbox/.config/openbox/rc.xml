@@ -6,9 +6,9 @@
   </resistance>
   <focus>
     <focusNew>yes</focusNew>
-    <followMouse>yes</followMouse>
     <focusLast>yes</focusLast>
-    <underMouse>yes</underMouse>
+    <followMouse>no</followMouse>
+    <underMouse>no</underMouse>
     <focusDelay>200</focusDelay>
     <raiseOnFocus>no</raiseOnFocus>
   </focus>
@@ -127,7 +127,18 @@
       <action name="Unfocus"/>
     </keybind>
     <keybind key="A-Tab">
-      <action name="NextWindow"/>
+      <action name="NextWindow">
+        <dialog>none</dialog>
+        <finalactions>
+          <action name="Focus"/>
+          <action name="Raise"/>
+          <action name="Unshade"/>
+          <action name="MoveResizeTo">  <!-- center the window which we're focusing -->
+            <x>center</x>
+            <y>center</y>
+          </action>
+        </finalactions>
+      </action>
     </keybind>
     <keybind key="A-S-Tab">
       <action name="PreviousWindow"/>
@@ -153,13 +164,9 @@
     <keybind key="W-v">
       <action name="ToggleMaximizeVert"/>
     </keybind>
-    <keybind key="W-l">
+    <keybind key="S-A-v">
       <action name="Execute">
-	<command>dm-tool lock</command>
-	<startupnotify>
-	  <enabled>yes</enabled>
-	  <name>lock</name>
-	</startupnotify>
+        <command>rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu</command>
       </action>
     </keybind>
     <keybind key="W-a">

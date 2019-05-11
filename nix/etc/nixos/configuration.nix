@@ -28,6 +28,10 @@
     defaultLocale = "ja_JP.UTF-8";
     consoleUseXkbConfig = true;
   };
+  i18n.inputMethod = {
+    enabled = "fcitx";
+    fcitx.engines = with pkgs.fcitx-engines; [ mozc ];
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -35,7 +39,7 @@
   nixpkgs = {
     config.allowUnfree = true;
     overlays = [
-      (import ../nixos/st/overlay.nix)
+      (import ./st/overlay.nix)
     ];
   };
 
@@ -54,11 +58,13 @@
     google-chrome
     killall
     lightlocker
+    minitube
     neofetch
     pywal
     pulseaudio
     rofi
     rustup
+    spotify
     stow
     tmux
     wget
