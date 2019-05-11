@@ -9,3 +9,4 @@ set visible-stats on
 "\C-t": "fh\C-m"
 "\C-f": "fff\C-m"
 "\C-g": "git-fco\C-m"
+"\C-y": "mpsyt\C-m"
