@@ -13,45 +13,43 @@
 
 (defvar installing-package-list
   '(
-    tabbar
-    treemacs
-    git-gutter
-    projectile
-    magit
-    treemacs-projectile
-    smooth-scroll
-    easy-repeat
-    ivy
-    counsel
-    swiper
-    wgrep
-    multiple-cursors
     company
+    company-racer
     company-statistics
+    counsel
+    dockerfile-mode
+    easy-repeat
     expand-region
+    fiplr
+    flycheck
+    flycheck-rust
+    haskell-mode
+    ivy
+    json-mode
+    markdown-mode
+    multiple-cursors
+    mustache-mode
+    nginx-mode
+    nix-mode
+    plantuml-mode
+    projectile
+    pug-mode
+    racer
+    rust-mode
+    swiper
+    tabbar
+    terraform-mode
+    tidal
+    tide
+    treemacs
+    treemacs-projectile
     undo-tree
     visual-regexp
+    wgrep
     which-key
-    fiplr
-    markdown-mode
-    yaml-mode
-    json-mode
-    tide
-    dockerfile-mode
-    rust-mode
-    racer
-    flycheck-rust
-    company-racer
-    terraform-mode
-    nginx-mode
-    tidal
-    haskell-mode
-    company-ghc
     writeroom-mode
-    mustache-mode
-    plantuml-mode
-    pug-mode
-    nix-mode
+    xresources-theme
+    yaml-mode
   )
 )
 

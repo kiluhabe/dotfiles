@@ -1,5 +1,6 @@
 (require 'tabbar)
 
+(tabbar-mwheel-mode -1)
 (setq tabbar-use-images nil)
 
 ;; hide buttons
@@ -31,25 +32,25 @@ That is, a string used to represent it on the tab bar."
       (tabbar-shorten
        label (max 1 (/ (window-width)
                        (length (tabbar-view
-(tabbar-current-tabset)))))))))
+                                (tabbar-current-tabset)))))))))
 
 (set-face-attribute
  'tabbar-default nil
- :background "#121212"
- :foreground "#696969"
+ :background "black"
+ :foreground "white"
  :box nil
  :underline nil
  )
 (set-face-attribute
  'tabbar-selected nil
- :background "#1B1D1E"
- :foreground "#dcdcdc"
+ :background "blue"
+ :foreground "black"
  :box nil
  )
 (set-face-attribute
  'tabbar-modified nil
- :background "#121212"
- :foreground "#696969"
+ :background "black"
+ :foreground "blue"
  :box nil
  )
 

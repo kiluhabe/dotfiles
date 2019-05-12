@@ -72,6 +72,7 @@
     rofi
     rustup
     spotify
+    sshuttle
     stow
     tmux
     wget

@@ -6,6 +6,3 @@
 (setq ivy-extra-directories nil)
 (setq ivy-re-builders-alist
       '((t . ivy--regex-plus)))
-
-;; swiper
-(global-set-key "\C-s" 'swiper)

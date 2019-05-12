@@ -10,16 +10,16 @@
 (setq company-dabbrev-downcase nil)
 
 (set-face-attribute 'company-tooltip nil
-                    :foreground "gainsboro" :background "#262626")
+                    :foreground "white" :background "black")
 (set-face-attribute 'company-tooltip-common nil
-                    :foreground "gainsboro" :background "#262626")
+                    :foreground "white" :background "black")
 (set-face-attribute 'company-tooltip-common-selection nil
-                    :foreground "#1e90ff" :background "#104e8b")
+                    :foreground "black" :background "yellow")
 (set-face-attribute 'company-tooltip-selection nil
-                    :foreground "gainsboro" :background "#104e8b")
+                    :foreground "black" :background "yellow")
 (set-face-attribute 'company-preview-common nil
-                    :background "#104e8b" :foreground "gainsboro" :underline t)
+                    :background "black" :foreground "white" :underline t)
 (set-face-attribute 'company-scrollbar-fg nil
-                    :background "#262626")
+                    :background "black")
 (set-face-attribute 'company-scrollbar-bg nil
-                    :background "#262626")
+                    :background "black")

@@ -1,29 +1,42 @@
+;; avoid making temp files.
 (setq make-backup-files nil)
-(setq auto-save-default nil)
-(setq auto-save-list-file-prefix nil)
 (setq create-lockfiles nil)
 
-(setq inhibit-startup-screen t)
-(setq initial-scratch-message "")
-(menu-bar-mode -1)
+;; avoid auto save.
+(setq auto-save-default nil)
+(setq auto-save-list-file-prefix nil)
+
+;; indent as space
 (setq-default indent-tabs-mode nil)
 
-(setq indent-tabs-mode nil)
-(setq-default indent-tabs-mode nil)
-
-(require 'easy-repeat)
-(easy-repeat-mode t)
-
+;; disable version control
 (setq vc-handled-backends ())
-
-(require 'wgrep nil t)
 
 (electric-pair-mode t)
 
-(require 'which-key)
-(which-key-setup-side-window-bottom)
-(which-key-mode t)
-(setq which-key-idle-delay 0.5)
+;; simple dired
+(add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+(setq global-auto-revert-non-file-buffers t)
+(setq auto-revert-verbose nil)
+
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
+;; appearance
+(setq inhibit-startup-screen t)
+(setq initial-scratch-message "")
+(menu-bar-mode -1)
+(set-display-table-slot standard-display-table 'vertical-border (make-glyph-code ?┃))
+(set-face-inverse-video-p 'vertical-border nil)
+(show-paren-mode 1)
+(setq show-paren-style 'parenthesis)
+(fringe-mode (cons 8 8))
+
+;; language
+(setq locale-coding-system 'utf-8) ; pretty
+(set-terminal-coding-system 'utf-8) ; pretty
+(set-keyboard-coding-system 'utf-8) ; pretty
+(set-selection-coding-system 'utf-8) ; please
+(prefer-coding-system 'utf-8) ; with sugar on top
 
 (defun custom-new-buffer-frame ()
   "Create a new frame with a new empty buffer."
