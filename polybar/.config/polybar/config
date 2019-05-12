@@ -41,7 +41,7 @@ font-1 = "DejaVu Sans:pixelsize=12;3"
 font-2 = "FontAwesome:pixelsize=12;3"
 modules-left = wireless-network ewmh
 modules-center = date
-modules-right = backlight pulseaudio battery
+modules-right = pulseaudio backlight battery
 top = true
 
 [module/date]
@@ -103,18 +103,19 @@ type = internal/xworkspaces
 pin-workspaces = true
 enable-click = false
 enable-scroll = false
-icon-0 = 0;0
-icon-1 = 1;1
-icon-2 = 2;2
-icon-3 = 3;3
-icon-4 = 4;4
-icon-5 = 5;5
-icon-6 = 6;6
+icon-0 = 0;●
+icon-1 = 1; ●
+icon-2 = 2; ●
+icon-3 = 3; ●
+icon-4 = 4; ●
+icon-5 = 5; ●
+icon-6 = 6; ●
 format = <label-state>
 format-spacing = 10
 label-active = %icon%
 label-active-foreground = ${colors.background}
-label-active-background = ${colors.foreground}
+label-active-background = ${colors.alert}
+label-empty-foreground = ${colors.primary}
 label-occupied = %icon%
 label-urgent = %icon%
 label-empty = %icon%

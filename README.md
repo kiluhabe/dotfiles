@@ -1,3 +1,3 @@
 # dotfiles
 
-![scrot](https://i.imgur.com/NsvvK2d.png)
+![scrot](https://i.imgur.com/S6j9L2l.png)
