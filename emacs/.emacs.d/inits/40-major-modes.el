@@ -54,6 +54,29 @@
 (add-to-list 'auto-mode-alist '("\\.pug\\'" . pug-mode))
 (add-to-list 'auto-mode-alist '("\\.jade\\'" . pug-mode))
 
+;;React JSX
+(require 'rjsx-mode)
+(add-to-list 'auto-mode-alist '("components\\/.*\\.jsx\\'" . rjsx-mode))
+(add-to-list 'auto-mode-alist '("containers\\/.*\\.tsx\\'" . rjsx-mode))
+(add-hook 'rjsx-mode-hook
+          (lambda ()
+            (setq indent-tabs-mode nil) ;;インデントはタブではなくスペース
+            (setq js-indent-level 2) ;;スペースは２つ、デフォルトは4
+            (setq js2-strict-missing-semi-warning nil))) ;;行末のセミコロンの警告はオフ
+
+;;Ruby
+(require 'robe)
+(require 'ruby-electric)
+(add-hook 'ruby-mode-hook '
+          '(lambda ()
+            (robe-mode t)
+            (push 'company-robe company-backends)
+            (flymake-ruby-load)
+            (ruby-electric-mode t)
+            (setq ruby-electric-expand-delimiters-list nil)
+            ))
+
+
 ;;Rust
 (require 'rust-mode)
 (require 'racer)

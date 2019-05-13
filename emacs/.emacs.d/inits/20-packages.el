@@ -22,6 +22,7 @@
     expand-region
     fiplr
     flycheck
+    flycheck-ruby
     flycheck-rust
     haskell-mode
     ivy
@@ -35,6 +36,9 @@
     projectile
     pug-mode
     racer
+    rjsx-mode
+    robe
+    ruby-electric
     rust-mode
     swiper
     tabbar
