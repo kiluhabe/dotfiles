@@ -1,0 +1,6 @@
+(require 'multiple-cursors)
+(multiple-cursors-mode t)
+(global-set-key (kbd "C-c C-c") 'mc/edit-lines)
+(global-set-key (kbd "C-c <down>") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c <up>") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-a") 'mc/mark-all-like-this)
