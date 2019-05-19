@@ -22,7 +22,6 @@
     expand-region
     fiplr
     flycheck
-    flycheck-ruby
     flycheck-rust
     haskell-mode
     ivy
