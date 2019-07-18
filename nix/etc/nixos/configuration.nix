@@ -10,11 +10,14 @@
       /etc/nixos/hardware-configuration.nix
     ];
 
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.blacklistedKernelModules = ["nouveau"];
 
+  networking.firewall.enable = false;
   networking.hostName = "RazerBladeStealth"; # Define your hostname.
   networking.networkmanager.enable = true;
 
@@ -46,10 +49,13 @@
   };
 
   environment.systemPackages = with pkgs; [
+    arandr
     bash
     blueman
+    cargo-edit
     clipmenu
     curl
+    docker-compose
     dunst
     emacs26-nox
     enpass
@@ -67,6 +73,8 @@
     lightlocker
     mpv
     neofetch
+    pavucontrol
+    pcmanfm
     python37Packages.mps-youtube
     pywal
     rofi
@@ -75,6 +83,9 @@
     sshuttle
     stow
     tmux
+    tor
+    tor-browser-bundle
+    unzip
     wget
     xorg.xbacklight
     xsel
@@ -190,6 +201,7 @@
   # Enable touchpad support.
   services.xserver.libinput = {
     enable = true;
+    dev = "/dev/input/event*";
     naturalScrolling = true;
     clickMethod = "clickfinger";
     buttonMapping = "1 0 3 4 5 6 7";

@@ -123,10 +123,6 @@
           <action name="Focus"/>
           <action name="Raise"/>
           <action name="Unshade"/>
-          <action name="MoveResizeTo">  <!-- center the window which we're focusing -->
-            <x>center</x>
-            <y>center</y>
-          </action>
         </finalactions>
       </action>
     </keybind>
