@@ -61,7 +61,7 @@
     enpass
     feh
     fff
-    firefox
+    firefox-bin
     fzf
     gcc
     git
