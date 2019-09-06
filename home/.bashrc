@@ -52,6 +52,7 @@ export EDITOR=emacs
 
 # go
 export GOPATH=$HOME/.go
+export PATH=$PATH:$GOPATH/bin
 
 # rust
 export CARGO_HOME=$HOME/.cargo

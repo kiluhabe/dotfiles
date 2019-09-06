@@ -6,6 +6,8 @@
 
 ;;Haskell
 (require 'haskell-mode)
+(setq tidal-interpreter "~/bin/stack-ghci")
+(require 'tidal)
 ;;(require 'company-ghc)
 (defun setup-haskell-mode ()
   (interactive)
@@ -18,7 +20,7 @@
 )
 (add-hook 'haskell-mode-hook #'setup-haskell-mode)
 (add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.tidal\\'" . haskell-mode))
+(add-to-list 'auto-mode-alist '("\\.tidal\\'" . tidal-mode))
 
 (require 'json-mode)
 (add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))

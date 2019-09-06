@@ -54,6 +54,7 @@
     blueman
     cargo-edit
     clipmenu
+    cmake
     curl
     docker-compose
     dunst
@@ -65,16 +66,24 @@
     fzf
     gcc
     git
+    gimp
+    gnumake
+    go
     google-chrome
+    google-cloud-sdk
     imagemagick
+    jack2
     killall
     libnotify
     libinput-gestures
     lightlocker
     mpv
+    mysql57
     neofetch
+    openssl.dev
     pavucontrol
     pcmanfm
+    pkg-config
     python37Packages.mps-youtube
     pywal
     rofi
@@ -82,6 +91,7 @@
     spotify
     sshuttle
     stow
+    supercollider
     tmux
     tor
     tor-browser-bundle
