@@ -54,18 +54,11 @@
 (add-to-list 'auto-mode-alist '("\\.pug\\'" . pug-mode))
 (add-to-list 'auto-mode-alist '("\\.jade\\'" . pug-mode))
 
-;;React JSX
-(require 'rjsx-mode)
-(add-to-list 'auto-mode-alist '("components\\/.*\\.jsx\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("containers\\/.*\\.tsx\\'" . rjsx-mode))
-(add-hook 'rjsx-mode-hook
-          (lambda ()
-            (setq js-indent-level 4)
-            (setq js2-strict-missing-semi-warning nil)))
-
 ;;Ruby
 (require 'robe)
 (require 'ruby-electric)
+(custom-set-variables
+ '(ruby-insert-encoding-magic-comment nil))
 (add-hook 'ruby-mode-hook '
           '(lambda ()
             (robe-mode t)
@@ -104,6 +97,7 @@
 
 ;;Typescript
 (require 'tide)
+(require 'web-mode)
 (defun setup-tide-mode ()
   (interactive)
   (tide-setup)
@@ -113,8 +107,35 @@
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;;Java
+(require 'meghanada)
+(add-hook 'java-mode-hook
+          (lambda ()
+            ;; meghanada-mode on
+            (meghanada-mode t)
+            ;; enable telemetry
+            (meghanada-telemetry-enable t)
+            (flycheck-mode +1)
+            (setq c-basic-offset 2)
+            ;; use code format
+            (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
+(cond
+   ((eq system-type 'windows-nt)
+    (setq meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME")))
+    (setq meghanada-maven-path "mvn.cmd"))
+   (t
+    (setq meghanada-java-path "java")
+    (setq meghanada-maven-path "mvn")))

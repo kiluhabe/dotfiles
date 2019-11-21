@@ -29,7 +29,6 @@
 (set-face-inverse-video-p 'vertical-border nil)
 (show-paren-mode 1)
 (setq show-paren-style 'parenthesis)
-(fringe-mode (cons 8 8))
 
 ;; language
 (setq locale-coding-system 'utf-8) ; pretty

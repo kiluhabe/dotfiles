@@ -13,6 +13,7 @@
 
 (defvar installing-package-list
   '(
+    cl-lib
     company
     company-racer
     company-statistics
@@ -22,12 +23,13 @@
     expand-region
     fiplr
     flycheck
-    flycheck-ruby
     flycheck-rust
     haskell-mode
     ivy
+    js2-mode
     json-mode
     markdown-mode
+    meghanada
     multiple-cursors
     mustache-mode
     nginx-mode
@@ -36,7 +38,6 @@
     projectile
     pug-mode
     racer
-    rjsx-mode
     robe
     ruby-electric
     rust-mode
@@ -49,11 +50,13 @@
     treemacs-projectile
     undo-tree
     visual-regexp
+    web-mode
     wgrep
     which-key
     writeroom-mode
     xresources-theme
     yaml-mode
+    yasnippet
   )
 )
 

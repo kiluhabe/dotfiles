@@ -21,3 +21,5 @@
     root = ~/.go/src
 [credential "https://source.developers.google.com"]
 	helper = gcloud.sh
+[gpg]
+	program = /usr/local/bin/krgpg
