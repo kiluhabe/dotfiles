@@ -64,7 +64,9 @@
     fff
     firefox-bin
     fzf
+    gauche
     gcc
+    ghc
     git
     gimp
     gnumake
@@ -73,6 +75,7 @@
     google-cloud-sdk
     imagemagick
     jack2
+    jdk
     killall
     libnotify
     libinput-gestures
@@ -80,6 +83,8 @@
     mpv
     mysql57
     neofetch
+    nodejs
+    openssl
     openssl.dev
     pavucontrol
     pcmanfm
@@ -92,10 +97,14 @@
     sshuttle
     stow
     supercollider
+    texlive.combined.scheme-full
     tmux
     tor
     tor-browser-bundle
+    traceroute
     unzip
+    vscode
+    watson
     wget
     xorg.xbacklight
     xsel
@@ -145,6 +154,8 @@
       "Noto Sans KR"
     ];
   };
+
+  programs.java.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.

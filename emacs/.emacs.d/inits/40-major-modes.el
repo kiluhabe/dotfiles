@@ -76,7 +76,8 @@
             (ruby-electric-mode t)
             (setq ruby-electric-expand-delimiters-list nil)
             ))
-
+(custom-set-variables
+ '(ruby-insert-encoding-magic-comment nil))
 
 ;;Rust
 (require 'rust-mode)
@@ -120,3 +121,12 @@
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
+
+;; Faust
+(require 'faust-mode)
+(require 'auto-complete)
+(defun setup-faust-mode ()
+  (auto-complete-mode t)
+)
+(add-hook 'faust-mode-hook #'setup-faust-mode)
+(add-to-list 'auto-mode-alist '("\\.dsp\\'" . faust-mode))

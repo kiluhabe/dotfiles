@@ -30,6 +30,13 @@ if [ -d $HOME/.pyenv ]; then
   eval "$(pyenv init -)"
 fi
 
+# java
+if  [ -d $HOME/.jenv ]; then
+  export JENV_ROOT=$HOME/.jenv
+  export PATH=$PATH:$JENV_ROOT/bin
+  eval "$(jenv init -)"
+fi
+
 #node
 if [ -d $HOME/.nodenv ]; then
   export NODENV_ROOT=$HOME/.nodenv

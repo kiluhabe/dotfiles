@@ -13,6 +13,8 @@
 
 (defvar installing-package-list
   '(
+    auto-complete
+    cl-lib
     company
     company-racer
     company-statistics
@@ -20,6 +22,7 @@
     dockerfile-mode
     easy-repeat
     expand-region
+    faust-mode
     fiplr
     flycheck
     flycheck-rust
@@ -53,6 +56,7 @@
     writeroom-mode
     xresources-theme
     yaml-mode
+    yasnippet
   )
 )
 
