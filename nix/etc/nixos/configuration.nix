@@ -100,7 +100,7 @@
     texlive.combined.scheme-full
     tmux
     tor
-    tor-browser-bundle
+    tor-browser-bundle-bin
     traceroute
     unzip
     vscode

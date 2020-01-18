@@ -51,6 +51,7 @@
     treemacs-projectile
     undo-tree
     visual-regexp
+    web-mode
     wgrep
     which-key
     writeroom-mode

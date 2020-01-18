@@ -34,6 +34,7 @@
 )
 (add-hook 'markdown-mode-hook #'setup-markdown-mode)
 (add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
+(add-to-list 'auto-mode-alist '("\\.mdx\\'" . markdown-mode))
 
 (require 'mustache-mode)
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . mustache-mode))
@@ -107,6 +108,7 @@
 
 ;;Typescript
 (require 'tide)
+(require 'web-mode)
 (defun setup-tide-mode ()
   (interactive)
   (tide-setup)
@@ -116,7 +118,11 @@
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
 (add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . typescript-mode))
+(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
+(add-hook 'web-mode-hook
+          (lambda ()
+            (when (string-equal "tsx" (file-name-extension buffer-file-name))
+              (setup-tide-mode))))
 
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
