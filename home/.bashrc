@@ -75,3 +75,6 @@ export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 #aliases
 alias es="emacs"
 alias xcopy='xsel --clipboard --input'
+
+# wal
+(cat ~/.cache/wal/sequences &)
