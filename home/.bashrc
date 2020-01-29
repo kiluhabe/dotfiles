@@ -12,6 +12,7 @@ fi
 
 # set LOCAL
 export LANG=ja_JP.UTF-8
+(tty|fgrep -q 'tty') && export LANG="C"
 export LC_ALL=$LANG
 
 # rbenv setup
