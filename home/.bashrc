@@ -73,9 +73,11 @@ export _JAVA_AWT_WM_NONREPARENTING=1
 export ANDROID_HOME=$HOME/AndroidTools
 export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 
+# wal
+if [ -e "$(which wal 2>/dev/null)" ] ; then
+    (wal -R &>/dev/null &)
+fi
+
 #aliases
 alias es="emacs"
 alias xcopy='xsel --clipboard --input'
-
-# wal
-(cat ~/.cache/wal/sequences &)
