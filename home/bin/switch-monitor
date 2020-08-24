@@ -16,13 +16,13 @@ do
         eDP_1_PREVIOUS_STATUS==$eDP_1_CURRENT_STATUS
 
         if [ $DP_1_CURRENT_STATUS = $CONNECTED ] && [ $eDP_1_CURRENT_STATUS = $CONNECTED ]; then
-            xrandr --output eDP1 --auto --output DP1 --auto
+            xrandr --output eDP-1 --auto --output DP-1 --auto
         fi
         if [ $DP_1_CURRENT_STATUS = $CONNECTED ] && [ $eDP_1_CURRENT_STATUS = $DISCONNECTED ]; then
-            xrandr --output eDP1 --off --output DP1 --auto
+            xrandr --output eDP-1 --off --output DP-1 --auto
         fi
         if [ $DP_1_CURRENT_STATUS = $DISCONNECTED ] && [ $eDP_1_CURRENT_STATUS = $CONNECTED ]; then
-            xrandr --output eDP1 --auto --output DP1 --off
+            xrandr --output eDP-1 --auto --output DP-1 --off
         fi
 
     fi

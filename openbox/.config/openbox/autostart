@@ -1,4 +1,5 @@
 (sleep 1s && wal -R) &
+(sleep 1s && picom -b) &
 (sleep 1s && $HOME/.config/polybar/launch.sh) &
 (sleep 1s && clipmenud) &
 (sleep 1s && libinput-gestures) &

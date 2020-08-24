@@ -137,7 +137,7 @@
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-	<command>st -e tmux</command>
+	<command>st</command>
 	<startupnotify>
 	  <enabled>yes</enabled>
 	  <name>st</name>

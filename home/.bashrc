@@ -59,8 +59,14 @@ fi
 export EDITOR=emacs
 
 # go
-export GOPATH=$HOME/.go
-export PATH=$PATH:$GOPATH/bin
+ if [ -d "${HOME}/.goenv/" ]; then
+     export GOENV_ROOT="$HOME/.goenv"
+     export PATH=$PATH:$GOENV_ROOT/bin
+     export PATH=$PATH:$GOPATH/bin
+     export GO111MODULE=on
+     goenv rehash > /dev/null
+     eval "$(goenv init -)"
+ fi
 
 # rust
 export CARGO_HOME=$HOME/.cargo
@@ -74,8 +80,8 @@ export ANDROID_HOME=$HOME/AndroidTools
 export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 
 # wal
-if [ -e "$(which wal 2>/dev/null)" ] ; then
-    (wal -R &>/dev/null &)
+if [ -e "$(which wal 2>/dev/null)" ]; then
+    wal -Rnq
 fi
 
 #aliases

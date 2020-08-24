@@ -16,6 +16,7 @@
     auto-complete
     cl-lib
     company
+    company-go
     company-racer
     company-statistics
     counsel
@@ -26,6 +27,8 @@
     fiplr
     flycheck
     flycheck-rust
+    go-eldoc
+    go-mode
     haskell-mode
     ivy
     json-mode

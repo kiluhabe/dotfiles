@@ -136,3 +136,15 @@
 )
 (add-hook 'faust-mode-hook #'setup-faust-mode)
 (add-to-list 'auto-mode-alist '("\\.dsp\\'" . faust-mode))
+
+;; Go
+(require 'go-mode)
+(require 'go-eldoc)
+(require 'company-go)
+(defun setup-go-mode ()
+  (setq tab-width 2)
+  (go-eldoc-setup)
+  (add-to-list 'company-backends 'company-go)
+  )
+(add-hook 'go-mode-hook #'setup-go-mode)
+(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
