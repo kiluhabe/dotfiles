@@ -29,7 +29,6 @@
     js2-mode
     json-mode
     markdown-mode
-    meghanada
     multiple-cursors
     mustache-mode
     nginx-mode
@@ -50,6 +49,7 @@
     treemacs-projectile
     undo-tree
     visual-regexp
+    vue-mode
     web-mode
     wgrep
     which-key

@@ -14,7 +14,7 @@
   ga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   pc = !git push origin `git rev-parse --abbrev-ref HEAD`
 [core]
-  excludesfile = $HOME/.gitignore_global
+	excludesfile = /Users/kiluhabe/.gitignore_global
   editor = emacs
 [ghq]
     root = ~/.ghq

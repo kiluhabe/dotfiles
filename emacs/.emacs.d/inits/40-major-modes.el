@@ -103,6 +103,7 @@
   (tide-setup)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
+  (setq tab-width 2)
   (tide-hl-identifier-mode +1)
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
@@ -117,25 +118,15 @@
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
 
+;;Javascript
 (require 'js2-mode)
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-
-;;Java
-(require 'meghanada)
-(add-hook 'java-mode-hook
+(add-hook 'js-mode-hook
           (lambda ()
-            ;; meghanada-mode on
-            (meghanada-mode t)
-            ;; enable telemetry
-            (meghanada-telemetry-enable t)
-            (flycheck-mode +1)
-            (setq c-basic-offset 2)
-            ;; use code format
-            (add-hook 'before-save-hook 'meghanada-code-beautify-before-save)))
-(cond
-   ((eq system-type 'windows-nt)
-    (setq meghanada-java-path (expand-file-name "bin/java.exe" (getenv "JAVA_HOME")))
-    (setq meghanada-maven-path "mvn.cmd"))
-   (t
-    (setq meghanada-java-path "java")
-    (setq meghanada-maven-path "mvn")))
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))
+
+;; Vue
+(require 'vue-mode)
+(add-hook 'vue-mode-hook 'flycheck-mode)
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))

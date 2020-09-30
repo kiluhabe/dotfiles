@@ -1,5 +1,5 @@
 {
-    "java.jdt.ls.vmargs": "-noverify -Xmx1G -XX:+UseG1GC -XX:+UseStringDeduplication -javaagent:\"/Users/kiluhabe/.vscode/extensions/gabrielbb.vscode-lombok-0.9.9/server/lombok.jar\"",
+    "java.jdt.ls.vmargs": "-noverify -Xmx1G -XX:+UseG1GC -XX:+UseStringDeduplication -javaagent:\"/Users/kiluhabe/.vscode/extensions/gabrielbb.vscode-lombok-1.0.1/server/lombok.jar\"",
     "java.configuration.checkProjectSettingsExclusions": false,
     "editor.suggestSelection": "first",
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
@@ -12,7 +12,14 @@
         "org",
         "com"
     ],
-    "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+    "java.format.settings.url": ".vscode/checkstyle.xml",
     "java.format.settings.profile": "GoogleStyle",
-    "window.zoomLevel": 0
+    "window.zoomLevel": 0,
+    "java.semanticHighlighting.enabled": true,
+    "java.requirements.JDK11Warning": false,
+    "java.project.importOnFirstTimeStartup": "automatic",
+    "java.refactor.renameFromFileExplorer": "autoApply",
+    "[java]": {
+        "editor.defaultFormatter": "redhat.java"
+    }
 }

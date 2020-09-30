@@ -1,3 +1,6 @@
+# for mac
+export BASH_SILENCE_DEPRECATION_WARNING=1
+
 # path
 if [[ $(uname -a) =~ ^Darwin ]]; then
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
@@ -45,6 +48,19 @@ fi
 # global npm module
 if [ -d "$(which npm 2>/dev/null)" ]; then
     export PATH=$PATH:$(npm bin -g)
+fi
+
+# jenv
+if [ -d $HOME/.jenv ]; then
+    export JENV_ROOT=$HOME/.jenv
+    export PATH=$PATH:$JENV_ROOT/bin
+    eval "$(jenv init -)"
+fi
+
+# tfenv
+if [ -d $HOME/.tfenv ]; then
+    export TFENV_ROOT=$HOME/.tfenv
+    export PATH=$PATH:$TFENV_ROOT/bin
 fi
 
 # The next line enables shell command completion for gcloud.
