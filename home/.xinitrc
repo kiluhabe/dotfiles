@@ -36,5 +36,6 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
 
+xscreensaver -no-splash &
 fcitx-autostart &
 exec openbox-session

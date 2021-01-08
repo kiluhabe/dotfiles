@@ -71,7 +71,7 @@ export EDITOR=emacs
 # rust
 export CARGO_HOME=$HOME/.cargo
 export RUSTUP_HOME=$HOME/.rustup
-export RUST_SRC_PATH=$(rustc --print sysroot 2> /dev/null)/lib/rustlib/src/rust/src
+export RUST_SRC_PATH=$(rustc --print sysroot 2> /dev/null)/lib/rustlib/src/rust/library
 export PATH=$PATH:$CARGO_HOME/bin
 
 # android sdk
