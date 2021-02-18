@@ -92,7 +92,16 @@ export ANDROID_HOME=$HOME/AndroidTools
 export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 
 # wal
-(cat ~/.cache/wal/sequences &)
+if [ -d ~/.cache/wal ]; then
+    # Import colorscheme from 'wal' asynchronously
+    # &   # Run the process in the background.
+    # ( ) # Hide shell job control messages.
+    (cat ~/.cache/wal/sequences &)
+    # Alternative (blocks terminal for 0-3ms)
+    cat ~/.cache/wal/sequences
+    # To add support for TTYs this line can be optionally added.
+    source ~/.cache/wal/colors-tty.sh
+fi
 
 #aliases
 alias xcopy='xsel --clipboard --input'
@@ -100,4 +109,3 @@ alias es="env TERM=xterm emacs"
 alias reload-x="xrdb $HOME/.Xresources "
 alias xcopy='xsel --clipboard --input'
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
-

@@ -27,9 +27,9 @@
  '(git-gutter:deleted-sign "・")
  '(git-gutter:modified-sign "・")
  '(git-gutter:window-width 2)
- '(package-selected-packages (quote (tabbar)))
+ '(package-selected-packages '(tabbar))
  '(ruby-insert-encoding-magic-comment nil)
- '(tabbar-separator (quote (0.5))))
+ '(tabbar-separator '(0.5)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
