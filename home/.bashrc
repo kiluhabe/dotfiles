@@ -71,7 +71,14 @@ fi
 export EDITOR=emacs
 
 # go
-export GOPATH=$HOME/.go
+if [ -d $HOME/.goenv ]; then
+  export GOENV_ROOT=$HOME/.goenv
+  export PATH=$GOENV_ROOT/bin:$PATH
+  goenv rehash >/dev/null
+  eval "$(goenv init -)"
+  export PATH=$GOROOT/bin:$PATH
+  export PATH=$PATH:$GOPATH/bin
+fi
 
 # rust
 export CARGO_HOME=$HOME/.cargo

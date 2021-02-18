@@ -21,5 +21,15 @@
     "java.refactor.renameFromFileExplorer": "autoApply",
     "[java]": {
         "editor.defaultFormatter": "redhat.java"
-    }
+    },
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "mssql.connections": [
+        {
+            "server": "{{put-server-name-here}}",
+            "database": "{{put-database-name-here}}",
+            "user": "{{put-username-here}}",
+            "password": "{{put-password-here}}"
+        }
+    ],
+    "javascript.updateImportsOnFileMove.enabled": "always"
 }
