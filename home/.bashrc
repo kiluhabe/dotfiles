@@ -1,7 +1,13 @@
 # path
+if [[ $(uname -a) =~ ^Darwin ]]; then
+    export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
+    export TERM=xterm-256color
+    export BASH_SILENCE_DEPRECATION_WARNING=1
+fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
 #prompt
+unset PROMPT_COMMAND
 PROMPT_COMMAND='addline'
 PS1="\$(prompt) "
 
@@ -31,13 +37,6 @@ if [ -d $HOME/.pyenv ]; then
   eval "$(pyenv init -)"
 fi
 
-# java
-if  [ -d $HOME/.jenv ]; then
-  export JENV_ROOT=$HOME/.jenv
-  export PATH=$PATH:$JENV_ROOT/bin
-  eval "$(jenv init -)"
-fi
-
 #node
 if [ -d $HOME/.nodenv ]; then
   export NODENV_ROOT=$HOME/.nodenv
@@ -51,6 +50,19 @@ if [ -d "$(which npm 2>/dev/null)" ]; then
     export PATH=$PATH:$(npm bin -g)
 fi
 
+# jenv
+if [ -d $HOME/.jenv ]; then
+    export JENV_ROOT=$HOME/.jenv
+    export PATH=$PATH:$JENV_ROOT/bin
+    eval "$(jenv init -)"
+fi
+
+# tfenv
+if [ -d $HOME/.tfenv ]; then
+    export TFENV_ROOT=$HOME/.tfenv
+    export PATH=$PATH:$TFENV_ROOT/bin
+fi
+
 # The next line enables shell command completion for gcloud.
 if [ -d $HOME/google-cloud-sdk/bin ]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
@@ -59,14 +71,14 @@ fi
 export EDITOR=emacs
 
 # go
- if [ -d "${HOME}/.goenv/" ]; then
-     export GOENV_ROOT="$HOME/.goenv"
-     export PATH=$PATH:$GOENV_ROOT/bin
-     export PATH=$PATH:$GOPATH/bin
-     export GO111MODULE=on
-     goenv rehash > /dev/null
-     eval "$(goenv init -)"
- fi
+if [ -d $HOME/.goenv ]; then
+  export GOENV_ROOT=$HOME/.goenv
+  export PATH=$GOENV_ROOT/bin:$PATH
+  goenv rehash >/dev/null
+  eval "$(goenv init -)"
+  export PATH=$GOROOT/bin:$PATH
+  export PATH=$PATH:$GOPATH/bin
+fi
 
 # rust
 export CARGO_HOME=$HOME/.cargo
@@ -80,10 +92,12 @@ export ANDROID_HOME=$HOME/AndroidTools
 export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
 
 # wal
-if [ -e "$(which wal 2>/dev/null)" ]; then
-    wal -Rnq
-fi
+(cat ~/.cache/wal/sequences &)
 
 #aliases
-alias es="emacs"
 alias xcopy='xsel --clipboard --input'
+alias es="env TERM=xterm emacs"
+alias reload-x="xrdb $HOME/.Xresources "
+alias xcopy='xsel --clipboard --input'
+alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
+

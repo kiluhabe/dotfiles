@@ -31,6 +31,7 @@
     go-mode
     haskell-mode
     ivy
+    js2-mode
     json-mode
     markdown-mode
     multiple-cursors
@@ -54,6 +55,7 @@
     treemacs-projectile
     undo-tree
     visual-regexp
+    vue-mode
     web-mode
     wgrep
     which-key

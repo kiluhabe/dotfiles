@@ -69,6 +69,8 @@
 ;;Ruby
 (require 'robe)
 (require 'ruby-electric)
+(custom-set-variables
+ '(ruby-insert-encoding-magic-comment nil))
 (add-hook 'ruby-mode-hook '
           '(lambda ()
             (robe-mode t)
@@ -114,6 +116,7 @@
   (tide-setup)
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
   (eldoc-mode +1)
+  (setq tab-width 2)
   (tide-hl-identifier-mode +1)
 )
 (add-hook 'typescript-mode-hook #'setup-tide-mode)
@@ -124,6 +127,7 @@
             (when (string-equal "tsx" (file-name-extension buffer-file-name))
               (setup-tide-mode))))
 
+;; YAML
 (require 'yaml-mode)
 (add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
 (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
@@ -148,3 +152,16 @@
   )
 (add-hook 'go-mode-hook #'setup-go-mode)
 (add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+
+;;Javascript
+(require 'js2-mode)
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+(add-hook 'js-mode-hook
+          (lambda ()
+            (make-local-variable 'js-indent-level)
+            (setq js-indent-level 2)))
+
+;; Vue
+(require 'vue-mode)
+(add-hook 'vue-mode-hook 'flycheck-mode)
+(add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))

@@ -1,9 +1,12 @@
 #!/usr/bin/env bash
 
 main() {
-    arrow="▞"
+    is_git_dirty=$(git status -s --ignore-submodules=dirty 2> /dev/null )
 
-    printf " $arrow "
+    arrow="➜"
+    dirty=$([ -n "$is_git_dirty" ] && echo "✗" || echo "")
+
+    printf "$arrow $dirty"
 }
 
 main

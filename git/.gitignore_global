@@ -3,3 +3,7 @@
 node_modules/
 bower_components/
 .vscode/
+.java-version
+.node-version
+.sts4-cache
+.ruby-ersion
