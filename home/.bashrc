@@ -106,6 +106,6 @@ fi
 #aliases
 alias xcopy='xsel --clipboard --input'
 alias es="env TERM=xterm emacs"
-alias reload-x="xrdb $HOME/.Xresources "
-alias xcopy='xsel --clipboard --input'
+alias tm="tmux -u"
+alias reload-x="xrdb $HOME/.Xresources"
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"

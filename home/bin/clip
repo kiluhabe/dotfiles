@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+main() {
+       if [ -n "$(uname | grep Darwin)" ]; then
+          command -v pbcopy > /dev/null 2&>1 && command -v reattach-to-user-namespace > /dev/null 2&>1 && reattach-to-user-namespace pbcopy || exit 1
+       else
+          command -v xsel > /dev/null 2&>1 && xsel --clipboard --input || exit 1
+       fi
+}
+
+main
