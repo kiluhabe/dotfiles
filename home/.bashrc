@@ -18,11 +18,11 @@ fi
 
 # set LOCAL
 if [[ $(uname -a) =~ ^Darwin ]]; then
-    export LANG=ja_JP.UTF-8
+    export LANG="ja_JP.UTF-8"
 else
-    (tty|fgrep -q 'tty') && export LANG=C || export LANG=ja_JP.UTF-8
+    (tty|fgrep -q 'tty') && export LANG="C" || export LANG="ja_JP.UTF-8"
 fi
-export LC_ALL=$LANG
+export LC_ALL="$LANG"
 
 # rbenv setup
 if [ -d $HOME/.rbenv ]; then
