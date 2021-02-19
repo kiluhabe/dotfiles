@@ -17,8 +17,11 @@ if [ -d "$(which direnv 2>/dev/null)" ]; then
 fi
 
 # set LOCAL
-export LANG=ja_JP.UTF-8
-(tty|fgrep -q 'tty') && export LANG="C"
+if [[ $(uname -a) =~ ^Darwin ]]; then
+    export LANG=ja_JP.UTF-8
+else
+    (tty|fgrep -q 'tty') && export LANG=C || export LANG=ja_JP.UTF-8
+fi
 export LC_ALL=$LANG
 
 # rbenv setup
@@ -107,5 +110,6 @@ fi
 alias xcopy='xsel --clipboard --input'
 alias es="env TERM=xterm emacs"
 alias tm="tmux -u"
+alias tmux="tmux -u"
 alias reload-x="xrdb $HOME/.Xresources"
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
