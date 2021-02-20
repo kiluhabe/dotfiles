@@ -137,10 +137,10 @@
     </keybind>
     <keybind key="W-t">
       <action name="Execute">
-	<command>st</command>
+	<command>alacritty</command>
 	<startupnotify>
 	  <enabled>yes</enabled>
-	  <name>st</name>
+	  <name>alacritty</name>
 	</startupnotify>
       </action>
     </keybind>
