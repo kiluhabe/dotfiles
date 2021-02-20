@@ -81,7 +81,7 @@ key_bindings:
   - { key: V,              mods: Command,                    action: Paste            }
   - { key: C,              mods: Command,                    action: Copy             }
   - { key: V,              mods: Control,                    action: Paste            }
-  - { key: C,              mods: Control,                    action: Copy             }
+  # - { key: C,              mods: Control,                    action: Copy             }
   - { key: H,              mods: Command,                    action: Hide             }
   - { key: M,              mods: Command,                    action: Minimize         }
   - { key: Q,              mods: Command,                    action: Quit             }
