@@ -24,35 +24,64 @@ primary = ${xrdb:color1:#222}
 secondary = ${xrdb:color2:#222}
 alert = ${xrdb:color3:#222}
 
-[bar/top]
-width = 100%
-height = 20
+[bar/common]
+height = 48
 background = ${colors.alert}
 foreground = ${colors.background}
-line-size = 0
-border-size = 0
-padding-left = 4
-padding-right = 4
-module-margin-left = 0
-module-margin-right = 2.5
-fixed-center = true
-font-0 = "Roboto Mono:pixelsize=12;2"
-font-1 = "DejaVu Sans:pixelsize=12;3"
-font-2 = "FontAwesome:pixelsize=12;3"
-modules-left = wireless-network ewmh
-modules-center = date
-modules-right = pulseaudio backlight battery
+font-0 = Roboto Mono:pixelsize=12;2
+font-1 = FontAwesome5Free:style=Solid:pixelsize=14;2
+font-2 = FontAwesome5Free:style=Regular:pixelsize=14;2
+font-3 = FontAwesome5Brands:style=Regular:pixelsize=14;2
+font-4 = Symbola:pixelsize=16;2
+override-redirect = true
+radius = 16
+offset-y = 16
+module-margin = 2
+
+[bar/left]
+inherit = bar/common
+width = 680
+modules-center = date ewmh
 top = true
+padding = 8
+offset-x = 16
+
+[bar/right]
+inherit = bar/common
+width = 480
+modules-center = backlight battery audio wired-network wireless-network
+top = true
+padding = 8
+offset-x = 1424
 
 [module/date]
 type = internal/date
 interval = 1.0
-date = "%Y-%m-%d"
+date = "%a, %d %B"
 time = %H:%M
-label = %date% %time%
+label =  %date% | %time%
+
+[module/ewmh]
+type = internal/xworkspaces
+pin-workspaces = true
+enable-click = false
+enable-scroll = false
+label-active = ●
+label-active-foreground = ${colors.background}
+label-active-background = ${colors.alert}
+label-active-padding = 2
+label-empty-foreground = ${colors.secondary}
+label-empty = ●
+label-empty-padding = 2
+label-occupied-foreground = ${colors.primary}
+label-occupied = ●
+label-occupied-padding = 2
+label-urgent = ●
+label-urgent-padding = 2
 
 [module/backlight]
-type = internal/xbacklight
+type = internal/backlight
+card = intel_backlight
 format = <ramp>
 ramp-0 = 🌕
 ramp-1 = 🌔
@@ -75,7 +104,7 @@ ramp-capacity-2 = 
 ramp-capacity-3 = 
 ramp-capacity-4 = 
 
-[module/pulseaudio]
+[module/audio]
 type = internal/pulseaudio
 sink = alsa_output.pci-0000_00_1f.3.analog-stere
 use-ui-max = false
@@ -98,34 +127,5 @@ format-disconnected = <label-disconnected>
 label-connected =  %essid%
 label-disconnected = x
 
-[module/ewmh]
-type = internal/xworkspaces
-pin-workspaces = true
-enable-click = false
-enable-scroll = false
-icon-0 = 0;●
-icon-1 = 1; ●
-icon-2 = 2; ●
-icon-3 = 3; ●
-icon-4 = 4; ●
-icon-5 = 5; ●
-icon-6 = 6; ●
-format = <label-state>
-format-spacing = 10
-label-active = %icon%
-label-active-foreground = ${colors.background}
-label-active-background = ${colors.alert}
-label-empty-foreground = ${colors.primary}
-label-occupied = %icon%
-label-urgent = %icon%
-label-empty = %icon%
-
 [settings]
 screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
-;pseudo-transparency = false
-
-; vim:ft=dosini
