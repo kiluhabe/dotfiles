@@ -1,31 +1,49 @@
 configuration {{
-    show-icons:   false;
+    show-icons:   true;
     sidebar-mode: false;
+    display-run: "";
 }}
+
 * {{
-    // Default bg is transparent.
     background-color: transparent;
     spacing:          8;
 }}
+
 #window {{
-    // Default font
     font: "Roboto Mono 12";
-    fullscreen: true;
-    transparency: "background";
-    background-color: {foreground}99;
-
-    // Add dummy widgets on top and bottom so the sizing
-    // nicely centers hdum, independent of resolution.
-                                        children: [ dummy1, hdum, dummy2 ];
-
+    background-color: {background};
+    children: [ hdum ];
+    padding: 32px;
+    height: 25%;
+    width: 25%;
+    location: center;
 }}
+
 #hdum {{
-    orientation: horizontal;
-    // Add dummy widgets on left and right so the sizing
-    // nicely centers mainbox, independent of resolution.
-                                           children: [ dummy3, mainbox, dummy4 ];
-
+    children: [ mainbox ];
 }}
+
+#mainbox {{
+    children: [inputbar, message, listview];
+}}
+
+#inputbar {{
+    background-color: {foreground}50;
+    color: {background};
+    border-radius: 15px;
+    padding: 8px;
+}}
+
+#listview {{
+    padding: 16px 0 0;
+}}
+
+#element {{
+    color: {foreground};
+    padding: 4px 8px;
+}}
+
 #element selected {{
-   text-color: {color1};
+   background-color: {color1}50;
+   border-radius: 15px;
 }}
