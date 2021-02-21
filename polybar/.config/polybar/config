@@ -36,23 +36,33 @@ font-4 = Symbola:pixelsize=16;2
 override-redirect = true
 radius = 16
 offset-y = 16
-module-margin = 2
+module-margin = 1
 
-[bar/left]
+[bar/one]
 inherit = bar/common
-width = 680
+width = 600
 modules-center = date ewmh
 top = true
 padding = 8
 offset-x = 16
 
-[bar/right]
+[bar/two]
 inherit = bar/common
-width = 480
-modules-center = backlight battery audio wired-network wireless-network
+width = 160
+modules-center = backlight battery audio
 top = true
 padding = 8
-offset-x = 1424
+offset-x = 1480
+
+[bar/three]
+inherit = bar/common
+width = 240
+modules-center = bluetooth wired-network wireless-network
+top = true
+padding = 8
+offset-x = 1664
+click-left = rofi-wifi
+click-right = rofi-bluetooth
 
 [module/date]
 type = internal/date
@@ -126,6 +136,11 @@ format-connected = <label-connected>
 format-disconnected = <label-disconnected>
 label-connected =  %essid%
 label-disconnected = x
+
+[module/bluetooth]
+type = custom/script
+exec = [ -n "$(bluetoothctl show | grep 'Powered: yes')" ] && echo 
+interval = 5
 
 [settings]
 screenchange-reload = true

@@ -1,0 +1,44 @@
+#!/usr/bin/env bash
+#
+# connection manager with rofi
+
+# options rofi
+menu='rofi -dmenu -i -p'
+
+# set interfaces
+wifi='wlo1'
+
+enable='Enable'
+select='Menu'
+disable='Disable'
+restart='Restart'
+
+# create search menu
+conn=$(echo -e "$select\n$enable\n$disable\n$restart"| $menu "  Wi-Fi" )
+
+# exit with no input
+if [[ $? -eq 1 ]]; then
+    exit 1
+fi
+
+# select rofi search provider
+case $conn in
+    $enable)
+       notify-send '  Enabling...' && \
+           nmcli device connect $wifi && \
+           notify-send '  Enabled.' ;;
+    $select)
+        alacritty \
+            -t "nmtui" \
+            -e "nmtui" ;;
+    $restart)
+       notify-send '  Restarting...' && \
+            nmcli device disconnect $wifi && \
+            sleep 3 && \
+            nmcli device connect $wifi
+            notify-send '  Restarted.' ;;
+    $disable)
+        notify-send '  Disabling...' && \
+            nmcli device disconnect $wifi && \
+            notify-send '  Disabled.' ;;
+esac

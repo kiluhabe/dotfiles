@@ -1,0 +1,32 @@
+#!/usr/bin/env bash
+#
+# connection manager with rofi
+
+# options rofi
+menu='rofi -dmenu -i -p'
+
+enable='Enable'
+disable='Disable'
+select='Menu'
+
+# create search menu
+conn=$(echo -e "$select\n$enable\n$disable"| $menu " Bluetooth" )
+
+# exit with no input
+if [[ $? -eq 1 ]]; then
+    exit 1
+fi
+
+# select rofi search provider
+case $conn in
+    $enable)
+        notify-send ' Enabling...' && \
+            bluetoothctl power on
+            notify-send ' Enabled.' ;;
+    $disable)
+        notify-send ' Disabling...' && \
+            bluetoothctl power off
+            notify-send ' Disabled.' ;;
+    $select)
+        blueman-manager
+esac
