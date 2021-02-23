@@ -2,22 +2,18 @@
 #
 # connection manager with rofi
 
-# options rofi
-menu='rofi -dmenu -i -p'
+menu='rofi -no-show-icons -no-sidebar-mode -dmenu -i -p'
 
 enable='Enable'
 disable='Disable'
 select='Menu'
 
-# create search menu
 conn=$(echo -e "$select\n$enable\n$disable"| $menu " Bluetooth" )
 
-# exit with no input
 if [[ $? -eq 1 ]]; then
     exit 1
 fi
 
-# select rofi search provider
 case $conn in
     $enable)
         notify-send ' Enabling...' && \

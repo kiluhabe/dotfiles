@@ -28,7 +28,7 @@ alert = ${xrdb:color3:#222}
 height = 48
 background = ${colors.alert}
 foreground = ${colors.background}
-font-0 = Roboto Mono:pixelsize=12;2
+font-0 = mono:pixelsize=12;2
 font-1 = FontAwesome5Free:style=Solid:pixelsize=14;2
 font-2 = FontAwesome5Free:style=Regular:pixelsize=14;2
 font-3 = FontAwesome5Brands:style=Regular:pixelsize=14;2
@@ -48,11 +48,11 @@ offset-x = 16
 
 [bar/two]
 inherit = bar/common
-width = 160
+width = 192
 modules-center = backlight battery audio
 top = true
 padding = 8
-offset-x = 1480
+offset-x = 1456
 
 [bar/three]
 inherit = bar/common

@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
-#
-# connection manager with rofi
 
-# options rofi
 menu='rofi -no-show-icons -no-sidebar-mode -dmenu -i -p'
 
-# set interfaces
 wifi='wlo1'
 
 enable='Enable'
@@ -13,15 +9,12 @@ select='Menu'
 disable='Disable'
 restart='Restart'
 
-# create search menu
 conn=$(echo -e "$select\n$enable\n$disable\n$restart"| $menu "  Wi-Fi" )
 
-# exit with no input
 if [[ $? -eq 1 ]]; then
     exit 1
 fi
 
-# select rofi search provider
 case $conn in
     $enable)
        notify-send '  Enabling...' && \
