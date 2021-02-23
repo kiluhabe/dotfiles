@@ -1,5 +1,4 @@
 configuration {
-	show-icons: false;
 	sidebar-mode: false;
 	theme: "~/.cache/wal/colors-rofi-light.rasi";
 }

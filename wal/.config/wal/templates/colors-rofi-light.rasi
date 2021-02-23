@@ -1,7 +1,39 @@
 configuration {{
+    modi: "drun,run,window";
     show-icons:   true;
-    sidebar-mode: false;
+    icon-theme: "Tela circle dark";
+    window-thumbnail: true;
+    terminal: "alacritty";
+    run-shell-command: "{{terminal}} -e {{cmd}}";
+    window-match-fields: "all";
+    drun-match-fields: "name,exec";
+    case-sensitive: false;
+    cycle: true;
+    sidebar-mode: true;
     display-run: "";
+    auto-select: false;
+    combi-modi: "window,drun";
+    matching: "regex";
+    auto-select: false;
+    combi-modi: "window,drun";
+    matching: "regex";
+    threads: 0;
+    window-format: "{{w:0}}	{{n:0}}	{{t:0}}";
+    click-to-exit: true;
+    show-match: true;
+    max-history-size: 25;
+    combi-hide-mode-prefix: true;
+    display-window: "";
+    display-run: "";
+    display-drun: "";
+    display-combi: "Combined";
+    kb-primary-paste: "Control+V";
+    kb-secondary-paste: "Control+v";
+    kb-move-front: "Control+a";
+    kb-move-end: "Control+e";
+    kb-remove-word-back: "Control+BackSpace";
+    kb-remove-to-eol: "Control+k";
+    kb-remove-to-sol: "Control+K";
 }}
 
 * {{
@@ -10,21 +42,18 @@ configuration {{
 }}
 
 #window {{
-    font: "Roboto Mono 12";
+    font: "FontAwesome5Free 16";
     background-color: {background};
-    children: [ hdum ];
     padding: 32px;
-    height: 25%;
+    height: 32%;
     width: 25%;
     location: center;
 }}
 
 #hdum {{
-    children: [ mainbox ];
 }}
 
 #mainbox {{
-    children: [inputbar, message, listview];
 }}
 
 #inputbar {{
@@ -35,15 +64,25 @@ configuration {{
 }}
 
 #listview {{
-    padding: 16px 0 0;
+    padding: 16px 0 4px;
 }}
 
 #element {{
     color: {foreground};
     padding: 4px 8px;
+    margin: 4px 0 4px;
 }}
 
 #element selected {{
    background-color: {color1}50;
    border-radius: 15px;
+}}
+
+#element-icon {{
+   size: 24px ;
+}}
+
+#button {{
+    spacing: 0;
+    color: {foreground};
 }}
