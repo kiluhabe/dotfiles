@@ -3,7 +3,7 @@
 # connection manager with rofi
 
 # options rofi
-menu='rofi -dmenu -i -p'
+menu='rofi -no-show-icons -no-sidebar-mode -dmenu -i -p'
 
 # set interfaces
 wifi='wlo1'

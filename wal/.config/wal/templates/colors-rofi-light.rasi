@@ -63,6 +63,10 @@ configuration {{
     padding: 8px;
 }}
 
+#entry {{
+    margin: 2px 0 0 0;
+}}
+
 #listview {{
     padding: 16px 0 4px;
 }}
@@ -71,7 +75,6 @@ configuration {{
     color: {foreground};
     padding: 16px 16px 8px;
     margin: 4px 0 4px;
-    text-align: center;
 }}
 
 #element selected {{
