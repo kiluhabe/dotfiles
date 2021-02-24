@@ -45,7 +45,6 @@ configuration {{
     font: "FontAwesome5Free 16";
     background-color: {background};
     padding: 32px;
-    height: 32%;
     width: 25%;
     location: center;
 }}
@@ -69,6 +68,8 @@ configuration {{
 
 #listview {{
     padding: 16px 0 4px;
+    dynamic: true;
+    lines: 3;
 }}
 
 #element {{
