@@ -159,6 +159,9 @@ languages: envs rust
 brew:
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
+${DOTFILES}/brew/.Brewfile:
+	cat ${DOTFILES}/brew/.Brewfile
+
 bundle: brew ${DOTFILES}/brew/.Brewfile
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
