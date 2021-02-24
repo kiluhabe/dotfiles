@@ -38,4 +38,5 @@ export XMODIFIERS=@im=fcitx
 
 xscreensaver -no-splash &
 fcitx-autostart &
-exec openbox-session
+sxhkd &
+exec bspwm

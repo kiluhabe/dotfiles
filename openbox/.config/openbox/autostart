@@ -1,9 +1,0 @@
-(sleep 1s && wal -R) &
-(sleep 1s && picom -b) &
-(sleep 1s && $HOME/.config/polybar/launch.sh) &
-(sleep 1s && clipmenud) &
-(sleep 1s && libinput-gestures) &
-(sleep 1s && launch-dunst) &
-(sleep 1s && outer-display-only) &
-(sleep 1s && fcitx-autostart) &
-(sleep 1s && xss-lock -- xscreensaver-command -lock) &
