@@ -1,3 +1,5 @@
+export EDITOR=emacs
+
 # path
 if [[ $(uname -a) =~ ^Darwin ]]; then
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
@@ -71,8 +73,6 @@ if [ -d $HOME/google-cloud-sdk/bin ]; then
   export PATH=$PATH:$HOME/google-cloud-sdk/bin
 fi
 
-export EDITOR=emacs
-
 # go
 if [ -d $HOME/.goenv ]; then
   export GOENV_ROOT=$HOME/.goenv
@@ -88,21 +88,14 @@ export CARGO_HOME=$HOME/.cargo
 export RUSTUP_HOME=$HOME/.rustup
 export RUST_SRC_PATH=$(rustc --print sysroot 2> /dev/null)/lib/rustlib/src/rust/library
 export PATH=$PATH:$CARGO_HOME/bin
-
-# android sdk
-export _JAVA_AWT_WM_NONREPARENTING=1
-export ANDROID_HOME=$HOME/AndroidTools
-export ANDROID_SDK_ROOT=$ANDROID_HOME/sdk
+if [ -d $CARGO_HOME ]; then
+    source $CARGO_HOME/env
+fi
 
 # wal
 if [ -d ~/.cache/wal ]; then
-    # Import colorscheme from 'wal' asynchronously
-    # &   # Run the process in the background.
-    # ( ) # Hide shell job control messages.
     (cat ~/.cache/wal/sequences &)
-    # Alternative (blocks terminal for 0-3ms)
     cat ~/.cache/wal/sequences
-    # To add support for TTYs this line can be optionally added.
     source ~/.cache/wal/colors-tty.sh
 fi
 

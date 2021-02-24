@@ -1,0 +1,8 @@
+version: '3'
+services:
+  arch:
+    build: .
+    volumes:
+      - .:/home/test/dotfiles:cached
+    user: test
+    working_dir: /home/test/dotfiles

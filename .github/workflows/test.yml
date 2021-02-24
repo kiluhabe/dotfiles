@@ -1,0 +1,25 @@
+name: Test
+
+on: push
+  # schedule:
+  #   - cron:  '0 0 */7 * *'
+
+jobs:
+  arch:
+    name: make install
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+      - name: Run make
+        run: docker-compose run --rm arch make SKIP_CONFIRM=true
+  macos:
+    name: make install
+    run-on: macos-latest
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+      - name: Select Xcode version
+      run: sudo xcode-select -s '/Applications/Xcode_12.4.app/Contents/Developer'
+      - name: Run make
+        run: make SKIP_CONFIRM=true

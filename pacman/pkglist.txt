@@ -16,7 +16,6 @@ clang
 dart
 dhcpcd
 dialog
-direnv
 docker-compose
 dosfstools
 dpkg
@@ -33,7 +32,6 @@ fff
 file
 findutils
 firefox
-firefox-nightly
 flex
 fontconfig
 fuse2
@@ -82,6 +80,7 @@ pcmanfm
 picom
 pkgconf
 polybar
+python-pywal
 pulseaudio
 rofi
 rsync
@@ -93,19 +92,14 @@ tela-circle-icon-theme-git
 texinfo
 tmux
 tor
-tor-browser
 ttf-font-awesome
 ttf-roboto-mono
 ttf-symbola
 unzip
 usbutils
-virtualbox
-virtualbox-host-dkms
-visual-studio-code-bin
 webkit2gtk
 wget
 which
-wine
 wpa_supplicant
 xorg-xbacklight
 xorg-xinit
@@ -113,5 +107,4 @@ xorg-xrandr
 xscreensaver
 xsel
 xss-lock
-yay
 zoom
