@@ -1,3 +1,6 @@
 (global-set-key (kbd "M-x") 'counsel-M-x)
-(global-set-key (kbd "C-x C-f") 'counsel-find-file)
+(global-set-key (kbd "M-y") 'counsel-yank-pop)
+(global-set-key (kbd "M-f") 'counsel-fzf)
+(global-set-key (kbd "M-r") 'counsel-recentf)
+(global-set-key (kbd "M-b") 'counsel-ibuffer)
 (defvar counsel-find-file-ignore-regexp (regexp-opt '("./" "../")))

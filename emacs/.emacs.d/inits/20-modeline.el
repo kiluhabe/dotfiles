@@ -1,5 +1,3 @@
-
-
 (setq-default mode-line-format
   (list
     "  "
@@ -14,7 +12,7 @@
     "  "
     ;; was this buffer modified since the last save?
     '(:eval (when (buffer-modified-p)
-              (propertize "●"
+              (propertize "✗"
                              'face '((t (:foreground "#ffa500")))
                              'help-echo "Buffer has been modified")))
     "  "

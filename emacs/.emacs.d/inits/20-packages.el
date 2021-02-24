@@ -62,7 +62,6 @@
     writeroom-mode
     xresources-theme
     yaml-mode
-    yasnippet
   )
 )
 
