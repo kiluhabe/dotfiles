@@ -94,6 +94,3 @@ cask "tableplus"
 cask "visual-studio-code"
 cask "xquartz"
 cask "zoomus"
-mas "GIPHY CAPTURE", id: 668208984
-mas "Microsoft To Do", id: 1274495053
-mas "Xcode", id: 497799835
