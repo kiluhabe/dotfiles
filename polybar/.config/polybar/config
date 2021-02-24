@@ -26,8 +26,8 @@ alert = ${xrdb:color3:#222}
 
 [bar/common]
 height = 48
-background = ${colors.alert}
-foreground = ${colors.background}
+background = ${colors.background}
+foreground = ${colors.foreground}
 font-0 = Roboto Mono:pixelsize=12;2
 font-1 = FontAwesome5Free:style=Solid:pixelsize=14;2
 font-2 = FontAwesome5Free:style=Regular:pixelsize=14;2
@@ -77,17 +77,18 @@ pin-workspaces = true
 enable-click = false
 enable-scroll = false
 label-active = ●
-label-active-foreground = ${colors.background}
-label-active-background = ${colors.alert}
+label-active-foreground = ${colors.foreground}
+label-active-background = ${colors.background}
 label-active-padding = 1
-label-empty-foreground = ${colors.secondary}
+label-empty-foreground = ${colors.primary}
 label-empty = ●
 label-empty-padding = 1
-label-occupied-foreground = ${colors.primary}
+label-occupied-foreground = ${colors.secondary}
 label-occupied = ●
 label-occupied-padding = 1
 label-urgent = ●
 label-urgent-padding = 1
+label-urgent-foreground = ${colors.alert}
 
 [module/backlight]
 type = internal/backlight
