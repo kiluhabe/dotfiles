@@ -15,7 +15,7 @@ jobs:
         run: docker-compose run --rm arch make SKIP_CONFIRM=true
   macos:
     name: make install
-    run-on: macos-latest
+    runs-on: macos-latest
     steps:
       - name: Checkout codes
         uses: actions/checkout@v2
