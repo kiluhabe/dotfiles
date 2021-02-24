@@ -1,3 +1,4 @@
+SHELL=/bin/bash
 SKIP_CONFIRM := false
 DOTFILES := ${HOME}/dotfiles
 PACKAGES := $(shell comm -12 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))

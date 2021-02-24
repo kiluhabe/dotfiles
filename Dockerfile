@@ -1,8 +1,9 @@
 FROM archlinux:latest
 
 RUN \
+        pacman-db-upgrade && \
         pacman -Syy && \
-        pacman -S --noconfirm sudo make yes
+        pacman -S --noconfirm sudo make
 RUN \
         groupadd -g 1000 test && \
         useradd -m -g test -G wheel -s /bin/bash test && \
