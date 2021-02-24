@@ -1,6 +1,6 @@
 SHELL=/bin/bash
 SKIP_CONFIRM := false
-DOTFILES := ${HOME}/dotfiles
+DOTFILES := $(shell pwd)
 PACKAGES := $(shell comm -12 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))
 AUR_PACKAGES := $(shell comm -13 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))
 TMP_DIR := ${HOME}/tmp
