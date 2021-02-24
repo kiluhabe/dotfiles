@@ -47,6 +47,7 @@ configuration {{
     padding: 32px;
     width: 25%;
     location: center;
+    border-radius: 16px;
 }}
 
 #hdum {{

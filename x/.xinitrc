@@ -38,5 +38,4 @@ export XMODIFIERS=@im=fcitx
 
 xscreensaver -no-splash &
 fcitx-autostart &
-sxhkd &
 exec bspwm
