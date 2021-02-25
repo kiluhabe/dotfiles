@@ -15,7 +15,6 @@ bluez
 bluez-utils
 bspwm
 clang
-dart
 dhcpcd
 dialog
 docker-compose
@@ -50,7 +49,6 @@ groff
 grub
 gzip
 imagemagick
-inkscape
 iw
 kr-bin
 libinput-gestures
@@ -62,7 +60,6 @@ linux-firmware
 linux-headers
 m4
 make
-mesa-demos
 mkinitcpio
 mtpfs
 nano
@@ -73,12 +70,10 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
-nvidia
 openssh
 pacman
 patch
 pavucontrol
-pcmanfm
 picom
 pkgconf
 polybar
