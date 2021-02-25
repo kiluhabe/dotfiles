@@ -10,12 +10,9 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "nektos/tap"
-tap "qmk/qmk"
 
 # Core application library for C
 brew "glib"
-# Toolkit for image loading and pixel buffer manipulation
-brew "gdk-pixbuf"
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"
 # Official Amazon AWS command-line interface
@@ -30,8 +27,6 @@ brew "direnv"
 brew "emacs"
 # Simple file manager written in bash
 brew "fff"
-# Play, record, convert, and stream audio and video
-brew "ffmpeg"
 # C routines to compute the Discrete Fourier Transform
 brew "fftw"
 # Command-line fuzzy finder written in Go
@@ -74,8 +69,7 @@ brew "aws/tap/aws-sam-cli"
 brew "derailed/k9s/k9s"
 # Run GitHub Actions locally
 brew "nektos/tap/act"
-# Quantum Mechanical Keyboard (QMK) Firmware
-brew "qmk/qmk/qmk"
+
 cask "clipy"
 cask "discord"
 cask "docker"
@@ -87,10 +81,9 @@ cask "iterm2"
 cask "ngrok"
 cask "notion"
 cask "postman"
-cask "qmk-toolbox"
 cask "slack"
 cask "spotify"
 cask "tableplus"
 cask "visual-studio-code"
 cask "xquartz"
-cask "zoomus"
+cask "zoom"

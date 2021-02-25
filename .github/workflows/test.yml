@@ -2,7 +2,7 @@ name: Test
 
 on: push
   # schedule:
-  #   - cron:  '0 0 */7 * *'
+  #   - cron:  '0 0 * * FRI'
 
 jobs:
   arch:
@@ -11,6 +11,8 @@ jobs:
     steps:
       - name: Checkout codes
         uses: actions/checkout@v2
+      - name: Clean
+        run: docker system prune --force
       - name: Run make
         run: docker-compose run --rm arch make SKIP_CONFIRM=true
   macos:
