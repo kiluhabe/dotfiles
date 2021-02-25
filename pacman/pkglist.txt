@@ -70,10 +70,12 @@ noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
+nvidia
 openssh
 pacman
 patch
 pavucontrol
+pcmanfm
 picom
 pkgconf
 polybar
@@ -94,7 +96,6 @@ ttf-roboto-mono
 ttf-symbola
 unzip
 usbutils
-webkit2gtk
 wget
 which
 wpa_supplicant

@@ -5,16 +5,16 @@ on: push
   #   - cron:  '0 0 * * FRI'
 
 jobs:
-  arch:
-    name: Arch
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout codes
-        uses: actions/checkout@v2
-      - name: Clean
-        run: docker system prune --force
-      - name: Run make
-        run: docker-compose run --rm arch make SKIP_CONFIRM=true
+  # arch:
+  #   name: Arch
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout codes
+  #       uses: actions/checkout@v2
+  #     - name: Clean
+  #       run: docker system prune --force
+  #     - name: Run make
+  #       run: docker-compose run --rm arch make SKIP_CONFIRM=true
   macos:
     name: macOS
     runs-on: macos-latest
@@ -24,6 +24,6 @@ jobs:
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_12.4.app/Contents/Developer'
       - name: Clean
-        run: sudo rm /usr/local/bin/aws
+        run: sudo rm /usr/local/bin/aws*
       - name: Run make
         run: make SKIP_CONFIRM=true

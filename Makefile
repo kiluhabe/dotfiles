@@ -102,6 +102,9 @@ ${HOME}/.Xmodmap ${HOME}/.xinitrc:
 /etc/X11/xorg.conf.d/20-touchpad.conf:
 	sudo stow -v libinput -t /
 
+/etc/X11/xorg.conf.d/20-backlight.conf:
+	sudo stow -v backlight -t /
+
 ## Darwin
 ${HOME}/.Brewfile:
 	stow -v brew

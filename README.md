@@ -1,3 +1,2 @@
-# dotfiles
-
-![scrot](https://i.imgur.com/S6j9L2l.png)
+# Dotfiles
+[![Test](https://github.com/kiluhabe/dotfiles/actions/workflows/test.yml/badge.svg?branch=master&event=schedule)](https://github.com/kiluhabe/dotfiles/actions/workflows/test.yml)
