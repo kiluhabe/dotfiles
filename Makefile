@@ -65,7 +65,7 @@ ${HOME}/.gitconfig ${HOME}/.gitignore_global:
 	stow -v git
 
 ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
-	rm ${HOME}/.bashrc ${HOME}/.bash_profile && \
+	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile && \
 		stow -v home
 
 ${HOME}/.config/neofetch: ${CONFIG_DIR}
