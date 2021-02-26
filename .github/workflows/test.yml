@@ -1,8 +1,8 @@
 name: Test
 
-on: push
-  # schedule:
-  #   - cron:  '0 0 * * FRI'
+on:
+  schedule:
+    - cron:  '0 0 * * SAT'
 
 jobs:
   # arch:
