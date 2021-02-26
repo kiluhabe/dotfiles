@@ -173,5 +173,5 @@ ifeq ($(shell uname -s), Linux)
 install: confirm pacman aur group languages dotfiles
 endif
 ifeq ($(shell uname -s), Darwin)
-install: confirm bundle group languages dotfiles
+install: confirm bundle languages dotfiles
 endif
