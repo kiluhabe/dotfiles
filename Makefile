@@ -134,7 +134,7 @@ ${HOME}/.nodenv:
 	git clone https://github.com/nodenv/nodenv.git ${HOME}/.nodenv && \
 		git clone https://github.com/nodenv/node-build.git ${HOME}/.nodenv/plugins/node-build
 
-${HOME}/.goenv: /usr/sbin/git
+${HOME}/.goenv:
 	git clone https://github.com/syndbg/goenv.git ${HOME}/.goenv
 
 ${HOME}/.jenv:
