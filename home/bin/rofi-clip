@@ -2,10 +2,15 @@
 
 menu='rofi -no-show-icons -no-sidebar-mode -dmenu -i -p'
 
-cache=$(echo -e "$(clipcatctl list --no-id)"| $menu "" )
+list=(${foo//(: |\n)/})
+echo ${list[@]}
+
+option=$(clipcatctl list | $menu "")
 
 if [[ $? -eq 1 ]]; then
     exit 1
 fi
 
-echo $cache | clip
+id=$(echo $option | sed -e 's/:.*$//')
+
+clipcatctl get "$id" | clip
