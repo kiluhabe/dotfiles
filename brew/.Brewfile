@@ -1,4 +1,3 @@
-tap "argon/mas"
 tap "argoproj/tap"
 tap "aws/tap"
 tap "derailed/k9s"
@@ -12,28 +11,20 @@ tap "homebrew/core"
 tap "kryptco/tap"
 tap "nektos/tap"
 
-# Core application library for C
-brew "glib"
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"
 # Official Amazon AWS command-line interface
 brew "awscli"
 # Encode and decode base64 files
 brew "base64"
-# Formatting tools for C, C++, Obj-C, Java, JavaScript, TypeScript
-brew "clang-format"
 # Load/unload environment variables based on $PWD
 brew "direnv"
 # GNU Emacs text editor
 brew "emacs"
 # Simple file manager written in bash
 brew "fff"
-# C routines to compute the Discrete Fourier Transform
-brew "fftw"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# Network related modules for glib
-brew "glib-networking"
 # Tools and libraries to manipulate images in many formats
 brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
@@ -64,10 +55,6 @@ brew "the_silver_searcher"
 brew "tmux"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Mac App Store command-line interface
-brew "argon/mas/mas"
-# AWS SAM CLI 🐿 is a tool for local development and testing of Serverless applications
-brew "aws/tap/aws-sam-cli"
 # Kubernetes CLI To Manage Your Clusters In Style!
 brew "derailed/k9s/k9s"
 # Run GitHub Actions locally
