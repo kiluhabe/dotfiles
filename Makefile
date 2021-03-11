@@ -179,7 +179,7 @@ bundle: brew ${DOTFILES}/brew/.Brewfile
 
 # Misc
 ${HOME}/.pyenv/shims/wal: ${HOME}/.pyenv
-	${HOME}/.pyenv/bin/pyenv install ${PYTHON_VERSION} && \
+	${HOME}/.pyenv/bin/pyenv install -s ${PYTHON_VERSION} && \
 		${HOME}/.pyenv/bin/pyenv global ${PYTHON_VERSION} && \
 		${HOME}/.pyenv/bin/pyenv rehash && \
 		pip3 install --user pywal
