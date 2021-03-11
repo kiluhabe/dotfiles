@@ -12,6 +12,5 @@ emacs/.emacs.d/tramp
 home/bin/sowm
 home/bin/st
 emacs/.emacs.d/meghanada
-vscode/Library/Application Support/Code/CachedExtensionVSIXs
-vscode/Library/Application Support/Code/logs
-vscode/Library/Application Support/Code/machineid
+vscode/Library/Application Support/*
+!vscode/Library/Application Support/Code/User/settings.json
