@@ -184,8 +184,11 @@ ${HOME}/.pyenv/shims/wal: ${HOME}/.pyenv
 		${HOME}/.pyenv/bin/pyenv rehash && \
 		pip3 install --user pywal
 
+vscode-extentions:
+	cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 echo code --install-extension
 
-misc: ${HOME}/.pyenv/shims/wal
+
+misc: ${HOME}/.pyenv/shims/wal vscode-extentions
 
 # Install
 ifeq ($(shell uname -s), Linux)
