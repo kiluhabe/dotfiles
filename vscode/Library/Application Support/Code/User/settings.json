@@ -31,5 +31,6 @@
             "password": "{{put-password-here}}"
         }
     ],
-    "javascript.updateImportsOnFileMove.enabled": "always"
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.tabSize": 2
 }
