@@ -179,16 +179,8 @@ ${HOME}/.pyenv/shims/wal: ${HOME}/.pyenv
 		${HOME}/.pyenv/bin/pyenv rehash && \
 		pip3 install --user pywal
 
-/usr/local/bin/kr:
-	/bin/bash -c "$(curl -fsSL https://krypt.co/kr)"
 
-ifeq ($(shell uname -s), Linux)
 misc: ${HOME}/.pyenv/shims/wal
-endif
-ifeq ($(shell uname -s), Darwin)
-misc: ${HOME}/.pyenv/shims/wal /usr/local/bin/kr
-endif
-
 
 # Install
 ifeq ($(shell uname -s), Linux)
