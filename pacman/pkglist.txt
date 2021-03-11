@@ -80,7 +80,6 @@ pcmanfm
 picom
 pkgconf
 polybar
-python-pywal
 pulseaudio
 rofi
 rsync

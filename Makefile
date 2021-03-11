@@ -1,13 +1,14 @@
 SHELL=/bin/bash
 SKIP_CONFIRM := false
 DOTFILES := $(shell pwd)
-PACKAGES := $(shell comm -12 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))
-AUR_PACKAGES := $(shell comm -13 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))
+PACKAGES = $(shell comm -12 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))
+AUR_PACKAGES = $(shell comm -13 <(pacman -Slq | sort) <(sort ${DOTFILES}/pacman/pkglist.txt))
 TMP_DIR := ${HOME}/tmp
 AUR_HELPER_GIT_REPO := https://aur.archlinux.org/paru.git
 AUR_HELPER := paru
 CONFIG_DIR := ${HOME}/.config
 USER = $(shell whoami)
+PYTHON_VERSION := 3.9.2
 
 .DEFAULT_GOAL := install
 
@@ -171,10 +172,20 @@ ${DOTFILES}/brew/.Brewfile:
 bundle: brew ${DOTFILES}/brew/.Brewfile
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
+# Misc
+${HOME}/.pyenv/shims/wal: ${HOME}/.pyenv
+	${HOME}/.pyenv/bin/pyenv install ${PYTHON_VERSION} && \
+		${HOME}/.pyenv/bin/pyenv global ${PYTHON_VERSION} && \
+		${HOME}/.pyenv/bin/pyenv rehash && \
+		pip3 install --user pywal
+
+misc: ${HOME}/.pyenv/shims/wal
+
+
 # Install
 ifeq ($(shell uname -s), Linux)
-install: confirm pacman aur group languages dotfiles
+install: confirm pacman aur group languages dotfiles misc
 endif
 ifeq ($(shell uname -s), Darwin)
-install: confirm bundle languages dotfiles
+install: confirm bundle languages dotfiles misc
 endif
