@@ -9,6 +9,7 @@ tap "homebrew/cask-drivers"
 tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
+tap "kryptco/tap"
 tap "nektos/tap"
 
 # Core application library for C
