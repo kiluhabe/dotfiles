@@ -3,7 +3,10 @@
 main() {
     branchname="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
     is_git_dirty=$(git status -s --ignore-submodules=dirty 2> /dev/null)
-    if [ -n "$branchname" ]; then
+    max=15
+    if [ ${#branchname} -ge $max ]; then
+        [ -n "$is_git_dirty" ] && echo "✗ ${branchname:0:$max}..." || echo "${branchname:0:$max}..."
+    elif [ -n "$branchname" ]; then
         [ -n "$is_git_dirty" ] && echo "✗ $branchname" || echo $branchname
     else
         echo "---"

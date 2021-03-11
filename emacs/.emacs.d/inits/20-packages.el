@@ -46,6 +46,7 @@
     robe
     ruby-electric
     rust-mode
+    slim-mode
     swiper
     tabbar
     terraform-mode

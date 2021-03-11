@@ -165,3 +165,7 @@
 (require 'vue-mode)
 (add-hook 'vue-mode-hook 'flycheck-mode)
 (add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
+
+;; Slim
+(require 'slim-mode)
+(add-to-list 'auto-mode-alist '("\\.slim\\'" . slim-mode))
