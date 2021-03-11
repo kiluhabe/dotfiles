@@ -8,11 +8,16 @@ AUR_HELPER_GIT_REPO := https://aur.archlinux.org/paru.git
 AUR_HELPER := paru
 CONFIG_DIR := ${HOME}/.config
 USER = $(shell whoami)
-PYTHON_VERSION := 3.9.2
+
+RUBY_VERSION = $(shell ${HOME}/.rbenv/bin/rbenv install -L | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
+PYTHON_VERSION = $(shell ${HOME}/.pyenv/bin/pyenv install -l | grep -E "^  [0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
+NODE_VERSION = $(shell ${HOME}/.nodenv/bin/nodenv install -l | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
+GO_VERSION = $(shell ${HOME}/.goenv/bin/goenv install -l | grep -E "^  [0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
+TERRAFORM_VERSION = $(shell ${HOME}/.tfenv/bin/tfenv list-remote | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | head -n 1)
 
 .DEFAULT_GOAL := install
 
-.PHONY: pacman ${AUR_HELPER} aur dotfiles group envs rust languages
+.PHONY: pacman ${AUR_HELPER} aur dotfiles group envs rust languages bundle vscode-extensions misc brew
 
 confirm:
 	@if [ "${SKIP_CONFIRM}" != "true" ]; then \
@@ -132,27 +137,49 @@ dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.g
 endif
 
 # Languages
-${HOME}/.rbenv:
+${HOME}/.rbenv/bin/rbenv:
 	git clone https://github.com/rbenv/rbenv.git ${HOME}/.rbenv && \
 		git clone https://github.com/rbenv/ruby-build.git ${HOME}/.rbenv/plugins/ruby-build
 
-${HOME}/.pyenv:
+${HOME}/.rbenv/versions/${RUBY_VERSION}: ${HOME}/.rbenv/bin/rbenv
+	${HOME}/.rbenv/bin/rbenv install -s ${RUBY_VERSION} && \
+		${HOME}/.rbenv/bin/rbenv global ${RUBY_VERSION} && \
+		${HOME}/.rbenv/bin/rbenv rehash
+
+${HOME}/.pyenv/bin/pyenv:
 	 git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv
 
-${HOME}/.nodenv:
+${HOME}/.pyenv/versions/${PYTHON_VERSION}: ${HOME}/.pyenv/bin/pyenv
+	${HOME}/.pyenv/bin/pyenv install -s ${PYTHON_VERSION} && \
+		${HOME}/.pyenv/bin/pyenv global ${PYTHON_VERSION} && \
+		${HOME}/.pyenv/bin/pyenv rehash
+
+${HOME}/.nodenv/bin/nodenv:
 	git clone https://github.com/nodenv/nodenv.git ${HOME}/.nodenv && \
 		git clone https://github.com/nodenv/node-build.git ${HOME}/.nodenv/plugins/node-build
 
-${HOME}/.goenv:
+${HOME}/.nodenv/versions/${NODE_VERSION}: ${HOME}/.nodenv/bin/nodenv
+	${HOME}/.nodenv/bin/nodenv install -s ${NODE_VERSION} && \
+		${HOME}/.nodenv/bin/nodenv global ${NODE_VERSION} && \
+		${HOME}/.nodenv/bin/nodenv rehash
+
+${HOME}/.goenv/bin/goenv:
 	git clone https://github.com/syndbg/goenv.git ${HOME}/.goenv
 
-${HOME}/.jenv:
-	git clone https://github.com/jenv/jenv.git ${HOME}/.jenv
+${HOME}/.goenv/versions/${GO_VERSION}: ${HOME}/.goenv/bin/goenv
+	${HOME}/.goenv/bin/goenv install -s ${GO_VERSION} && \
+		${HOME}/.goenv/bin/goenv global ${GO_VERSION} && \
+		${HOME}/.goenv/bin/goenv rehash
 
-${HOME}/.tfenv:
+${HOME}/.tfenv/bin/tfenv:
 	git clone https://github.com/tfutils/tfenv.git ${HOME}/.tfenv
 
-envs: ${HOME}/.rbenv ${HOME}/.pyenv ${HOME}/.nodenv ${HOME}/.goenv ${HOME}/.jenv ${HOME}/.tfenv
+${HOME}/.tfenv/versions/${TERRAFORM_VERSION}: ${HOME}/.tfenv/bin/tfenv
+	${HOME}/.tfenv/bin/tfenv install ${TERRAFORM_VERSION} && \
+		${HOME}/.tfenv/bin/tfenv use ${TERRAFORM_VERSION}
+
+${HOME}/.jenv/bin/jenv:
+	git clone https://github.com/jenv/jenv.git ${HOME}/.jenv
 
 ${HOME}/.cargo/bin/rustup:
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
@@ -165,7 +192,7 @@ rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
 		${HOME}/.cargo/bin/cargo +nightly install racer && \
 		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete
 
-languages: envs rust
+languages: ${HOME}/.rbenv/versions/${RUBY_VERSION} ${HOME}/.pyenv/versions/${PYTHON_VERSION} ${HOME}/.nodenv/versions/${NODE_VERSION} ${HOME}/.goenv/versions/${GO_VERSION} ${HOME}/.tfenv/versions/${TERRAFORM_VERSION} ${HOME}/.jenv/bin/jenv rust
 
 # Brew
 brew:
@@ -178,11 +205,8 @@ bundle: brew ${DOTFILES}/brew/.Brewfile
 	-brew bundle --file ${DOTFILES}/brew/.Brewfile
 
 # Misc
-${HOME}/.pyenv/shims/wal: ${HOME}/.pyenv
-	${HOME}/.pyenv/bin/pyenv install -s ${PYTHON_VERSION} && \
-		${HOME}/.pyenv/bin/pyenv global ${PYTHON_VERSION} && \
-		${HOME}/.pyenv/bin/pyenv rehash && \
-		pip3 install --user pywal
+${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
+	pip3 install --user pywal
 
 vscode-extentions:
 	-cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
