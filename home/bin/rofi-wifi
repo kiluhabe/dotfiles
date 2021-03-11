@@ -9,7 +9,7 @@ select='Menu'
 disable='Disable'
 restart='Restart'
 
-conn=$(echo -e "$select\n$enable\n$disable\n$restart"| $menu "  Wi-Fi" )
+conn=$(echo -e "$select\n$enable\n$disable\n$restart"| $menu "" )
 
 if [[ $? -eq 1 ]]; then
     exit 1

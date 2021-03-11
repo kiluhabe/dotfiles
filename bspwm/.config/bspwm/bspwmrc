@@ -19,3 +19,4 @@ bspc config gapless_monocle      true
 (sleep 1s && outer-display-only) &
 (sleep 1s && fcitx-autostart) &
 (sleep 1s && xss-lock -- xscreensaver-command -lock) &
+(sleep 1s && clipcatd) &

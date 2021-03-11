@@ -13,6 +13,10 @@ super + b
 super + d
 	rofi -show
 
+# clipboard
+shift + alt + v
+        rofi-clip
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd

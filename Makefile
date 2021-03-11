@@ -96,6 +96,9 @@ ${HOME}/.config/rofi: ${CONFIG_DIR}
 ${HOME}/.config/sxhkd: ${CONFIG_DIR}
 	stow -v sxhkd
 
+${HOME}/.config/clipcat: ${CONFIG_DIR}
+	stow -v clipcat
+
 ${HOME}/.Xmodmap ${HOME}/.xinitrc:
 	stow -v x
 
@@ -116,7 +119,7 @@ ${HOME}/Library/Application\ Support/Code/User/settings.json:
 	stow -v vscode
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/bspwm ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/picom.conf ${HOME}/.config/polybar ${HOME}/.config/rofi ${HOME}/.config/sxhkd ${HOME}/.Xmodmap ${HOME}/.xinitrc /etc/X11/xorg.conf.d/20-touchpad.conf
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/bspwm ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/picom.conf ${HOME}/.config/polybar ${HOME}/.config/rofi ${HOME}/.config/sxhkd ${HOME}/.config/clipcat ${HOME}/.Xmodmap ${HOME}/.xinitrc /etc/X11/xorg.conf.d/20-touchpad.conf
 endif
 ifeq ($(shell uname -s), Darwin)
 dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json
