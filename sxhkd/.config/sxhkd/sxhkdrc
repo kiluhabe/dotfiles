@@ -4,7 +4,10 @@
 
 # terminal emulator
 super + t
-	alacritty
+	sh $HOME/.cache/wal/tabbed.sh alacritty --embed || alacritty
+
+super + r
+        tabbed alacritty -e
 
 super + b
         firefox
