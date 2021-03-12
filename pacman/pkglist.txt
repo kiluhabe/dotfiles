@@ -56,6 +56,7 @@ libinput-gestures
 libnotify
 libtool
 libxft
+light
 linux
 linux-firmware
 linux-headers
@@ -99,7 +100,6 @@ usbutils
 wget
 which
 wpa_supplicant
-xorg-xbacklight
 xorg-xinit
 xorg-xrandr
 xscreensaver

@@ -21,6 +21,18 @@ shift + alt + v
 super + Escape
 	pkill -USR1 -x sxhkd
 
+# control audio volume
+XF86Audio{Lower,Raise}Volume
+        amixer set Master 5%{-,+}
+
+# mute sound
+XF86AudioMute
+        amixer -D pulse set Master 1+ toggle
+
+# control brightness
+XF86MonBrightness{Up,Down}
+        light -{A,U} 5OA
+
 #
 # bspwm hotkeys
 #

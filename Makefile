@@ -28,7 +28,7 @@ confirm:
 
 # Users
 group:
-	sudo usermod -aG input,lp,docker ${USER}
+	sudo usermod -aG input,lp,docker,video ${USER}
 
 # Packages
 pacman: ${DOTFILES}
