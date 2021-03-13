@@ -212,7 +212,7 @@ vscode-extentions:
 	-cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
 
 
-misc: ${HOME}/.pyenv/shims/wal vscode-extentions
+misc: ${HOME}/.local/bin/wal vscode-extentions
 
 # Install
 ifeq ($(shell uname -s), Linux)
