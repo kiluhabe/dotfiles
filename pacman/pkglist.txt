@@ -88,7 +88,6 @@ sed
 stow
 sudo
 sxhkd
-tabbed
 tela-circle-icon-theme-git
 texinfo
 tmux
