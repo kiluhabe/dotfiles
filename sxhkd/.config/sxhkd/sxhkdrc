@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + t
-	sh $HOME/.cache/wal/tabbed.sh alacritty --embed || alacritty
+	alacritty
 
 super + r
         tabbed alacritty -e
