@@ -40,8 +40,8 @@ module-margin = 1
 
 [bar/one]
 inherit = bar/common
-width = 700
-modules-center = date ewmh
+width = 280
+modules-center = date
 top = true
 padding = 8
 offset-x = 16
@@ -63,6 +63,15 @@ padding = 8
 offset-x = 1664
 click-left = rofi-wifi
 click-right = rofi-bluetooth
+
+[bar/four]
+inherit = bar/common
+width = 400
+modules-center = ewmh
+top = true
+padding = 8
+offset-x = 1504
+offset-y = 1016
 
 [module/date]
 type = internal/date
