@@ -36,7 +36,6 @@ findutils
 firefox
 flex
 fontconfig
-fuse2
 fzf
 gawk
 gcc
@@ -46,7 +45,6 @@ git
 google-chrome
 google-cloud-sdk
 grep
-groff
 grub
 gzip
 imagemagick
@@ -77,7 +75,6 @@ openssh
 pacman
 patch
 pavucontrol
-pcmanfm
 picom
 pkgconf
 polybar
