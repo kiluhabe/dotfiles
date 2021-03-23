@@ -25,8 +25,6 @@ brew "emacs"
 brew "fff"
 # Command-line fuzzy finder written in Go
 brew "fzf"
-# Tools and libraries to manipulate images in many formats
-brew "imagemagick"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Run local Kubernetes cluster in Docker
