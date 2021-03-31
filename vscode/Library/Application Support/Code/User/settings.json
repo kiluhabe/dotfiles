@@ -32,5 +32,6 @@
         }
     ],
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "openapi.securityAuditToken": "CiDPmKX6A22+NKRqiINUcGB1vU0KeyR37yR7M1fsh3785RIY62BjvChYbomps1bzjmhXqtH9HluwDL90GnG0HjWR9LUuKPWi9dbgBh1FsMyNZijvBczfMfVTKS/fY1g0UE0FHn6nt0bBTSJ5QrzuyfjnPGdQGMQKdfATdN+iMTDhAKq66smKb7tzk0pdkUSp5y5Dsl9IHBcoe2ACXXacxOfpP2gCJrWVMPAHpqNDJw=="
 }
