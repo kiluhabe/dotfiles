@@ -185,7 +185,7 @@ ${HOME}/.cargo/bin/rustup:
 	curl https://sh.rustup.rs -sSf | sh -s -- -y
 
 rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
-	${HOME}/.cargo/bin/rustup update && \
+	-${HOME}/.cargo/bin/rustup update && \
 		${HOME}/.cargo/bin/rustup install nightly && \
 		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis && \
 		${HOME}/.cargo/bin/rustup toolchain add nightly && \
