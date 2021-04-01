@@ -58,6 +58,8 @@ brew "derailed/k9s/k9s"
 # Run GitHub Actions locally
 brew "nektos/tap/act"
 brew "docker-compose"
+brew "svn"
+brew "imagemagick"
 
 cask "clipy"
 cask "discord"
