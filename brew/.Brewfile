@@ -35,8 +35,6 @@ brew "kryptco/tap/kr"
 brew "kubectx"
 # Kubernetes controller and tool for one-way encrypted Secrets
 brew "kubeseal"
-# Open source relational database management system
-brew "mysql"
 # Open client for Cisco AnyConnect VPN
 brew "openconnect"
 # Password generator
