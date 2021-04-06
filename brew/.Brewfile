@@ -61,6 +61,7 @@ brew "docker-compose"
 brew "svn"
 brew "imagemagick"
 
+cask "boostnote"
 cask "clipy"
 cask "discord"
 cask "docker"
