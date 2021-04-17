@@ -32,5 +32,6 @@
         }
     ],
     "javascript.updateImportsOnFileMove.enabled": "always",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "openapi.securityAuditToken": "<REDACTED>"
 }
