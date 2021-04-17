@@ -35,8 +35,6 @@ brew "kryptco/tap/kr"
 brew "kubectx"
 # Kubernetes controller and tool for one-way encrypted Secrets
 brew "kubeseal"
-# Open source relational database management system
-brew "mysql"
 # Open client for Cisco AnyConnect VPN
 brew "openconnect"
 # Password generator
@@ -58,6 +56,8 @@ brew "derailed/k9s/k9s"
 # Run GitHub Actions locally
 brew "nektos/tap/act"
 brew "docker-compose"
+brew "svn"
+brew "imagemagick"
 
 cask "clipy"
 cask "discord"
