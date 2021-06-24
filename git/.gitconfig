@@ -19,6 +19,7 @@
 [core]
   excludesfile = $HOME/.gitignore_global
   editor = emacs
+  ignorecase = false
 [credential "https://source.developers.google.com"]
   helper = gcloud.sh
 [gpg]
