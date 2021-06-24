@@ -25,6 +25,8 @@ brew "emacs"
 brew "fff"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# Syntax-highlighting pager for git and diff output
+brew "git-delta"
 # Lightweight and flexible command-line JSON processor
 brew "jq"
 # Run local Kubernetes cluster in Docker
