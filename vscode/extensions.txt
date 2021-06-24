@@ -1,10 +1,10 @@
 42Crunch.vscode-openapi
-Arjun.swagger-viewer
 be5invis.toml
 firsttris.vscode-jest-runner
 formulahendry.code-runner
 fwcd.kotlin
 GabrielBB.vscode-lombok
+golang.go
 httpsterio.henna
 jakebathman.mysql-syntax
 juhahinkula.thymeleaf
@@ -13,6 +13,7 @@ mathiasfrohlich.Kotlin
 MaxfieldWalker.vscode-color-theme-spirited-away
 ms-azuretools.vscode-docker
 ms-python.python
+ms-python.vscode-pylance
 ms-toolsai.jupyter
 naco-siren.gradle-language
 octref.vetur
@@ -22,6 +23,7 @@ Pivotal.vscode-concourse
 Pivotal.vscode-manifest-yaml
 Pivotal.vscode-spring-boot
 redhat.java
+redhat.vscode-commons
 redhat.vscode-yaml
 rust-lang.rust
 shengchen.vscode-checkstyle

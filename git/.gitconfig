@@ -20,13 +20,27 @@
   excludesfile = $HOME/.gitignore_global
   editor = emacs
 [credential "https://source.developers.google.com"]
-	helper = gcloud.sh
+  helper = gcloud.sh
 [gpg]
-	program = /usr/local/bin/krgpg
+  program = /usr/local/bin/krgpg
 [filter "lfs"]
-	required = true
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
 [init]
-	defaultBranch = main
+  defaultBranch = main
+[pager]
+  diff = delta
+  log = delta
+  reflog = delta
+  show = delta
+[delta]
+  plus-style = "syntax #012800"
+  minus-style = "syntax #340001"
+  syntax-theme = Monokai Extended
+  navigate = true
+  line-numbers = true
+  side-by-side = true
+[interactive]
+  diffFilter = delta --color-only
