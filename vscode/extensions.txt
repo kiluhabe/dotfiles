@@ -15,6 +15,7 @@ ms-azuretools.vscode-docker
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
+ms-vscode-remote.remote-containers
 naco-siren.gradle-language
 octref.vetur
 panicbit.cargo
