@@ -42,6 +42,7 @@ gcc
 gettext
 gimp
 git
+git-delta
 google-chrome
 google-cloud-sdk
 grep
