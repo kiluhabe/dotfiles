@@ -29,6 +29,7 @@
     flycheck-rust
     go-eldoc
     go-mode
+    graphql-mode
     haskell-mode
     ivy
     js2-mode
