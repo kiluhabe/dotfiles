@@ -169,3 +169,8 @@
 ;; Slim
 (require 'slim-mode)
 (add-to-list 'auto-mode-alist '("\\.slim\\'" . slim-mode))
+
+;; GraphQL
+(require 'graphql-mode)
+(add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode))
+(add-to-list 'auto-mode-alist '("\\.gql\\'" . graphql-mode))
