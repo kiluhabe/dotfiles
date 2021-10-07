@@ -84,6 +84,7 @@ pulseaudio
 rofi
 rsync
 sed
+spotify
 stow
 sudo
 sxhkd
