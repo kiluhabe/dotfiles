@@ -134,9 +134,9 @@ format-muted = <label-muted>
 label-volume =  %percentage%%
 label-muted = x
 
-[module/wired-network]
-type = internal/network
-interface = eth1
+; [module/wired-network]
+; type = internal/network
+; interface = eth1
 
 [module/wireless-network]
 type = internal/network

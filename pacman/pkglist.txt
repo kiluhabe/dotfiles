@@ -48,6 +48,8 @@ google-cloud-sdk
 grep
 grub
 gzip
+jack2
+jack2-dbus
 imagemagick
 iw
 kr-bin
@@ -81,6 +83,7 @@ picom
 pkgconf
 polybar
 pulseaudio
+qjackctl
 rofi
 rsync
 sed
@@ -100,6 +103,7 @@ usbutils
 wget
 which
 wpa_supplicant
+xfsprogs
 xorg-xinit
 xorg-xrandr
 xscreensaver
