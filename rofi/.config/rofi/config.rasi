@@ -1,4 +1,4 @@
 configuration {
 	sidebar-mode: false;
-	theme: "~/.cache/wal/colors-rofi-light.rasi";
 }
+@theme "~/.cache/wal/colors-rofi-light.rasi"
