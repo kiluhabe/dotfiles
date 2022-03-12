@@ -54,6 +54,7 @@ imagemagick
 iw
 kr-bin
 libinput-gestures
+libnvidia-container-tools
 libnotify
 libtool
 libxft
@@ -74,6 +75,8 @@ noto-fonts-cjk
 noto-fonts-emoji
 noto-fonts-extra
 nvidia
+nvidia-container-toolkit
+nvidia-container-runtime
 openssh
 pacman
 pacman-contrib
