@@ -63,6 +63,7 @@ linux
 linux-firmware
 linux-headers
 m4
+maim
 make
 mkinitcpio
 mtpfs
