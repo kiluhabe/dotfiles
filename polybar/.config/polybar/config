@@ -78,7 +78,7 @@ type = internal/date
 interval = 1.0
 date = "%a, %d %B"
 time = %H:%M
-label =  %date% | %time%
+label = %date% | %time%
 
 [module/ewmh]
 type = internal/xworkspaces
@@ -115,14 +115,10 @@ full-at = 100
 battery = BAT0
 adapter = AC0
 poll-interval = 2
-format-charging = <ramp-capacity><label-charging>
-format-discharging = <ramp-capacity>
-label-charging = 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
+format-charging = <label-charging>
+format-discharging = <label-discharging>
+label-charging = %percentage%%
+label-discharging = %percentage%%
 
 [module/audio]
 type = internal/pulseaudio
@@ -131,12 +127,12 @@ use-ui-max = false
 interval = 5
 format-volume = <label-volume>
 format-muted = <label-muted>
-label-volume =  %percentage%%
-label-muted = x
+label-volume = Vol %percentage%%
+label-muted = Muted
 
-; [module/wired-network]
-; type = internal/network
-; interface = eth1
+[module/wired-network]
+type = internal/network
+interface = enp0s20f0u1u3
 
 [module/wireless-network]
 type = internal/network
@@ -144,8 +140,8 @@ interface = wlo1
 interval = 3.0
 format-connected = <label-connected>
 format-disconnected = <label-disconnected>
-label-connected =  %essid%
-label-disconnected = x
+label-connected = %essid%
+label-disconnected = NoFi
 
 [module/bluetooth]
 type = custom/script
