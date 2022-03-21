@@ -14,7 +14,7 @@ super + b
 
 # program launcher
 super + d
-	rofi -config $HOME/.cache/wal/colors-rofi-drun-window-light.rasi -show drun
+	rofi -config $HOME/.cache/wal/colors-rofi-launcher-light.rasi -show drun
 
 # clipboard
 shift + alt + v
