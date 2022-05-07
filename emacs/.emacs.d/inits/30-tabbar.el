@@ -11,7 +11,8 @@
                  (cons "" nil))))
 
 (custom-set-variables
-'(tabbar-separator (quote (1))))
+ '(tabbar-separator (quote (1))))
+
 
 
 ;; trim overflow tabs
