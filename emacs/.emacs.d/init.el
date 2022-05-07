@@ -3,8 +3,6 @@
 ;; installed packages.  Don't delete this line.  If you don't want it,
 ;; just comment it out by adding a semicolon to the start of the line.
 ;; You may delete these explanatory comments.
-(package-initialize)
-
 (let ((default-directory (expand-file-name "~/.emacs.d/site-lisp")))
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
@@ -16,7 +14,7 @@
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (setq custom-theme-directory "~/.emacs.d/themes")
-(load-theme 'super-cool t)
+(load-theme 'twilight t)
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
