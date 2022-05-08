@@ -32,5 +32,6 @@
     ],
     "javascript.updateImportsOnFileMove.enabled": "always",
     "editor.tabSize": 2,
-    "go.toolsManagement.autoUpdate": true
+    "go.toolsManagement.autoUpdate": true,
+    "redhat.telemetry.enabled": false
 }
