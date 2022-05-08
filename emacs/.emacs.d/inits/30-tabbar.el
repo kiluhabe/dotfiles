@@ -11,7 +11,8 @@
                  (cons "" nil))))
 
 (custom-set-variables
-'(tabbar-separator (quote (1))))
+ '(tabbar-separator (quote (1))))
+
 
 
 ;; trim overflow tabs
@@ -37,20 +38,20 @@ That is, a string used to represent it on the tab bar."
 (set-face-attribute
  'tabbar-default nil
  :background "black"
- :foreground "white"
+ :foreground "#f8f8f8"
  :box nil
  :underline nil
  )
 (set-face-attribute
  'tabbar-selected nil
- :background "blue"
- :foreground "black"
+ :background "#141414"
+ :foreground "#f8f8f8"
  :box nil
  )
 (set-face-attribute
  'tabbar-modified nil
- :background "black"
- :foreground "blue"
+ :background "#141414"
+ :foreground "#7587A6"
  :box nil
  )
 
