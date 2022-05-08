@@ -1,0 +1,118 @@
+configuration {{
+    modes: [window, drun];
+    sidebar-mode: false;
+    show-icons: true;
+    icon-theme: "Tela circle dark";
+    window-thumbnail: true;
+    case-sensitive: false;
+    cycle: true;
+    sidebar-mode: false;
+    auto-select: false;
+    matching: "fuzzy";
+    threads: 0;
+    window-format: "[{{w}}] | {{c}} | {{t}}";
+    click-to-exit: true;
+    show-match: true;
+    max-history-size: 25;
+    scroll-method: 1;
+    display-drun: "גּ";
+    display-window: "";
+    drun-display-format: "{{name}}";
+    kb-primary-paste: "Control+V";
+    kb-secondary-paste: "Control+v";
+    kb-move-front: "Control+a";
+    kb-move-end: "Control+e";
+    kb-remove-word-back: "Control+BackSpace";
+    kb-remove-to-eol: "Control+k";
+    kb-remove-to-sol: "Control+K";
+}}
+
+* {{
+    background-color: transparent;
+    spacing:          8;
+}}
+
+window {{
+    font: "Roboto Mono Nerd Font 12";
+    background-color: {background};
+    padding: 32px;
+    width: 16%;
+    height: 80%;
+    location: southwest;
+    x-offset: 16px;
+    y-offset: -16px;
+    border-radius: 8px;
+    border: 0px;
+}}
+
+prompt {{
+    padding: 4px 0px 4px 8px;
+    text-color: transparent;
+}}
+
+textbox-prompt-colon {{
+    str: "";
+}}
+
+entry {{
+    margin: 2px 0 0 0;
+    placeholder: "";
+}}
+
+inputbar {{
+    background-color: {foreground}80;
+    color: {background};
+    border-radius: 50px;
+    padding: 4px 4px 0px;
+    children: [ prompt,textbox-prompt-colon,entry ];
+}}
+
+listview {{
+    background-color: {background};
+    padding: 4px 0 4px;
+    dynamic: true;
+    lines: 3;
+    scrollbar: false;
+    border: 0px;
+}}
+
+element {{
+    padding: 8px 8px 4px;
+    margin: 4px 0 4px;
+}}
+
+element normal normal {{
+    background-color: {background};
+    color: {foreground};
+}}
+
+element normal active {{
+    background-color: {background};
+    color: {foreground};
+}}
+
+element alternate normal {{
+    background-color: {background};
+    color: {foreground};
+}}
+
+element selected {{
+   background-color: {color1}50;
+   border-radius: 50px;
+}}
+
+element selected active {{
+   background-color: {color1}50;
+   border-radius: 50px;
+}}
+
+element-icon {{
+   size: 24px;
+   margin: 0 8px 0 0;
+   padding: 0 0 0 8px;
+}}
+
+button {{
+    spacing: 0;
+    color: {foreground};
+}}

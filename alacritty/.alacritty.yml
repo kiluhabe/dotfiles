@@ -11,6 +11,7 @@ window:
     instance: Alacritty
     general: Alacritty
   gtk_theme_variant: None
+  opacity: 1.0
 
 scrolling:
   history: 10000
@@ -44,8 +45,6 @@ bell:
   animation: Linear
   duration: 1
   command: None
-
-background_opacity: 1.0
 
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
