@@ -1,3 +1,0 @@
-#!/usr/bin/env bash
-
-rofi -config $HOME/.cache/wal/colors-rofi-drun-window-light.rasi -show drun
