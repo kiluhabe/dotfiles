@@ -2,7 +2,6 @@ acpi
 alacritty
 alsa-plugins
 alsa-utils
-arandr
 autoconf
 automake
 base
