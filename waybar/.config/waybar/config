@@ -1,0 +1,39 @@
+[{
+  "layer": "bottom",
+  "position": "top",
+  "modules-left": ["clock"],
+  "modules-right": ["backlight", "network", "battery", "river/tags"],
+  "name": "bar1",
+  "height": 36,
+  "gtk-layer-shell": false,
+  "clock": {
+    "format":  "{:%a, %d %B %H:%M}",
+    "tooltip": "false",
+    "locale": "en_US.UTF-8"
+  },
+  "backlight": {
+    "device": "intel_backlight",
+    "format": "{icon} {percent}%",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "battery": {
+     "bat": "BAT0",
+     "format": " {icon}  {capacity}% ",
+     "format-icons": ["", "", "", "", ""]
+  },
+  "network": {
+    "interface": "wlo1",
+    "format": "{ifname}",
+    "format-wifi": "  {essid} ({signalStrength}%) ",
+    "format-ethernet": "  {ipaddr}/{cidr} ",
+    "format-disconnected": "", //An empty format will hide the module.
+    "tooltip-format": "  {ifname} via {gwaddr} ",
+    "tooltip-format-wifi": "  {essid} ({signalStrength}%) ",
+    "tooltip-format-ethernet": "  {ifname} ",
+    "tooltip-format-disconnected": "Disconnected",
+    "max-length": 50
+  },
+  "river/tags": {
+    "tag-labels": ["", "", "", "", "", "", "", "", ""]
+  }
+}]

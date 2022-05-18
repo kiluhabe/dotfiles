@@ -1,0 +1,29 @@
+* {{
+    font-family: Roboto Mono Nerd Font;
+    font-size: 14px;
+}}
+
+window#waybar {{
+    border: none;
+    background: transparent;
+}}
+
+.modules-right, .modules-left {{
+    border-radius: 8px;
+    margin: 16px 16px;
+    padding: 4px 24px;
+    background: {background};
+    color: {foreground};
+}}
+
+#clock, #backlight, #network, #battery, #tags {{
+    padding: 0px 8px;
+}}
+
+#tags button {{
+    padding: 8px;
+}}
+
+#tags button.focused {{
+   color: {foreground};
+}}
