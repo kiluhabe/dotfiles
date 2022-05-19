@@ -84,32 +84,14 @@ ${HOME}/.config/wal: ${CONFIG_DIR}
 	stow -v wal
 
 ## Linux
-${HOME}/.config/bspwm: ${CONFIG_DIR}
-	stow -v bspwm
-
 ${HOME}/.config/libinput-gestures.conf: ${CONFIG_DIR}
 	stow -v libinput-gestures
 
-${HOME}/.config/picom.conf: ${CONFIG_DIR}
-	stow -v picom
+${HOME}/.config/river/init: ${CONFIG_DIR}
+	stow -v river
 
-${HOME}/.config/polybar: ${CONFIG_DIR}
-	stow -v polybar
-
-${HOME}/.config/sxhkd: ${CONFIG_DIR}
-	stow -v sxhkd
-
-${HOME}/.config/clipcat: ${CONFIG_DIR}
-	stow -v clipcat
-
-${HOME}/.Xmodmap ${HOME}/.xinitrc:
-	stow -v x
-
-/etc/X11/xorg.conf.d/20-touchpad.conf:
-	sudo stow -v libinput -t /
-
-/etc/X11/xorg.conf.d/20-backlight.conf:
-	sudo stow -v backlight -t /
+${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css: ${CONFIG_DIR}
+	stow -v waybar
 
 ## Darwin
 ${HOME}/.Brewfile:
@@ -127,7 +109,7 @@ ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 		stow -v iterm2
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/bspwm ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/picom.conf ${HOME}/.config/polybar ${HOME}/.config/sxhkd ${HOME}/.config/clipcat ${HOME}/.Xmodmap ${HOME}/.xinitrc /etc/X11/xorg.conf.d/20-touchpad.conf
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
 endif
 ifeq ($(shell uname -s), Darwin)
 dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
