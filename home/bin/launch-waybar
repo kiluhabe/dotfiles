@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+main() {
+    wal -R && waybar --style $HOME/.cache/wal/waybar.css
+}
+
+main
