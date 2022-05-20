@@ -129,9 +129,9 @@ do
     riverctl map $mode None XF86Eject spawn 'eject -T'
 
     # Control pulse audio volume with pamixer (https://github.com/cdemoulins/pamixer)
-    riverctl map $mode None XF86AudioRaiseVolume  spawn 'pamixer -i 5'
-    riverctl map $mode None XF86AudioLowerVolume  spawn 'pamixer -d 5'
-    riverctl map $mode None XF86AudioMute         spawn 'pamixer --toggle-mute'
+    riverctl map $mode None XF86AudioRaiseVolume  spawn 'amixer set Master 5%+'
+    riverctl map $mode None XF86AudioLowerVolume  spawn 'amixer set Master 5%-'
+    riverctl map $mode None XF86AudioMute         spawn 'amixer -D pulse set Master 1+ toggle'
 
     # Control MPRIS aware media players with playerctl (https://github.com/altdesktop/playerctl)
     riverctl map $mode None XF86AudioMedia spawn 'playerctl play-pause'
@@ -164,15 +164,13 @@ riverctl default-layout rivertile
 
 # Scripts
 (sleep 1s && fcitx-autostart) &
-# TODO: Wallpaper and Colorscheme
 (sleep 1s && wal -R) &
-# TODO: Compositer
 (sleep 1s && libinput-gestures) &
 (sleep 1s && dunst -conf $HOME/.cache/wal/dunstrc) &
 # TODO: Display Control
-# TODO: Screensaver
+(sleep 1s && swayidle -w timeout 300 'swaylock -i $(wallpaper-path)' before-sleep 'swaylock -i $(wallpaper-path)') &
 (sleep 1s && clipcatd) &
-(sleep 1s && setup-wallpaper) &
+(sleep 1s && swaybg --image $(wallpaper-path) -m fill) &
 (sleep 1s && launch-waybar) &
 
 # rivertile
