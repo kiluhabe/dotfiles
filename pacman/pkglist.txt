@@ -88,6 +88,9 @@ sed
 spotify
 stow
 sudo
+swaybg
+swayidle
+swaylock
 tela-circle-icon-theme-git
 texinfo
 tmux

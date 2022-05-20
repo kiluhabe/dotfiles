@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-main() {
-    swaybg --image $(cat $HOME/.cache/wal/wal) -m fill
-}
-
-main

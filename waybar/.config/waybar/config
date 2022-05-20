@@ -2,7 +2,7 @@
   "layer": "bottom",
   "position": "top",
   "modules-left": ["clock"],
-  "modules-right": ["backlight", "network", "battery", "river/tags"],
+  "modules-right": ["pulseaudio","backlight", "network", "battery", "river/tags"],
   "name": "bar1",
   "height": 36,
   "gtk-layer-shell": false,
@@ -10,6 +10,22 @@
     "format":  "{:%a, %d %B %H:%M}",
     "tooltip": "false",
     "locale": "en_US.UTF-8"
+  },
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "format-bluetooth": "{icon} {volume}%",
+    "format-muted": "",
+    "format-icons": {
+        "headphone": "",
+        "hands-free": "",
+        "headset": "",
+        "phone": "",
+        "portable": "",
+        "car": "",
+        "default": ["", ""]
+    },
+    "scroll-step": 1,
+    "on-click": "pavucontrol"
   },
   "backlight": {
     "device": "intel_backlight",

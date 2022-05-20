@@ -15,8 +15,12 @@ window#waybar {
     background: white;
 }
 
-#clock, #backlight, #network, #battery, #tags {
+#clock, #backlight, #network, #battery {
     padding: 0px 8px;
+}
+
+#pulseaudio {
+    padding: 0px 16px 0px 8px;
 }
 
 #tags button {
