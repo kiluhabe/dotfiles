@@ -105,5 +105,5 @@ wget
 which
 wpa_supplicant
 xfsprogs
-yofi
+yofi-bin
 zoom
