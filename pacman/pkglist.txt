@@ -9,7 +9,7 @@ bash-completion
 binutils
 bison
 bitwig-studio
-blueman
+blueberry
 bluez
 bluez-utils
 clang

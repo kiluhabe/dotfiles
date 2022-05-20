@@ -13,7 +13,7 @@ done
 
 riverctl map normal Super T spawn alacritty
 riverctl map normal Super B spawn firefox
-riverctl map normal Super D spawn yofi
+riverctl map normal Super D spawn 'yofi --config-file /home/kiluhabe/.cache/wal/yofi-launcher.toml'
 
 # Super+F to toggle fullscreen
 riverctl map normal Super A toggle-fullscreen
