@@ -20,10 +20,7 @@ jobs:
           TEST_UID=1000
           TEST_USER=tester
           TEST_GROUP=wheel
-          useradd -m -s $SHELL -u $TEST_UID -g $TEST_GROUP $TEST_USER
-          echo "%$TEST_GROUP ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
-          chmod 0440 /etc/sudoers
-          chmod g+w /etc/passwd
+          useradd -m -s $SHELL -u $TEST_UID -g wheel $TEST_USER
       - name: Run make
         run: su tester && make SKIP_CONFIRM=true
   # macos:
