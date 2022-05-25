@@ -13,8 +13,8 @@ jobs:
     steps:
       - name: Checkout codes
         uses: actions/checkout@v2
-      - name: Install make
-        run: pacman -Syy && pacman -S --noconfirm make
+      - name: Install make and sudo
+        run: pacman -Syy && pacman -S --noconfirm make sudo
       - name: Run make
         run: make SKIP_CONFIRM=true
   # macos:
