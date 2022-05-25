@@ -17,9 +17,10 @@ jobs:
         run: pacman -Syy && pacman -S --noconfirm make sudo
       - name: Create test user
         run: |
-          useradd -m -s $SHELL -N -u 1000 tester && \
-          echo "tester ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
-          chmod 0440 /etc/sudoers && \
+          useradd -m -s $SHELL -N -u 1000 tester
+          adduser tester sudo
+          echo "%sudo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
+          chmod 0440 /etc/sudoers
           chmod g+w /etc/passwd
       - name: Run make
         run: su tester && make SKIP_CONFIRM=true
