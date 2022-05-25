@@ -17,8 +17,7 @@ jobs:
         run: pacman -Syy && pacman -S --noconfirm make sudo
       - name: Create test user
         run: |
-          useradd -m -s $SHELL -N -u 1000 tester
-          adduser tester sudo
+          useradd -m -s $SHELL -u 1000 -g sudo tester
           echo "%sudo ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers
           chmod 0440 /etc/sudoers
           chmod g+w /etc/passwd
