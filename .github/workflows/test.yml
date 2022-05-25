@@ -15,8 +15,14 @@ jobs:
         uses: actions/checkout@v2
       - name: Install make and sudo
         run: pacman -Syy && pacman -S --noconfirm make sudo
+      - name: Create test user
+        run: |
+          useradd -m -s $SHELL -N -u 1000 tester && \
+          echo "tester ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers && \
+          chmod 0440 /etc/sudoers && \
+          chmod g+w /etc/passwd
       - name: Run make
-        run: make SKIP_CONFIRM=true
+        run: su tester && make SKIP_CONFIRM=true
   # macos:
   #   name: macOS
   #   runs-on: macos-latest
