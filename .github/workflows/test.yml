@@ -22,7 +22,7 @@ jobs:
           TEST_GROUP=wheel
           useradd -m -s $SHELL -u $TEST_UID -g wheel $TEST_USER
       - name: Run make
-        run: su tester && make SKIP_CONFIRM=true
+        run: su tester -c 'make SKIP_CONFIRM=true'
   # macos:
   #   name: macOS
   #   runs-on: macos-latest
