@@ -59,51 +59,51 @@ ${CONFIG_DIR}:
 	mkdir -p ${CONFIG_DIR}
 
 ${HOME}/.alacritty.yml:
-	stow -v -t $HOME alacritty
+	stow -v -t ${HOME} alacritty
 
 ${HOME}/.emacss.d:
-	stow -v -t $HOME emacs
+	stow -v -t ${HOME} emacs
 
 ${HOME}/.gitconfig ${HOME}/.gitignore_global:
-	stow -v -t $HOME git
+	stow -v -t ${HOME} git
 
 ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
 	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile && \
-		stow -v -t $HOME home
+		stow -v -t ${HOME} home
 
 ${HOME}/.config/neofetch: ${CONFIG_DIR}
-	stow -v -t $HOME neofetch
+	stow -v -t ${HOME} neofetch
 
 ${HOME}/.tmux.conf:
-	stow -v -t $HOME tmux
+	stow -v -t ${HOME} tmux
 
 ${HOME}/.config/wal: ${CONFIG_DIR}
-	stow -v -t $HOME wal
+	stow -v -t ${HOME} wal
 
 ## Linux
 ${HOME}/.config/libinput-gestures.conf: ${CONFIG_DIR}
-	stow -v -t $HOME libinput-gestures
+	stow -v -t ${HOME} libinput-gestures
 
 ${HOME}/.config/river/init: ${CONFIG_DIR}
-	stow -v -t $HOME river
+	stow -v -t ${HOME} river
 
 ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css: ${CONFIG_DIR}
-	stow -v -t $HOME waybar
+	stow -v -t ${HOME} waybar
 
 ## Darwin
 ${HOME}/.Brewfile:
-	stow -v -t $HOME brew
+	stow -v -t ${HOME} brew
 
 ${HOME}/com.googlecode.iterm2.plist:
-	stow -v -t $HOME iterm2
+	stow -v -t ${HOME} iterm2
 
 ${HOME}/Library/Application\ Support/Code/User/settings.json:
 	rm -f ${HOME}/Library/Application\ Support/Code/User/settings.json && \
-		stow -v -t $HOME vscode
+		stow -v -t ${HOME} vscode
 
 ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 	rm -f ${HOME}/Library/Preferences/com.googlecode.iterm2.plist && \
-		stow -v -t $HOME iterm2
+		stow -v -t ${HOME} iterm2
 
 ifeq ($(shell uname -s), Linux)
 dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
