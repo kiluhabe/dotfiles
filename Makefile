@@ -163,7 +163,7 @@ ${HOME}/.cargo/bin/rustup:
 rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
 	-${HOME}/.cargo/bin/rustup update && \
 		${HOME}/.cargo/bin/rustup install nightly && \
-		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis && \
+		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview && \
 		${HOME}/.cargo/bin/rustup toolchain add nightly && \
 		${HOME}/.cargo/bin/cargo +nightly install racer && \
 		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete
