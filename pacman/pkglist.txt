@@ -43,6 +43,7 @@ git-delta
 google-chrome
 google-cloud-sdk
 grep
+groff
 grub
 gzip
 jack2
