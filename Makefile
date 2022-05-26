@@ -182,7 +182,7 @@ bundle: brew ${DOTFILES}/brew/.Brewfile
 
 # Misc
 ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
-	pip3 install --user pywal
+	pip install --user pywal
 
 vscode-extentions:
 	-cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
