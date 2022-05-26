@@ -15,6 +15,7 @@ bluez-utils
 clang
 dhcpcd
 dialog
+docker
 docker-compose
 dosfstools
 dpkg

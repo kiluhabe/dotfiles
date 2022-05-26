@@ -50,9 +50,6 @@ ${TMP_DIR}/${AUR_HELPER}: ${TMP_DIR}
 
 aur: /usr/sbin/${AUR_HELPER}
 	cd ${DOTFILES} && \
-		# sudo pacman-key --init && \
-		# sudo pacman-key --populate archlinux && \
-		# sudo pacman-key --refresh-keys  && \
 		${AUR_HELPER} -S --skipreview --noprovides --removemake --cleanafter --noconfirm --needed ${AUR_PACKAGES} && \
 		${AUR_HELPER} -c --noconfirm
 
