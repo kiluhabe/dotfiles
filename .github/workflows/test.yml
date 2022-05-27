@@ -1,11 +1,11 @@
 name: Test
 
-on: push
-  # schedule:
-  #   - cron:  '0 0 * * SAT'
+on:
+  schedule:
+    - cron:  '0 0 * * SAT'
 
 jobs:
-  arch:
+/home/kiluhabe/.pyenv/shims/pip  arch:
     name: Arch Linux
     runs-on: ubuntu-latest
     container:
@@ -28,15 +28,15 @@ jobs:
           chmod g+w /etc/passwd
       - name: Run make
         run: su tester -c 'make SKIP_CONFIRM=true'
-  # macos:
-  #   name: macOS
-  #   runs-on: macos-latest
-  #   steps:
-  #     - name: Checkout codes
-  #       uses: actions/checkout@v2
-  #     - name: Select Xcode version
-  #       run: sudo xcode-select -s '/Applications/Xcode_12.4.app/Contents/Developer'
-  #     - name: Clean
-  #       run: sudo rm /usr/local/bin/aws*
-  #     - name: Run make
-  #       run: make SKIP_CONFIRM=true
+  macos:
+    name: macOS
+    runs-on: macos-latest
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_12.4.app/Contents/Developer'
+      - name: Clean
+        run: sudo rm /usr/local/bin/aws*
+      - name: Run make
+        run: make SKIP_CONFIRM=true
