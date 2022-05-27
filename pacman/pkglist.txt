@@ -9,12 +9,13 @@ bash-completion
 binutils
 bison
 bitwig-studio
-blueman
+blueberry
 bluez
 bluez-utils
 clang
 dhcpcd
 dialog
+docker
 docker-compose
 dosfstools
 dpkg
@@ -43,6 +44,7 @@ git-delta
 google-chrome
 google-cloud-sdk
 grep
+groff
 grub
 gzip
 jack2
@@ -88,6 +90,9 @@ sed
 spotify
 stow
 sudo
+swaybg
+swayidle
+swaylock
 tela-circle-icon-theme-git
 texinfo
 tmux
@@ -102,5 +107,5 @@ wget
 which
 wpa_supplicant
 xfsprogs
-yofi
+yofi-bin
 zoom

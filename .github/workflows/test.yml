@@ -5,16 +5,29 @@ on:
     - cron:  '0 0 * * SAT'
 
 jobs:
-  # arch:
-  #   name: Arch
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Checkout codes
-  #       uses: actions/checkout@v2
-  #     - name: Clean
-  #       run: docker system prune --force
-  #     - name: Run make
-  #       run: docker-compose run --rm arch make SKIP_CONFIRM=true
+  arch:
+    name: Arch Linux
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+    steps:
+      - name: Checkout codes
+        uses: actions/checkout@v2
+      - name: Install make and sudo
+        run: pacman -Syy && pacman -S --noconfirm make sudo
+      - name: Create test user
+        run: |
+          TEST_UID=1000
+          TEST_USER=tester
+          TEST_GID=100
+          TEST_GROUP=testers
+          groupadd -g $TEST_GID $TEST_GROUP
+          useradd -m -s $SHELL -u $TEST_UID -g $TEST_GROUP $TEST_USER
+          echo "%$TEST_GROUP ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
+          chmod 0440 /etc/sudoers
+          chmod g+w /etc/passwd
+      - name: Run make
+        run: su tester -c 'make SKIP_CONFIRM=true'
   macos:
     name: macOS
     runs-on: macos-latest

@@ -50,9 +50,6 @@ ${TMP_DIR}/${AUR_HELPER}: ${TMP_DIR}
 
 aur: /usr/sbin/${AUR_HELPER}
 	cd ${DOTFILES} && \
-		sudo pacman-key --init && \
-		sudo pacman-key --populate archlinux && \
-		sudo pacman-key --refresh-keys  && \
 		${AUR_HELPER} -S --skipreview --noprovides --removemake --cleanafter --noconfirm --needed ${AUR_PACKAGES} && \
 		${AUR_HELPER} -c --noconfirm
 
@@ -62,57 +59,54 @@ ${CONFIG_DIR}:
 	mkdir -p ${CONFIG_DIR}
 
 ${HOME}/.alacritty.yml:
-	stow -v alacritty
+	stow -v -t ${HOME} alacritty
 
 ${HOME}/.emacss.d:
-	stow -v emacs
+	stow -v -t ${HOME} emacs
 
 ${HOME}/.gitconfig ${HOME}/.gitignore_global:
-	stow -v git
+	stow -v -t ${HOME} git
 
 ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
 	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile && \
-		stow -v home
-
-${HOME}/.config/neofetch: ${CONFIG_DIR}
-	stow -v neofetch
+		stow -v -t ${HOME} home
 
 ${HOME}/.tmux.conf:
-	stow -v tmux
+	stow -v -t ${HOME} tmux
 
 ${HOME}/.config/wal: ${CONFIG_DIR}
-	stow -v wal
+	stow -v -t ${HOME} wal
 
 ## Linux
 ${HOME}/.config/libinput-gestures.conf: ${CONFIG_DIR}
-	stow -v libinput-gestures
+	stow -v -t ${HOME} libinput-gestures
 
 ${HOME}/.config/river/init: ${CONFIG_DIR}
-	stow -v river
+	stow -v -t ${HOME} river
 
 ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css: ${CONFIG_DIR}
-	stow -v waybar
+	stow -v -t ${HOME} waybar
 
 ## Darwin
 ${HOME}/.Brewfile:
-	stow -v brew
+	stow -v -t ${HOME} brew
 
 ${HOME}/com.googlecode.iterm2.plist:
-	stow -v iterm2
+	stow -v -t ${HOME} iterm2
 
 ${HOME}/Library/Application\ Support/Code/User/settings.json:
 	rm -f ${HOME}/Library/Application\ Support/Code/User/settings.json && \
-		stow -v vscode
+		stow -v -t ${HOME} vscode
 
 ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 	rm -f ${HOME}/Library/Preferences/com.googlecode.iterm2.plist && \
-		stow -v iterm2
+		stow -v -t ${HOME} iterm2
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
 endif
 ifeq ($(shell uname -s), Darwin)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
 endif
 
 # Languages
@@ -165,9 +159,9 @@ ${HOME}/.cargo/bin/rustup:
 
 rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
 	-${HOME}/.cargo/bin/rustup update && \
-		${HOME}/.cargo/bin/rustup install nightly && \
-		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis && \
-		${HOME}/.cargo/bin/rustup toolchain add nightly && \
+		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview && \
+		${HOME}/.cargo/bin/rustup toolchain install nightly && \
+		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview --toolchain=nightly && \
 		${HOME}/.cargo/bin/cargo +nightly install racer && \
 		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete
 
@@ -185,7 +179,7 @@ bundle: brew ${DOTFILES}/brew/.Brewfile
 
 # Misc
 ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
-	pip3 install --user pywal
+	${HOME}/.pyenv/shims/pip install --user pywal
 
 vscode-extentions:
 	-cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
