@@ -5,7 +5,7 @@ on:
     - cron:  '0 0 * * SAT'
 
 jobs:
-/home/kiluhabe/.pyenv/shims/pip  arch:
+  arch:
     name: Arch Linux
     runs-on: ubuntu-latest
     container:
