@@ -71,9 +71,6 @@ ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
 	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile && \
 		stow -v -t ${HOME} home
 
-${HOME}/.config/neofetch: ${CONFIG_DIR}
-	stow -v -t ${HOME} neofetch
-
 ${HOME}/.tmux.conf:
 	stow -v -t ${HOME} tmux
 
@@ -106,10 +103,10 @@ ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 		stow -v -t ${HOME} iterm2
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
 endif
 ifeq ($(shell uname -s), Darwin)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.config/neofetch ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
 endif
 
 # Languages
@@ -162,9 +159,9 @@ ${HOME}/.cargo/bin/rustup:
 
 rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
 	-${HOME}/.cargo/bin/rustup update && \
-		${HOME}/.cargo/bin/rustup install nightly && \
 		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview && \
-		${HOME}/.cargo/bin/rustup toolchain add nightly && \
+		${HOME}/.cargo/bin/rustup toolchain install nightly && \
+		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview --toolchain=nightly && \
 		${HOME}/.cargo/bin/cargo +nightly install racer && \
 		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete
 
