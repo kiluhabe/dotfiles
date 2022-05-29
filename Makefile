@@ -17,7 +17,7 @@ TERRAFORM_VERSION = $(shell ${HOME}/.tfenv/bin/tfenv list-remote | grep -E "^[0-
 
 .DEFAULT_GOAL := install
 
-.PHONY: pacman ${AUR_HELPER} aur dotfiles group envs rust languages bundle vscode-extensions misc brew
+.PHONY: pacman ${AUR_HELPER} aur dotfiles group envs rust languages bundle vscode-extensions misc brew test
 
 confirm:
 	@if [ "${SKIP_CONFIRM}" != "true" ]; then \
@@ -155,15 +155,13 @@ ${HOME}/.jenv/bin/jenv:
 	git clone https://github.com/jenv/jenv.git ${HOME}/.jenv
 
 ${HOME}/.cargo/bin/rustup:
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
 
 rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
 	${HOME}/.cargo/bin/rustup update && \
 		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustfmt clippy && \
-		${HOME}/.cargo/bin/rustup toolchain install nightly && \
-		${HOME}/.cargo/bin/rustup component add rustc-dev --toolchain=nightly && \
-		${HOME}/.cargo/bin/cargo +nightly install racer && \
-		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete
+		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete && \
+		${HOME}/.cargo/bin/rustup toolchain install nightly
 
 languages: ${HOME}/.rbenv/versions/${RUBY_VERSION} ${HOME}/.pyenv/versions/${PYTHON_VERSION} ${HOME}/.nodenv/versions/${NODE_VERSION} ${HOME}/.goenv/versions/${GO_VERSION} ${HOME}/.tfenv/versions/${TERRAFORM_VERSION} ${HOME}/.jenv/bin/jenv rust
 
