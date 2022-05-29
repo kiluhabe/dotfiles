@@ -67,7 +67,7 @@ ${HOME}/.emacss.d:
 	stow -v -t ${HOME} emacs
 
 ${HOME}/.gitconfig ${HOME}/.gitignore_global:
-	rm ${HOME}/.gitconfig ${HOME}/.gitignore*
+	[ -f "${HOME}/.gitconfig" ] && [ -f "${HOME}/.gitignore_global" ] && rm ${HOME}/.gitconfig ${HOME}/.gitignore_globa || echo "skip cleer git config"
 	stow -v -t ${HOME} git
 
 ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
