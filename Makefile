@@ -15,6 +15,8 @@ NODE_VERSION = $(shell ${HOME}/.nodenv/bin/nodenv install -l | grep -E "^[0-9]+\
 GO_VERSION = $(shell ${HOME}/.goenv/bin/goenv install -l | grep -E "^  [0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
 TERRAFORM_VERSION = $(shell ${HOME}/.tfenv/bin/tfenv list-remote | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | head -n 1)
 
+VS_CODE_COMMAND = $(shell which code 2>/dev/null)
+
 .DEFAULT_GOAL := install
 
 .PHONY: pacman ${AUR_HELPER} aur dotfiles group envs rust languages bundle vscode-extensions misc brew test
@@ -65,6 +67,7 @@ ${HOME}/.emacss.d:
 	stow -v -t ${HOME} emacs
 
 ${HOME}/.gitconfig ${HOME}/.gitignore_global:
+	rm ${HOME}/.gitconfig ${HOME}/.gitignore*
 	stow -v -t ${HOME} git
 
 ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
@@ -180,7 +183,7 @@ ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
 	${HOME}/.pyenv/shims/pip install --user pywal
 
 vscode-extentions:
-	cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
+	cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 ${VS_CODE_COMMAND} --install-extension
 
 
 misc: ${HOME}/.local/bin/wal vscode-extentions
