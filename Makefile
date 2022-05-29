@@ -155,13 +155,13 @@ ${HOME}/.jenv/bin/jenv:
 	git clone https://github.com/jenv/jenv.git ${HOME}/.jenv
 
 ${HOME}/.cargo/bin/rustup:
-	curl https://sh.rustup.rs -sSf | sh -s -- -y
+	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
-	-${HOME}/.cargo/bin/rustup update && \
-		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview && \
+	${HOME}/.cargo/bin/rustup update && \
+		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustfmt clippy && \
 		${HOME}/.cargo/bin/rustup toolchain install nightly && \
-		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustc-dev llvm-tools-preview --toolchain=nightly && \
+		${HOME}/.cargo/bin/rustup component add rustc-dev --toolchain=nightly && \
 		${HOME}/.cargo/bin/cargo +nightly install racer && \
 		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete
 
@@ -175,14 +175,14 @@ ${DOTFILES}/brew/.Brewfile:
 	cat ${DOTFILES}/brew/.Brewfile
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
-	-brew bundle --file ${DOTFILES}/brew/.Brewfile
+	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
 # Misc
 ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
 	${HOME}/.pyenv/shims/pip install --user pywal
 
 vscode-extentions:
-	-cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
+	cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 code --install-extension
 
 
 misc: ${HOME}/.local/bin/wal vscode-extentions

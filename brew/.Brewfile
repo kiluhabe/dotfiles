@@ -9,7 +9,6 @@ tap "homebrew/cask-fonts"
 tap "homebrew/cask-versions"
 tap "homebrew/core"
 tap "kryptco/tap"
-tap "nektos/tap"
 
 # Get stuff done with container-native workflows for Kubernetes
 brew "argo"

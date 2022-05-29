@@ -1,8 +1,8 @@
 name: Test
 
-on:
-  schedule:
-    - cron:  '0 0 * * SAT'
+on: push
+  # schedule:
+  #   - cron:  '0 0 * * *'
 
 jobs:
   arch:
@@ -26,8 +26,10 @@ jobs:
           echo "%$TEST_GROUP ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
           chmod 0440 /etc/sudoers
           chmod g+w /etc/passwd
+      # - name: Run make
+      #   run: su tester -c 'make SKIP_CONFIRM=true'
       - name: Run make
-        run: su tester -c 'make SKIP_CONFIRM=true'
+        run: su tester -c 'make pacman rust'
   macos:
     name: macOS
     runs-on: macos-latest
