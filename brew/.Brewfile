@@ -55,7 +55,7 @@ brew "tree"
 # Kubernetes CLI To Manage Your Clusters In Style!
 brew "derailed/k9s/k9s"
 # Run GitHub Actions locally
-brew "nektos/tap/act"
+brew "act"
 brew "docker-compose"
 brew "svn"
 brew "imagemagick"
