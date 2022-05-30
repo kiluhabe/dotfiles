@@ -67,12 +67,12 @@ ${HOME}/.emacss.d:
 	stow -v -t ${HOME} emacs
 
 ${HOME}/.gitconfig ${HOME}/.gitignore_global:
-	[ -f "${HOME}/.gitconfig" ] && [ -f "${HOME}/.gitignore_global" ] && rm ${HOME}/.gitconfig ${HOME}/.gitignore_globa || echo "skip cleer git config"
+	rm -rf ${HOME}/.gitconfig ${HOME}/.gitignore_global 2> /dev/null
 	stow -v -t ${HOME} git
 
 ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
-	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile && \
-		stow -v -t ${HOME} home
+	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile 2> /dev/null
+	stow -v -t ${HOME} home
 
 ${HOME}/.tmux.conf:
 	stow -v -t ${HOME} tmux
