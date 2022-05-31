@@ -1,2 +1,4 @@
-(require 'expand-region)
-(global-set-key (kbd "C-c c") 'er/expand-region)
+(use-package expand-region
+  :ensure t
+  :defer t
+  :bind ("C-c c" . er/expand-region))

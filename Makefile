@@ -183,15 +183,20 @@ ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
 	${HOME}/.pyenv/shims/pip install --user pywal
 
 vscode-extentions:
+	source ${HOME}/.bashrc
 	cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 ${VS_CODE_COMMAND} --install-extension
 
 
 misc: ${HOME}/.local/bin/wal vscode-extentions
 
+# Test
+test:
+	echo "$HOME" | emacs -batch -l $HOME/.emacs.d/init.el
+
 # Install
 ifeq ($(shell uname -s), Linux)
-install: confirm pacman aur group languages dotfiles misc
+install: confirm pacman aur group languages dotfiles misc test
 endif
 ifeq ($(shell uname -s), Darwin)
-install: confirm bundle dotfiles languages misc
+install: confirm bundle dotfiles languages misc test
 endif

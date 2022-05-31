@@ -1,5 +1,7 @@
-(require 'multiple-cursors)
-(multiple-cursors-mode t)
-(global-set-key (kbd "C-c <down>") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c <up>") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c C-a") 'mc/mark-all-like-this)
+(use-package multiple-cursors
+             :config
+             (multiple-cursors-mode t)
+             :bind (
+             ("C-c <down>" . mc/mark-next-like-this)
+             ("C-c <up>" . mc/mark-previous-like-this)
+             ("C-c C-a" . mc/mark-all-like-this)))

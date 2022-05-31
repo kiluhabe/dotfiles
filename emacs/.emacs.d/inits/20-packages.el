@@ -23,7 +23,6 @@
     dockerfile-mode
     easy-repeat
     expand-region
-    faust-mode
     fiplr
     flycheck
     flycheck-rust
@@ -36,12 +35,7 @@
     json-mode
     markdown-mode
     multiple-cursors
-    mustache-mode
-    nginx-mode
-    nix-mode
-    plantuml-mode
     projectile
-    pug-mode
     racer
     rjsx-mode
     robe
@@ -56,8 +50,8 @@
     treemacs
     treemacs-projectile
     undo-tree
+    use-package
     visual-regexp
-    vue-mode
     web-mode
     wgrep
     which-key

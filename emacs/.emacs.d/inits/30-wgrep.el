@@ -1,1 +1,3 @@
-(require 'wgrep nil t)
+(use-package wgrep
+  :ensure t
+  :defer t)
