@@ -1,176 +1,171 @@
 (require 'company)
 (require 'flycheck)
 
-(require 'dockerfile-mode)
-(add-to-list 'auto-mode-alist '("Dockerfile\\'" . dockerfile-mode))
+;; Dockerfile
+(use-package dockerfile-mode
+  :ensure t
+  :defer t
+  :mode "Dockerfile\\'")
 
 ;;Haskell
-(require 'haskell-mode)
-(setq tidal-interpreter "~/bin/stack-ghci")
-(require 'tidal)
-;;(require 'company-ghc)
-(defun setup-haskell-mode ()
-  (interactive)
+(use-package haskell-mode
+  :ensure t
+  :defer t
+  :mode "\\.hs\\'"
+  :config
   (turn-on-haskell-indentation)
   (turn-on-haskell-doc-mode)
-  ;;(with-eval-after-load 'company
-  ;;  (add-to-list 'company-backends 'company-ghc))
   (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-)
-(add-hook 'haskell-mode-hook #'setup-haskell-mode)
-(add-to-list 'auto-mode-alist '("\\.hs\\'" . haskell-mode))
-(add-to-list 'auto-mode-alist '("\\.tidal\\'" . tidal-mode))
+  (eldoc-mode +1))
+(use-package tidal
+  :ensure t
+  :defer t
+  :mode "\\.tidal\\'"
+  :config
+  (setq tidal-interpreter "~/bin/stack-ghci"))
+;; (use-package company-ghc
+;;   :ensure t
+;;   :defer t
+;;   :after company
+;;   :hook (haskell-mode tidal-mode)
+;;   :config
+;;   (with-eval-after-load 'company
+;;     (add-to-list 'company-backends 'company-ghc)))
 
-(require 'json-mode)
-(add-to-list 'auto-mode-alist '("\\.json\\'" . json-mode))
+;; JSON
+(use-package json-mode
+  :ensure t
+  :defer t
+  :mode "\\.json\\'")
 
 ;; Markdown
-(require 'markdown-mode)
-(require 'writeroom-mode)
-(defun setup-markdown-mode ()
-  (interactive)
-  (writeroom-mode +1)
-)
-(add-hook 'markdown-mode-hook #'setup-markdown-mode)
-(add-to-list 'auto-mode-alist '("\\.md\\'" . markdown-mode))
-(add-to-list 'auto-mode-alist '("\\.mdx\\'" . markdown-mode))
+(use-package markdown-mode
+  :ensure t
+  :defer t
+  :mode ("\\.md\\'" "\\.mdx\\'"))
+(use-package writeroom-mode
+  :ensure t
+  :defer t
+  :hook writeroom-mode
+  :config
+  (writeroom-mode +1))
 
-(require 'mustache-mode)
-(add-to-list 'auto-mode-alist '("\\.mustache\\'" . mustache-mode))
-
-(require 'nginx-mode)
-(add-to-list 'auto-mode-alist '("/nginx/sites-\\(?:available\\|enabled\\)/" . nginx-mode))
-
-(require 'nix-mode)
-(add-to-list 'auto-mode-alist '("\\.nix\\'" . nix-mode))
-
-;;PlantUML
-(require 'plantuml-mode)
-(add-to-list 'auto-mode-alist '("\\.plantuml\\'" . plantuml-mode))
-(add-to-list 'auto-mode-alist '("\\.pu\\'" . plantuml-mode))
-(setq plantuml-jar-path "/usr/share/plantuml/plantuml.jar")
-(setq plantuml-output-type "svg")
-(setq plantuml-options "-charset UTF-8")
-
-(require 'pug-mode)
-(add-to-list 'auto-mode-alist '("\\.pug\\'" . pug-mode))
-(add-to-list 'auto-mode-alist '("\\.jade\\'" . pug-mode))
-
-;;React JSX
-(require 'rjsx-mode)
-(add-to-list 'auto-mode-alist '("components\\/.*\\.jsx\\'" . rjsx-mode))
-(add-to-list 'auto-mode-alist '("containers\\/.*\\.tsx\\'" . rjsx-mode))
-(add-hook 'rjsx-mode-hook
-          (lambda ()
-            (setq js-indent-level 4)
-            (setq js2-strict-missing-semi-warning nil)))
+;; JSX
+(use-package rjsx-mode
+  :ensure t
+  :defer t
+  :mode ("\\.jsx\\'" "\\.tsx\\'")
+  :config
+  (setq js-indent-level 4)
+  (setq js2-strict-missing-semi-warning nil))
 
 ;;Ruby
-(require 'robe)
-(require 'ruby-electric)
-(custom-set-variables
- '(ruby-insert-encoding-magic-comment nil))
-(add-hook 'ruby-mode-hook '
-          '(lambda ()
-            (robe-mode t)
-            (push 'company-robe company-backends)
-            (flymake-ruby-load)
-            (ruby-electric-mode t)
-            (setq ruby-electric-expand-delimiters-list nil)
-            ))
-(custom-set-variables
- '(ruby-insert-encoding-magic-comment nil))
+(use-package robe
+  :ensure t
+  :defer t
+  :hook ruby-mode
+  :config
+  (ruby-insert-encoding-magic-comment nil)
+  (robe-mode t)
+  (push 'company-robe company-backends)
+)
+(use-package ruby-electric
+  :ensure t
+  :defer t
+  :config
+  (ruby-electric-mode t)
+  (setq ruby-electric-expand-delimiters-list nil))
 
 ;;Rust
-(require 'rust-mode)
-(require 'racer)
-(require 'flycheck-rust)
-(require 'company-racer)
-(require 'company)
-(defun setup-rust-mode ()
-  (interactive)
+(use-package rust-mode
+  :ensure t
+  :defer t
+  :mode "\\.rs\\'"
+  :config
+  (eldoc-mode +1))
+(use-package flycheck-rust
+  :ensure t
+  :defer t
+  :after rust-mode
+  :hook rust-mode
+  :config
+  (flycheck-rust-setup))
+(use-package racer
+  :ensure t
+  :defer t
+  :after rust-mode
+  :hook rust-mode
+  :config
+  (racer-mode +1))
+(use-package company-racer
+  :ensure t
+  :defer t
+  :after (company racer)
+  :config
   (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-racer))
-  (racer-mode +1)
-  (flycheck-rust-setup)
-  (eldoc-mode +1)
-  (global-flycheck-mode +1)
-)
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-(add-hook 'rust-mode-hook #'setup-rust-mode)
-(add-to-list 'auto-mode-alist '("\\.rs\\'" . rust-mode))
+    (add-to-list 'company-backends 'company-racer)))
 
-(require 'terraform-mode)
-(add-to-list 'auto-mode-alist '("\\.tf\\'" . terraform-mode))
-
-(require 'tidal)
-(add-to-list 'auto-mode-alist '("\\.tidal\\'" . tidal-mode))
+;; Terraform
+(use-package terraform-mode
+  :ensure t
+  :defer t
+  :mode "\\.tf\\'")
 
 ;;Typescript
-(require 'tide)
-(require 'web-mode)
-(defun setup-tide-mode ()
-  (interactive)
+(use-package tide
+  :ensure t
+  :defer t
+  :mode ("\\.ts\\'" "\\.tsx\\'")
+  :config
   (tide-setup)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (setq tab-width 2)
   (tide-hl-identifier-mode +1)
-)
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-(add-to-list 'auto-mode-alist '("\\.ts\\'" . typescript-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx\\'" . web-mode))
-(add-hook 'web-mode-hook
-          (lambda ()
-            (when (string-equal "tsx" (file-name-extension buffer-file-name))
-              (setup-tide-mode))))
+  (eldoc-mode +1))
+(use-package web-mode
+  :ensure t
+  :defer t
+  :mode ("\\.html\\'" "\\.tsx\\'"))
 
 ;; YAML
-(require 'yaml-mode)
-(add-to-list 'auto-mode-alist '("\\.yaml\\'" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode))
-
-;; Faust
-(require 'faust-mode)
-(require 'auto-complete)
-(defun setup-faust-mode ()
-  (auto-complete-mode t)
-)
-(add-hook 'faust-mode-hook #'setup-faust-mode)
-(add-to-list 'auto-mode-alist '("\\.dsp\\'" . faust-mode))
+(use-package yaml-mode
+  :ensure t
+  :defer t
+  :mode ("\\.yaml\\'" "\\.yml\\'"))
 
 ;; Go
-(require 'go-mode)
-(require 'go-eldoc)
-(require 'company-go)
-(defun setup-go-mode ()
-  (setq tab-width 2)
-  (go-eldoc-setup)
-  (add-to-list 'company-backends 'company-go)
-  )
-(add-hook 'go-mode-hook #'setup-go-mode)
-(add-to-list 'auto-mode-alist '("\\.go\\'" . go-mode))
+(use-package go-mode
+  :ensure t
+  :defer t
+  :mode "\\.go\\'")
+(use-package go-eldoc
+  :ensure t
+  :defer
+  :after go-mode
+  :hook go-mode
+  :config
+  (go-eldoc-setup))
+(use-package company-go
+  :ensure t
+  :defer t
+  :after (go-mode company)
+  :hook go-mode
+  :config
+  (add-to-list 'company-backends 'company-go))
 
 ;;Javascript
-(require 'js2-mode)
-(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
-(add-hook 'js-mode-hook
-          (lambda ()
-            (make-local-variable 'js-indent-level)
-            (setq js-indent-level 2)))
-
-;; Vue
-(require 'vue-mode)
-(add-hook 'vue-mode-hook 'flycheck-mode)
-(add-to-list 'auto-mode-alist '("\\.vue\\'" . vue-mode))
+(use-package js2-mode
+  :ensure t
+  :defer t
+  :mode "\\.js\\'"
+  :hook js-mode)
 
 ;; Slim
-(require 'slim-mode)
-(add-to-list 'auto-mode-alist '("\\.slim\\'" . slim-mode))
+(use-package slim-mode
+  :ensure t
+  :defer t
+  :mode "\\.slim\\'")
 
 ;; GraphQL
-(require 'graphql-mode)
-(add-to-list 'auto-mode-alist '("\\.graphql\\'" . graphql-mode))
-(add-to-list 'auto-mode-alist '("\\.gql\\'" . graphql-mode))
+(use-package graphql-mode
+  :ensure t
+  :defer t
+  :mode ("\\.graphql\\'" "\\.gql\\'"))

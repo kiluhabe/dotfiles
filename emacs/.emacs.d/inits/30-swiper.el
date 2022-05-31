@@ -1,2 +1,4 @@
-(require 'swiper)
-(global-set-key "\C-s" 'swiper)
+(use-package swiper
+  :ensure t
+  :defer t
+  :bind ("\C-s" . swiper))

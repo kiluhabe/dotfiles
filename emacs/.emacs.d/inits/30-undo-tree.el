@@ -1,5 +1,7 @@
-(require 'undo-tree)
-(global-undo-tree-mode)
-
-(define-key global-map (kbd "ESC z") 'undo-tree-undo)
-(define-key global-map (kbd "ESC Z") 'undo-tree-redo)
+(use-package undo-tree
+  :ensure t
+  :defer t
+  :bind (("ESC z" . undo-tree-undo)
+         ("ESC Z" . undo-tree-redo))
+  :config
+  (global-undo-tree-mode))
