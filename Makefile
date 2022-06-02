@@ -190,7 +190,7 @@ misc: ${HOME}/.local/bin/wal vscode-extentions
 
 # Test
 test:
-	echo "$HOME" | emacs -batch -l $HOME/.emacs.d/init.el
+	echo "$HOME" | emacs -batch -l ${HOME}/.emacs.d/init.el
 
 # Install
 ifeq ($(shell uname -s), Linux)
