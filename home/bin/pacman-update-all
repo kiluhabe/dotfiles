@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+main() {
+    sudo pacman -Syu --noconfirm
+    sudo pacman -Sc --noconfirm
+    paru -Syu --skipreview --noprovides --removemake --cleanafter --noconfirm
+    paru -c --noconfirm
+}
+
+main
