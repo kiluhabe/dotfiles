@@ -183,7 +183,7 @@ ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
 	${HOME}/.pyenv/shims/pip install --user pywal
 
 vscode-extentions:
-	[[ -f "${VS_CODE_COMMAND}" ]] && cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 ${VS_CODE_COMMAND} --install-extension
+	if [ -f "${VS_CODE_COMMAND}" ]; then cat ${DOTFILES}/vscode/extensions.txt | xargs -L 1 ${VS_CODE_COMMAND} --install-extension; fi
 
 
 misc: ${HOME}/.local/bin/wal vscode-extentions
