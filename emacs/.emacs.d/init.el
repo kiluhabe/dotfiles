@@ -24,3 +24,11 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(package-selected-packages
+   '(theme-magic yasnippet yaml-mode xresources-theme writeroom-mode which-key wgrep web-mode vue-mode visual-regexp use-package undo-tree treemacs-projectile tide tidal terraform-mode tabbar slim-mode ruby-electric robe rjsx-mode racer pug-mode plantuml-mode nix-mode nginx-mode mustache-mode multiple-cursors lsp-ui json-mode graphql-mode go-eldoc flycheck-rust flutter-l10n-flycheck fiplr faust-mode expand-region easy-repeat dockerfile-mode dart-mode counsel company-statistics company-racer company-go cargo auto-complete))
+ '(tabbar-separator '(1)))

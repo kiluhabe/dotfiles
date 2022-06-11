@@ -45,6 +45,7 @@
     swiper
     tabbar
     terraform-mode
+    theme-magic
     tidal
     tide
     treemacs
