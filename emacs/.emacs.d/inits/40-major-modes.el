@@ -1,6 +1,3 @@
-(require 'company)
-(require 'flycheck)
-
 ;; Dockerfile
 (use-package dockerfile-mode
   :ensure t
@@ -77,33 +74,15 @@
   (setq ruby-electric-expand-delimiters-list nil))
 
 ;;Rust
-(use-package rust-mode
+(use-package rustic
   :ensure t
   :defer t
+  :after lsp-mode
   :mode "\\.rs\\'"
   :config
-  (eldoc-mode +1))
-(use-package flycheck-rust
-  :ensure t
-  :defer t
-  :after rust-mode
-  :hook rust-mode
-  :config
-  (flycheck-rust-setup))
-(use-package racer
-  :ensure t
-  :defer t
-  :after rust-mode
-  :hook rust-mode
-  :config
-  (racer-mode +1))
-(use-package company-racer
-  :ensure t
-  :defer t
-  :after (company racer)
-  :config
-  (with-eval-after-load 'company
-    (add-to-list 'company-backends 'company-racer)))
+  (setq lsp-rust-server 'rust-analyzer)
+  (setq lsp-rust-analyzer-cargo-watch-command "clippy")
+  (setq lsp-eldoc-render-all t))
 
 ;; Terraform
 (use-package terraform-mode
