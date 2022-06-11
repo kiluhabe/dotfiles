@@ -1,4 +1,3 @@
-
 emacs/.emacs.d/elpa
 emacs/.emacs.d/auto-save-list
 emacs/.emacs.d/network-security.data
@@ -8,6 +7,7 @@ emacs/.emacs.d/recentf
 emacs/.emacs.d/company-statistics-cache.el
 emacs/.emacs.d/.mc-lists.el
 emacs/.emacs.d/tramp
+emacs/.emacs.d/.lsp-session-*
 *.dat
 home/bin/sowm
 home/bin/st

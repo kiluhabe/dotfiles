@@ -1,5 +1,5 @@
 (use-package theme-magic
-  :enable t
+  :ensure t
   :defer t
   :config
   (theme-magic-export-theme-mode))

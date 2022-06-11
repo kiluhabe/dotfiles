@@ -15,9 +15,9 @@
   '(
     auto-complete
     cl-lib
+    dash
     company
     company-go
-    company-racer
     company-statistics
     counsel
     dockerfile-mode
@@ -25,7 +25,6 @@
     expand-region
     fiplr
     flycheck
-    flycheck-rust
     go-eldoc
     go-mode
     graphql-mode
@@ -33,14 +32,15 @@
     ivy
     js2-mode
     json-mode
+    lsp-mode
+    lsp-ui
     markdown-mode
     multiple-cursors
     projectile
-    racer
     rjsx-mode
     robe
     ruby-electric
-    rust-mode
+    rustic
     slim-mode
     swiper
     tabbar
