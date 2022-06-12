@@ -1,5 +1,4 @@
 (use-package theme-magic
   :ensure t
   :defer t
-  :config
-  (theme-magic-export-theme-mode))
+  :hook (after-init . theme-magic-export-theme-mode))
