@@ -1,4 +1,7 @@
 (use-package company
+  :ensure t
+  :defer t
+  :hook (after-init . global-company-mode)
   :config
   (setq company-idle-delay 0)
   (setq company-minimum-prefix-length 2)
@@ -22,5 +25,4 @@
 
 (use-package company-statistics
   :after (company)
-  :config
-  (company-statistics-mode))
+  :commands (company-statistics-mode))

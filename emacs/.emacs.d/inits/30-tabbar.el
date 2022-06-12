@@ -1,7 +1,9 @@
 (use-package tabbar
   :ensure t
+  :defer t
   :bind (("M-n" . tabbar-forward-tab)
          ("M-p" . tabbar-backward-tab))
+  :hook (after-init . tabbar-mode)
   :config
   (tabbar-mwheel-mode -1)
   (setq tabbar-use-images nil)
