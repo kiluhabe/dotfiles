@@ -60,15 +60,14 @@
 (use-package robe
   :ensure t
   :defer t
-  :hook ruby-mode
+  :hook (ruby-mode . robe-mode)
   :config
   (ruby-insert-encoding-magic-comment nil)
-  (robe-mode t)
-  (push 'company-robe company-backends)
-)
+  (push 'company-robe company-backends))
 (use-package ruby-electric
   :ensure t
   :defer t
+  :hook ruby-mode
   :config
   (ruby-electric-mode t)
   (setq ruby-electric-expand-delimiters-list nil))
@@ -95,13 +94,14 @@
   :ensure t
   :defer t
   :mode ("\\.ts\\'" "\\.tsx\\'")
+  :commands (tide-setup)
   :config
-  (tide-setup)
   (tide-hl-identifier-mode +1)
   (eldoc-mode +1))
 (use-package web-mode
   :ensure t
   :defer t
+  :after tide
   :mode ("\\.html\\'" "\\.tsx\\'"))
 
 ;; YAML
@@ -119,14 +119,11 @@
   :ensure t
   :defer
   :after go-mode
-  :hook go-mode
-  :config
-  (go-eldoc-setup))
+  :hook (go-mode . go-eldoc-setup))
 (use-package company-go
   :ensure t
   :defer t
   :after (go-mode company)
-  :hook go-mode
   :config
   (add-to-list 'company-backends 'company-go))
 
