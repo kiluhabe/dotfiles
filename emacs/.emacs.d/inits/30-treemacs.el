@@ -1,13 +1,14 @@
 (use-package projectile
              :ensure t
              :defer t
+             :commands (projectile-discover-projects-in-directory)
              :config
-             (setq projectile-enable-caching t)
-             (projectile-discover-projects-in-directory))
+             (setq projectile-enable-caching t))
 
 (use-package treemacs
              :ensure t
              :defer t
+             :hook (after-init . treemacs)
              :config
              (treemacs-follow-mode t)
              (treemacs-filewatch-mode t)
