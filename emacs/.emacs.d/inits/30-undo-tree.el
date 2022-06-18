@@ -3,5 +3,6 @@
   :defer t
   :bind (("ESC z" . undo-tree-undo)
          ("ESC Z" . undo-tree-redo))
+  :hook (after-init . global-undo-tree-mode)
   :config
-  (global-undo-tree-mode))
+  (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/.undo"))))2
