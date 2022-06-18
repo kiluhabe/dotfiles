@@ -62,14 +62,14 @@
   :defer t
   :hook (ruby-mode . robe-mode)
   :config
-  (ruby-insert-encoding-magic-comment nil)
+  (setq ruby-insert-encoding-magic-comment nil)
   (push 'company-robe company-backends))
 (use-package ruby-electric
   :ensure t
   :defer t
+  :after robe
   :hook ruby-mode
   :config
-  (ruby-electric-mode t)
   (setq ruby-electric-expand-delimiters-list nil))
 
 ;;Rust
