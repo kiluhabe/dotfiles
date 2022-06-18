@@ -17,6 +17,7 @@
     cl-lib
     dash
     company
+    company-box
     company-go
     company-statistics
     counsel

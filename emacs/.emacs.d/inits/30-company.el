@@ -24,5 +24,13 @@
                       :background "black"))
 
 (use-package company-statistics
+  :ensure t
+  :defer t
   :after (company)
   :commands (company-statistics-mode))
+
+(use-package company-box
+  :ensure t
+  :defer t
+  :after (company)
+  :hook (company-mode . company-box-mode))
