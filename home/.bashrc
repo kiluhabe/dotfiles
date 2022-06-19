@@ -10,7 +10,7 @@ export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
 #prompt
 unset PROMPT_COMMAND
-PROMPT_COMMAND='addline'
+PROMPT_COMMAND='printf "\n"'
 PS1="\$(prompt) "
 
 # direnv
