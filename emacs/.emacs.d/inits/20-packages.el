@@ -17,7 +17,9 @@
     cl-lib
     dash
     company
+    company-box
     company-go
+    company-quickhelp
     company-statistics
     counsel
     dockerfile-mode
