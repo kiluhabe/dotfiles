@@ -1,10 +1,14 @@
 42Crunch.vscode-openapi
+apollographql.vscode-apollo
+Arjun.swagger-viewer
 be5invis.toml
+bierner.markdown-mermaid
 firsttris.vscode-jest-runner
 formulahendry.code-runner
 fwcd.kotlin
-GabrielBB.vscode-lombok
 golang.go
+GraphQL.vscode-graphql
+GraphQL.vscode-graphql-syntax
 httpsterio.henna
 jakebathman.mysql-syntax
 juhahinkula.thymeleaf
@@ -15,7 +19,8 @@ ms-azuretools.vscode-docker
 ms-python.python
 ms-python.vscode-pylance
 ms-toolsai.jupyter
-ms-vscode-remote.remote-containers
+ms-toolsai.jupyter-keymap
+ms-toolsai.jupyter-renderers
 naco-siren.gradle-language
 octref.vetur
 panicbit.cargo
@@ -42,3 +47,4 @@ vscjava.vscode-spring-boot-dashboard
 vscjava.vscode-spring-initializr
 william-voyek.vscode-nginx
 wmaurer.change-case
+yzhang.markdown-all-in-one
