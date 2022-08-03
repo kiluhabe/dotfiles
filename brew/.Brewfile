@@ -59,6 +59,7 @@ brew "act"
 brew "docker-compose"
 brew "svn"
 brew "imagemagick"
+brew "grep"
 
 cask "clipy"
 cask "discord"
