@@ -94,10 +94,10 @@
   :ensure t
   :defer t
   :mode ("\\.ts\\'" "\\.tsx\\'")
-  :commands (tide-setup)
-  :config
-  (tide-hl-identifier-mode +1)
-  (eldoc-mode +1))
+  :after (typescript-mode company flycheck)
+  :hook ((typescript-mode . tide-setup)
+         (typescript-mode . tide-hl-identifier-mode))
+  :config (eldoc-mode +1))
 (use-package web-mode
   :ensure t
   :defer t
