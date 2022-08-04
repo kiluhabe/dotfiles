@@ -22,16 +22,9 @@
         "editor.defaultFormatter": "redhat.java"
     },
     "typescript.updateImportsOnFileMove.enabled": "always",
-    "mssql.connections": [
-        {
-            "server": "{{put-server-name-here}}",
-            "database": "{{put-database-name-here}}",
-            "user": "{{put-username-here}}",
-            "password": "{{put-password-here}}"
-        }
-    ],
     "javascript.updateImportsOnFileMove.enabled": "always",
     "editor.tabSize": 2,
     "go.toolsManagement.autoUpdate": true,
-    "redhat.telemetry.enabled": false
+    "redhat.telemetry.enabled": false,
+    "markdown.extension.toc.slugifyMode": "github"
 }
