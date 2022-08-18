@@ -6,6 +6,7 @@ bierner.markdown-mermaid
 firsttris.vscode-jest-runner
 formulahendry.code-runner
 fwcd.kotlin
+GabrielBB.vscode-lombok
 golang.go
 GraphQL.vscode-graphql
 GraphQL.vscode-graphql-syntax
