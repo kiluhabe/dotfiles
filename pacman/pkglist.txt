@@ -24,14 +24,14 @@ efibootmgr
 emacs-nox
 enpass-bin
 fakeroot
-fcitx
-fcitx-configtool
-fcitx-mozc
+fcitx5-im
+fcitx5-mozc
 feh
 fff
 file
 findutils
 firefox
+firefox-nightly-bin
 flex
 fontconfig
 fzf
