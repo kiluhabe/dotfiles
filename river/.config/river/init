@@ -12,7 +12,7 @@ do
 done
 
 riverctl map normal Super T spawn alacritty
-riverctl map normal Super B spawn firefox
+riverctl map normal Super B spawn 'MOZ_ENABLE_WAYLAND=1 firefox'
 riverctl map normal Super D spawn 'yofi --config-file /home/kiluhabe/.cache/wal/yofi-launcher.toml'
 
 # Super+F to toggle fullscreen
@@ -160,7 +160,7 @@ riverctl csd-filter-add app-id "gedit"
 riverctl default-layout rivertile
 
 # Scripts
-(sleep 1s && fcitx-autostart) &
+(sleep 1s && fcitx5 -d) &
 (sleep 1s && wal -R) &
 (sleep 1s && libinput-gestures) &
 (sleep 1s && dunst -conf $HOME/.cache/wal/dunstrc) &
