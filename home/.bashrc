@@ -5,6 +5,7 @@ if [[ $(uname -a) =~ ^Darwin ]]; then
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
     export TERM=xterm-256color
     export BASH_SILENCE_DEPRECATION_WARNING=1
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
@@ -107,3 +108,4 @@ alias tmux="tmux -u"
 alias reload-x="xrdb $HOME/.Xresources"
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
 alias comp="cargo compete"
+. "$HOME/.cargo/env"
