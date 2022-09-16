@@ -29,7 +29,7 @@ brew "jq"
 # Run local Kubernetes cluster in Docker
 brew "kind"
 # Krypton command-line client, daemon, and SSH integration
-brew "kryptco/tap/kr"
+# brew "kryptco/tap/kr"
 # Tool that can switch between kubectl contexts easily and create aliases
 brew "kubectx"
 # Kubernetes controller and tool for one-way encrypted Secrets
