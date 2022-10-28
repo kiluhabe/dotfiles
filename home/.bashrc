@@ -5,6 +5,7 @@ if [[ $(uname -a) =~ ^Darwin ]]; then
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
     export TERM=xterm-256color
     export BASH_SILENCE_DEPRECATION_WARNING=1
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
 
@@ -107,18 +108,3 @@ alias tmux="tmux -u"
 alias reload-x="xrdb $HOME/.Xresources"
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
 alias comp="cargo compete"
-
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/kiluhabe/.pyenv/versions/anaconda3-2022.05/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/home/kiluhabe/.pyenv/versions/anaconda3-2022.05/etc/profile.d/conda.sh" ]; then
-        . "/home/kiluhabe/.pyenv/versions/anaconda3-2022.05/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/kiluhabe/.pyenv/versions/anaconda3-2022.05/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
