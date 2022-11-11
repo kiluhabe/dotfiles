@@ -176,6 +176,7 @@ ${DOTFILES}/brew/.Brewfile:
 	cat ${DOTFILES}/brew/.Brewfile
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
+	brew update -f
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
 # Misc

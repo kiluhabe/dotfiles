@@ -15,7 +15,7 @@ jobs:
       - name: Checkout codes
         uses: actions/checkout@v2
       - name: Install make and sudo
-        run: pacman -Syy && pacman -S --noconfirm make sudo
+        run: pacman -Syyu && pacman -S --noconfirm make sudo
       - name: Create test user
         run: |
           TEST_UID=1000
