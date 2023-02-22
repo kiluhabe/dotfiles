@@ -69,7 +69,7 @@ make
 mkinitcpio
 mtpfs
 nano
-nerd-fonts-complete
+nerd-fonts
 networkmanager
 notion-app
 noto-fonts
