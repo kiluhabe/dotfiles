@@ -31,7 +31,7 @@ fff
 file
 findutils
 firefox
-firefox-nightly
+firefox-nightly-bin
 flex
 fontconfig
 fzf
