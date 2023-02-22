@@ -9,13 +9,15 @@
   interactive = always
 [alias]
   co = checkout
+  sw = switch
   st = status
   br = branch
   ga = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --date=relative
   pc = !git push origin `git rev-parse --abbrev-ref HEAD`
   plc = !git pull origin `git rev-parse --abbrev-ref HEAD`
   plm = !git pull origin `git-main-branch`
-  cm = !git co `git-main-branch`
+  sm = !git switch `git-main-branch`
+  sc = switch -c
 [core]
   excludesfile = $HOME/.gitignore_global
   editor = emacs
