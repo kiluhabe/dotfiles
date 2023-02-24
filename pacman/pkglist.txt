@@ -59,6 +59,7 @@ libnotify
 libtool
 libwebp
 libxft
+libyaml
 light
 linux
 linux-firmware
