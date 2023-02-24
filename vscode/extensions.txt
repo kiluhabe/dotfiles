@@ -24,10 +24,6 @@ ms-toolsai.jupyter-renderers
 naco-siren.gradle-language
 octref.vetur
 panicbit.cargo
-Pivotal.vscode-boot-dev-pack
-Pivotal.vscode-concourse
-Pivotal.vscode-manifest-yaml
-Pivotal.vscode-spring-boot
 redhat.java
 redhat.vscode-commons
 redhat.vscode-yaml
@@ -38,6 +34,7 @@ sleistner.vscode-fileutils
 SonarSource.sonarlint-vscode
 streetsidesoftware.code-spell-checker
 VisualStudioExptTeam.vscodeintellicode
+vmware.vscode-spring-boot
 vscjava.vscode-java-debug
 vscjava.vscode-java-dependency
 vscjava.vscode-java-pack
