@@ -1,3 +1,5 @@
+1password
+1password-cli
 acpi
 alacritty
 alsa-plugins
@@ -80,6 +82,7 @@ nvidia
 nvidia-container-toolkit
 nvidia-container-runtime
 openssh
+openvpn
 pacman
 pacman-contrib
 patch
