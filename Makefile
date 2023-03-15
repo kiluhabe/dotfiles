@@ -87,6 +87,9 @@ ${HOME}/.config/libinput-gestures.conf: ${CONFIG_DIR}
 ${HOME}/.config/river/init: ${CONFIG_DIR}
 	stow -v -t ${HOME} river
 
+${HOME}/.config/hypr/hypr/hyprland.conf: ${CONFIG_DIR}
+	stow -v -t ${HOME} hypr
+
 ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css: ${CONFIG_DIR}
 	stow -v -t ${HOME} waybar
 
@@ -106,7 +109,7 @@ ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 		stow -v -t ${HOME} iterm2
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
+dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/river/init ${HOME}/.config/hypr/hypr/hyprland.conf ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
 endif
 ifeq ($(shell uname -s), Darwin)
 dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
