@@ -15,6 +15,7 @@ blueberry
 bluez
 bluez-utils
 clang
+code
 dhcpcd
 dialog
 docker
@@ -51,6 +52,7 @@ gzip
 hyprland-bin
 jack2
 jack2-dbus
+jq
 imagemagick
 iw
 kr-bin
@@ -96,7 +98,6 @@ river
 rsync
 rust-analyzer
 sed
-slack
 spotify
 stow
 sudo
@@ -116,6 +117,8 @@ waybar
 wget
 which
 wpa_supplicant
+xdg-desktop-portal
+xdg-desktop-portal-hyprland
 xfsprogs
 yofi-bin
 zoom
