@@ -118,7 +118,7 @@ wget
 which
 wpa_supplicant
 xdg-desktop-portal
-xdg-desktop-portal-hyprland
+xdg-desktop-portal-hyprland-git
 xfsprogs
 yofi-bin
 zoom
