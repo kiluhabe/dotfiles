@@ -34,6 +34,7 @@ fff
 file
 findutils
 firefox
+firefox-developer-edition
 flex
 fontconfig
 fzf
@@ -94,7 +95,6 @@ pavucontrol
 pkgconf
 pulseaudio
 qjackctl
-river
 rsync
 rust-analyzer
 sed
