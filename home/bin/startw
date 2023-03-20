@@ -2,5 +2,6 @@
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
+export WLR_NO_HARDWARE_CURSORS=1
 
 Hyprland
