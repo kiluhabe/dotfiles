@@ -14,6 +14,7 @@ bitwig-studio
 blueberry
 bluez
 bluez-utils
+brave-bin
 clang
 code
 dhcpcd
@@ -34,7 +35,6 @@ fff
 file
 findutils
 firefox
-firefox-developer-edition
 flex
 fontconfig
 fzf
