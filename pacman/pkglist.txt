@@ -113,7 +113,7 @@ ttf-roboto-mono
 ttf-symbola
 unzip
 usbutils
-waybar
+waybar-experimental-git
 wget
 which
 wpa_supplicant

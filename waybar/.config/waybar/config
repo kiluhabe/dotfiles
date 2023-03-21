@@ -3,6 +3,7 @@
   "position": "top",
   "modules-left": ["clock"],
   "modules-right": ["pulseaudio","backlight", "network", "bluetooth", "battery"],
+  "modules-center": ["wlr/workspaces"],
   "name": "bar1",
   "height": 72,
   "gtk-layer-shell": false,
@@ -57,4 +58,14 @@
     "max-length": 50,
     "on-click": "alacritty -t 'nmtui' -e 'nmtui'"
   },
+  "wlr/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "sort-by-number": true,
+    "format-icons": {
+      "active": "",
+      "urgent": "",
+      "default": "",
+    }
+  }
 }]
