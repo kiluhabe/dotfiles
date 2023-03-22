@@ -18,6 +18,8 @@
   plm = !git pull origin `git-main-branch`
   sm = !git switch `git-main-branch`
   sc = switch -c
+  df = diff
+  dfs = !git -c pager.diff='less -R' diff
 [core]
   excludesfile = $HOME/.gitignore_global
   editor = emacs
@@ -48,4 +50,4 @@
 [interactive]
   diffFilter = delta --color-only
 [pull]
-	rebase = false
+  rebase = false
