@@ -50,7 +50,7 @@ grep
 groff
 grub
 gzip
-hyprland-bin
+hyprland
 jack2
 jack2-dbus
 jq
