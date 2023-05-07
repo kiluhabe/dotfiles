@@ -166,7 +166,7 @@ rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
 		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete && \
 		${HOME}/.cargo/bin/rustup toolchain install nightly
 
-${HOME}/.denoe:
+${HOME}/.deno:
 	curl -fsSL https://deno.land/x/install/install.sh | sh
 
 languages: ${HOME}/.rbenv/versions/${RUBY_VERSION} ${HOME}/.pyenv/versions/${PYTHON_VERSION} ${HOME}/.nodenv/versions/${NODE_VERSION} ${HOME}/.goenv/versions/${GO_VERSION} ${HOME}/.tfenv/versions/${TERRAFORM_VERSION} ${HOME}/.jenv/bin/jenv rust ${HOME}/.deno
