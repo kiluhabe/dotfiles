@@ -54,7 +54,6 @@ brew "tree"
 brew "derailed/k9s/k9s"
 # Run GitHub Actions locally
 brew "act"
-brew "docker-compose"
 brew "svn"
 brew "imagemagick"
 brew "grep"
