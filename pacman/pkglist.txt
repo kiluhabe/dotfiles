@@ -96,6 +96,7 @@ playerctl
 pkgconf
 pulseaudio
 qjackctl
+rate-mirrors
 rsync
 rust-analyzer
 sed
