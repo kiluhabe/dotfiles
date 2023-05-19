@@ -1,16 +1,10 @@
-width = 320
-height = 720
+width = 720
+height = 480
 force_window = false
-font = "Roboto Mono Bold"
+font = "Noto Sans CJK JP"
 font_size = 16
 bg_color = 0x{background.strip}ff
 font_color = 0x{foreground.strip}ff
-
-[input_text]
-font_color = 0x{background.strip}ff
-bg_color = 0x{foreground.strip}ff
-margin = "16"
-padding = "4 8"
 
 [list_items]
 font_color = 0x{foreground.strip}ff
@@ -18,8 +12,5 @@ selected_font_color = 0x{color1.strip}ff
 match_color = 0x{color2.strip}ff
 margin = "8 16"
 hide_actions = false
-action_left_margin = 16
+action_left_margin = 0
 item_spacing = 16
-icon_spacing = 8
-[icon]
-size = 16

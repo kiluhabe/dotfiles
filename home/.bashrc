@@ -93,6 +93,12 @@ if [ -d $CARGO_HOME ]; then
     source $CARGO_HOME/env
 fi
 
+# deno
+if [ -d $HOME/.deno ]; then
+    export DENO_INSTALL="/home/kiluhabe/.deno"
+    export PATH="$DENO_INSTALL/bin:$PATH"
+fi
+
 # wal
 if [ -d ~/.cache/wal ]; then
     (cat ~/.cache/wal/sequences &)

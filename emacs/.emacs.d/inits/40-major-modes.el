@@ -90,18 +90,18 @@
   :mode "\\.tf\\'")
 
 ;;Typescript
-(use-package tide
+(use-package typescript-mode
   :ensure t
   :defer t
-  :mode ("\\.ts\\'" "\\.tsx\\'")
+  :mode ("\\.ts\\'" "\\.tsx\\'"))
+(use-package tide
+  :ensure t
   :after (typescript-mode company flycheck)
   :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode))
-  :config (eldoc-mode +1))
+         (typescript-mode . tide-hl-identifier-mode)))
 (use-package web-mode
   :ensure t
   :defer t
-  :after tide
   :mode ("\\.html\\'" "\\.tsx\\'"))
 
 ;; YAML

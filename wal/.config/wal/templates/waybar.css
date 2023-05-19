@@ -8,7 +8,7 @@ window#waybar {{
     background: transparent;
 }}
 
-.modules-right, .modules-left {{
+.modules-right, .modules-left, .modules-center {{
     border-radius: 8px;
     margin: 16px 16px;
     padding: 4px 24px;
@@ -20,10 +20,6 @@ window#waybar {{
     padding: 0px 8px;
 }}
 
-#tags button {{
-    padding: 8px;
-}}
-
-#tags button.focused {{
-   color: {foreground};
+#workspaces button {{
+    color: {foreground};
 }}
