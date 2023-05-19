@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
-export GBM_BACKEND=nvidia-drm
-export __GLX_VENDOR_LIBRARY_NAME=nvidia
 export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export XMODIFIERS=@im=fcitx
-export XKB_DEFAULT_OPTIONS=ctrl:nocaps
+export WLR_NO_HARDWARE_CURSORS=1
 
-river
+Hyprland
