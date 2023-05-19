@@ -26,5 +26,8 @@
     "editor.tabSize": 2,
     "go.toolsManagement.autoUpdate": true,
     "redhat.telemetry.enabled": false,
-    "markdown.extension.toc.slugifyMode": "github"
+    "markdown.extension.toc.slugifyMode": "github",
+    "[python]": {
+        "editor.formatOnType": true
+    }
 }
