@@ -100,7 +100,6 @@ rate-mirrors
 rsync
 rust-analyzer
 sed
-spotify
 stow
 sudo
 swaybg
