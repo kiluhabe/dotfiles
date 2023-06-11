@@ -93,7 +93,10 @@
 (use-package typescript-mode
   :ensure t
   :defer t
-  :mode ("\\.ts\\'" "\\.tsx\\'"))
+  :mode ("\\.ts\\'" "\\.tsx\\'")
+  :after (lsp-mode lsp)
+  :config
+  (setq lsp-enabled-clients '(ts-ls deno-ls)))
 (use-package tide
   :ensure t
   :after (typescript-mode company flycheck)
@@ -103,12 +106,6 @@
   :ensure t
   :defer t
   :mode ("\\.html\\'" "\\.tsx\\'"))
-
-;; YAML
-(use-package yaml-mode
-  :ensure t
-  :defer t
-  :mode ("\\.yaml\\'" "\\.yml\\'"))
 
 ;; Go
 (use-package go-mode

@@ -194,8 +194,13 @@ vscode-extentions:
 misc: ${HOME}/.local/bin/wal
 
 # Test
-test:
+test: test_emacs test_pacman
+
+test_emacs:
 	echo "$HOME" | emacs -batch -l ${HOME}/.emacs.d/init.el
+
+test_pacman:
+	pac-update-all
 
 # Install
 ifeq ($(shell uname -s), Linux)
