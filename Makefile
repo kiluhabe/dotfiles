@@ -180,6 +180,7 @@ ${DOTFILES}/brew/.Brewfile:
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
 	brew update -f
+	brew link --overwrite python@3.11
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
 # Misc
