@@ -200,7 +200,7 @@ test_emacs:
 	echo "$HOME" | emacs -batch -l ${HOME}/.emacs.d/init.el
 
 test_pacman:
-	pac-update-all
+	${HOME}/bin/pac-update-all
 
 # Install
 ifeq ($(shell uname -s), Linux)
