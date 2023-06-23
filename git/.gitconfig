@@ -27,7 +27,7 @@
 [credential "https://source.developers.google.com"]
   helper = gcloud.sh
 [gpg]
-  program = /usr/local/bin/krgpg
+  program = krgpg
 [filter "lfs"]
   required = true
   clean = git-lfs clean -- %f
@@ -51,3 +51,7 @@
   diffFilter = delta --color-only
 [pull]
   rebase = false
+[commit]
+	gpgSign = true
+[tag]
+	forceSignAnnotated = true
