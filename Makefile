@@ -179,6 +179,7 @@ ${DOTFILES}/brew/.Brewfile:
 	cat ${DOTFILES}/brew/.Brewfile
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
+	rm /usr/local/bin/2to3
 	brew update -f
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
