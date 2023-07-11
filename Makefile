@@ -179,7 +179,7 @@ ${DOTFILES}/brew/.Brewfile:
 	cat ${DOTFILES}/brew/.Brewfile
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
-	brew link --overwrite python@3.11
+	brew uninstall python@3.11
 	brew update -f
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
