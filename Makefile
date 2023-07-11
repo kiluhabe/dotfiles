@@ -179,7 +179,7 @@ ${DOTFILES}/brew/.Brewfile:
 	cat ${DOTFILES}/brew/.Brewfile
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
-	brew uninstall python@3.11
+	brew uninstall --ignore-dependencies python@3.11
 	brew update -f
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
