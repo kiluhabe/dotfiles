@@ -179,8 +179,7 @@ ${DOTFILES}/brew/.Brewfile:
 	cat ${DOTFILES}/brew/.Brewfile
 
 bundle: brew ${DOTFILES}/brew/.Brewfile
-	rm /usr/local/bin/2to3
-	rm /usr/local/bin/2to3-3.11
+	brew link --overwrite python@3.11
 	brew update -f
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
