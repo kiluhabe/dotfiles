@@ -100,6 +100,7 @@ rate-mirrors
 rsync
 rust-analyzer
 sed
+slack-desktop
 stow
 sudo
 swaybg
@@ -114,12 +115,12 @@ ttf-roboto-mono
 ttf-symbola
 unzip
 usbutils
-waybar-experimental-git
+waybar
 wget
 which
 wpa_supplicant
 xdg-desktop-portal
-xdg-desktop-portal-hyprland-git
+xdg-desktop-portal-hyprland
 xfsprogs
 yofi-bin
 zoom
