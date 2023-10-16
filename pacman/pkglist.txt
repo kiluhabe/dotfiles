@@ -56,7 +56,6 @@ jack2-dbus
 jq
 imagemagick
 iw
-kr-bin
 libinput-gestures
 libnvidia-container-tools
 libnotify
