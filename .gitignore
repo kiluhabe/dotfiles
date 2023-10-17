@@ -15,3 +15,4 @@ emacs/.emacs.d/quelpa
 vscode/Library/Application Support/*
 !vscode/Library/Application Support/Code/User/settings.json
 home/bin/kr*
+node_modules

@@ -1,0 +1,11 @@
+{
+  "name": "dotfiles",
+  "version": "1.0.0",
+  "description": "[![Test](https://github.com/kiluhabe/dotfiles/actions/workflows/test.yml/badge.svg?branch=master&event=schedule)](https://github.com/kiluhabe/dotfiles/actions/workflows/test.yml)",
+  "author": "kiluhabe",
+  "license": "MIT",
+  "devDependencies": {
+    "@secretlint/secretlint-rule-preset-recommend": "^6.2.3",
+    "secretlint": "^6.2.3"
+  }
+}
