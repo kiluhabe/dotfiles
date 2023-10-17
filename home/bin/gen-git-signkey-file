@@ -2,7 +2,7 @@
 
 main(){
         PUBLIC_KEY_FILE_NAME="sign_key.pub"
-        PUBLIC_KEY="$(akr load -L | grep SignKey)"
+        PUBLIC_KEY="$(ssh-add -L | grep SignKey)"
         if ! [ -f $HOME/.ssh/$PUBLIC_KEY_FILE_NAME ]; then
                   touch $HOME/.ssh/$PUBLIC_KEY_FILE_NAME
         fi
