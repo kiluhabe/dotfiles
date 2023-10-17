@@ -1,6 +1,7 @@
 1password
 1password-cli
 acpi
+akr
 alacritty
 alsa-plugins
 alsa-utils
@@ -92,6 +93,7 @@ pacman-contrib
 patch
 pavucontrol
 playerctl
+pinentry
 pkgconf
 pulseaudio
 qjackctl

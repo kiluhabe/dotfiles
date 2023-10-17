@@ -112,7 +112,7 @@ if [ -d "$(which akr 2>/dev/null)" ]; then
     if [[ $(uname -a) =~ ^Darwin ]]; then
         export PATH=$(brew --prefix openssh)/bin:$PATH
     fi
-    (akr setup &)
+    (akr start &)
     (gen-git-signkey-file &)
 fi
 
