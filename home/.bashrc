@@ -107,13 +107,11 @@ if [ -d ~/.cache/wal ]; then
 fi
 
 # For Akamai Krypton
-if [ -d "$(which akr 2>/dev/null)" ]; then
+if [ -f "$(which akr 2>/dev/null)" ]; then
     export SSH_AUTH_SOCK=$HOME/.akr/akr-ssh-agent.sock
     if [[ $(uname -a) =~ ^Darwin ]]; then
         export PATH=$(brew --prefix openssh)/bin:$PATH
     fi
-    (akr start &)
-    (gen-git-signkey-file &)
 fi
 
 #aliases
