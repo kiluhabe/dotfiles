@@ -106,6 +106,16 @@ if [ -d ~/.cache/wal ]; then
     source ~/.cache/wal/colors-tty.sh
 fi
 
+# For Akamai Krypton
+if [ -d "$(which akr 2>/dev/null)" ]; then
+    export SSH_AUTH_SOCK=$HOME/.akr/akr-ssh-agent.sock
+    if [[ $(uname -a) =~ ^Darwin ]]; then
+        export PATH=$(brew --prefix openssh)/bin:$PATH
+    fi
+    (akr setup &)
+    (gen-git-signkey-file &)
+fi
+
 #aliases
 alias xcopy='xsel --clipboard --input'
 alias es="env TERM=xterm emacs"
