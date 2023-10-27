@@ -27,6 +27,13 @@ jobs:
           echo "%$TEST_GROUP ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
           chmod 0440 /etc/sudoers
           chmod g+w /etc/passwd
+      # NOTE: https://github.com/actions/runner-images/issues/2840#issuecomment-790492173
+      - name: Disk Space Workaround
+        run: |
+          rm -rf /usr/share/dotnet
+          rm -rf /opt/ghc
+          rm -rf /usr/local/share/boost
+          rm -rf $AGENT_TOOLSDIRECTORY
       - name: Run make
         run: su tester -c 'make SKIP_CONFIRM=true'
   macos:
@@ -37,7 +44,5 @@ jobs:
         uses: actions/checkout@v3
       - name: Select Xcode version
         run: sudo xcode-select -s '/Applications/Xcode_14.2.app/Contents/Developer'
-      - name: Clean
-        run: sudo rm /usr/local/bin/aws*
       - name: Run make
         run: make SKIP_CONFIRM=true
