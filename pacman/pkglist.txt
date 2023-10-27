@@ -1,5 +1,4 @@
 1password
-1password-cli
 acpi
 akr
 alacritty
@@ -21,7 +20,6 @@ code
 dhcpcd
 dialog
 docker
-docker-compose
 dosfstools
 dpkg
 dunst
@@ -42,11 +40,9 @@ fzf
 gawk
 gcc
 gettext
-gimp
 git
 git-delta
 glibc
-google-chrome
 grep
 groff
 grub
@@ -107,7 +103,6 @@ sudo
 swaybg
 swayidle
 swaylock
-tela-circle-icon-theme-git
 texinfo
 tmux
 tor
