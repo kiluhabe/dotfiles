@@ -183,6 +183,9 @@ bundle: brew ${DOTFILES}/brew/.Brewfile
 	brew update -f
 	brew bundle --file ${DOTFILES}/brew/.Brewfile
 
+# Systemd
+
+
 # Misc
 ${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
 	${HOME}/.pyenv/shims/pip install --user pywal

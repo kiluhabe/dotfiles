@@ -93,19 +93,24 @@
 (use-package typescript-mode
   :ensure t
   :defer t
-  :mode ("\\.ts\\'" "\\.tsx\\'")
-  :after (lsp-mode lsp)
+  :mode
+  (("\\.ts\\'" . typescript-mode)
+   ("\\.tsx\\'" . typescript-mode))
+  :after (company flycheck)
   :config
-  (setq lsp-enabled-clients '(ts-ls deno-ls)))
+  (setq typescript-tsx-indent-offset 2)
+  (setq typescript-indent-level 2)
+  (setq tab-width 2))
 (use-package tide
   :ensure t
-  :after (typescript-mode company flycheck)
-  :hook ((typescript-mode . tide-setup)
-         (typescript-mode . tide-hl-identifier-mode)))
+  :defer t
+  :hook (typescript-mode . tide-setup))
+
+;; HTML
 (use-package web-mode
   :ensure t
   :defer t
-  :mode ("\\.html\\'" "\\.tsx\\'"))
+  :mode ("\\.html\\'"))
 
 ;; Go
 (use-package go-mode
