@@ -53,6 +53,7 @@ jack2-dbus
 jq
 imagemagick
 iw
+less
 libinput-gestures
 libnvidia-container-tools
 libnotify
@@ -109,6 +110,7 @@ tor
 ttf-font-awesome
 ttf-roboto-mono
 ttf-symbola
+ufw
 unzip
 usbutils
 waybar

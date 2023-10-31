@@ -3,7 +3,7 @@
   :defer t
   :init
   (setq lsp-keymap-prefix "C-c l")
-  :commands
+  :after
   (lsp lsp-deferred)
   :config
   (lsp-enable-which-key-integration)
@@ -12,6 +12,4 @@
 (use-package lsp-ui
   :ensure t
   :defer t
-  :after lsp-mode
-  :hook lsp-mode
-  :commands (lsp-ui-mode))
+  :hook lsp-mode)
