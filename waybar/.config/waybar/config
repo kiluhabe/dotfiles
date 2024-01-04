@@ -3,7 +3,6 @@
   "position": "top",
   "modules-left": ["clock"],
   "modules-right": ["pulseaudio","backlight", "network", "bluetooth", "battery"],
-  "modules-center": ["wlr/workspaces"],
   "name": "bar1",
   "height": 72,
   "gtk-layer-shell": false,
@@ -49,7 +48,7 @@
   "network": {
     "format": "{ifname}",
     "format-wifi": "  {essid} ({signalStrength}%) ",
-    "format-ethernet": "  {ipaddr}/{cidr} ",
+    "format-ethernet": "  {ipaddr}/{ifname} ",
     "format-disconnected": "OFFLINE", //An empty format will hide the module.
     "tooltip-format": "  {ifname} via {gwaddr} ",
     "tooltip-format-wifi": "  {essid} ({signalStrength}%) ",
@@ -57,15 +56,5 @@
     "tooltip-format-disconnected": "OFFLINE",
     "max-length": 50,
     "on-click": "alacritty -t 'nmtui' -e 'nmtui'"
-  },
-  "wlr/workspaces": {
-    "format": "{icon}",
-    "on-click": "activate",
-    "sort-by-number": true,
-    "format-icons": {
-      "active": "●",
-      "urgent": "◉",
-      "default": "○",
-    }
   }
 }]
