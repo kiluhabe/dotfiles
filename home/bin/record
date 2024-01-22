@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+main() {
+       TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+       OUTPUT_PATH="$HOME/Documents"
+       wf-recorder -x yuv420p -f "$OUTPUT_PATH/$TIMESTAMP.mp4" -g "$(slurp)" || pkill -SIGINT $(pgrep wf-recorder)
+}
+
+main
