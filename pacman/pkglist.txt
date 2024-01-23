@@ -98,6 +98,7 @@ rsync
 rust-analyzer
 sed
 slack-desktop
+slurp
 stow
 sudo
 swaybg
@@ -113,6 +114,7 @@ ufw
 unzip
 usbutils
 waybar
+wf-recorder
 wget
 which
 wpa_supplicant

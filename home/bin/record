@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+main() {
+    pgrep wf-recorder > /dev/null && {
+        pkill -SIGINT wf-recorder
+        notify-send "Terminate Capture."
+    } || {
+        TIMESTAMP=$(date +"%Y%m%d%H%M%S")
+        OUTPUT_PATH="$HOME/Documents"
+        notify-send "Start Capture."
+        wf-recorder -x yuv420p -f "$OUTPUT_PATH/$TIMESTAMP.mp4" -g "$(slurp)"
+    }
+    exit 0
+}
+
+main
