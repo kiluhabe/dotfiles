@@ -5,6 +5,7 @@ tap "heroku/brew"
 tap "homebrew/bundle"
 tap "homebrew/cask-fonts"
 tap "kryptco/tap"
+tap "akamai/mfa"
 
 brew "akamai/mfa/akr"
 brew "apr-util"
