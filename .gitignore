@@ -11,6 +11,7 @@ emacs/.emacs.d/.lsp-session-*
 emacs/.emacs.d/.undo
 emacs/.emacs.d/meghanada
 emacs/.emacs.d/quelpa
+emacs/.emacs.d/kkcrc
 *.dat
 vscode/Library/Application Support/*
 !vscode/Library/Application Support/Code/User/settings.json

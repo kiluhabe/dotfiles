@@ -29,5 +29,6 @@
     "markdown.extension.toc.slugifyMode": "github",
     "[python]": {
         "editor.formatOnType": true
-    }
+    },
+    "window.zoomLevel": -1
 }
