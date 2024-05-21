@@ -53,7 +53,7 @@
   :defer t
   :mode ("\\.jsx\\'" "\\.tsx\\'")
   :config
-  (setq js-indent-level 4)
+  (setq js-indent-level 2)
   (setq js2-strict-missing-semi-warning nil))
 
 ;;Ruby
@@ -92,19 +92,26 @@
 ;;Typescript
 (use-package typescript-mode
   :ensure t
-  :defer t
   :mode
   (("\\.ts\\'" . typescript-mode)
-   ("\\.tsx\\'" . typescript-mode))
-  :after (company flycheck)
-  :config
-  (setq typescript-tsx-indent-offset 2)
-  (setq typescript-indent-level 2)
-  (setq tab-width 2))
+   ("\\.tsx\\'" . tsx-ts-mode))
+  :custom
+  (typescript-indent-level . 2)
+  :setq
+  (typescript-tsx-indent-offset . 2)
+  :hook
+  (typescript-mode-hook . subword-mode))
+
 (use-package tide
   :ensure t
-  :defer t
-  :hook (typescript-mode . tide-setup))
+  :config
+  (add-hook 'typescript-mode-hook
+            (lambda ()
+              (tide-setup)
+              (flycheck-mode t)
+              (setq flycheck-check-syntax-automatically '(save mode-enabled))
+              (eldoc-mode t)
+              (company-mode-on))))
 
 ;; HTML
 (use-package web-mode
@@ -130,11 +137,11 @@
   (add-to-list 'company-backends 'company-go))
 
 ;;Javascript
-(use-package js2-mode
-  :ensure t
-  :defer t
-  :mode "\\.js\\'"
-  :hook js-mode)
+;; (use-package js2-mode
+;;   :ensure t
+;;   :defer t
+;;   :mode "\\.js\\'"
+;;   :hook js-mode)
 
 ;; Slim
 (use-package slim-mode
