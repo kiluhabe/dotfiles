@@ -12,6 +12,7 @@ emacs/.emacs.d/.undo
 emacs/.emacs.d/meghanada
 emacs/.emacs.d/quelpa
 emacs/.emacs.d/kkcrc
+emacs/.emacs.d/tree-sitter
 *.dat
 vscode/Library/Application Support/*
 !vscode/Library/Application Support/Code/User/settings.json

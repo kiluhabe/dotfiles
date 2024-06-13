@@ -51,7 +51,7 @@
 (use-package rjsx-mode
   :ensure t
   :defer t
-  :mode ("\\.jsx\\'" "\\.tsx\\'")
+  :mode ("\\.jsx\\'")
   :config
   (setq js-indent-level 2)
   (setq js2-strict-missing-semi-warning nil))
@@ -95,10 +95,9 @@
   :mode
   (("\\.ts\\'" . typescript-mode)
    ("\\.tsx\\'" . tsx-ts-mode))
-  :custom
-  (typescript-indent-level . 2)
-  :setq
-  (typescript-tsx-indent-offset . 2)
+  :config
+  (setq typescript-indent-level 2)
+  (setq typescript-ts-mode-indent-offset 2)
   :hook
   (typescript-mode-hook . subword-mode))
 
@@ -112,6 +111,7 @@
               (setq flycheck-check-syntax-automatically '(save mode-enabled))
               (eldoc-mode t)
               (company-mode-on))))
+
 
 ;; HTML
 (use-package web-mode
