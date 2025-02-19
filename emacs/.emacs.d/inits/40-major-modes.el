@@ -97,9 +97,7 @@
    ("\\.tsx\\'" . tsx-ts-mode))
   :config
   (setq typescript-indent-level 2)
-  (setq typescript-ts-mode-indent-offset 2)
-  :hook
-  (typescript-mode-hook . subword-mode))
+  (setq typescript-ts-mode-indent-offset 2))
 
 (use-package tide
   :ensure t
