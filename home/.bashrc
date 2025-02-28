@@ -5,6 +5,8 @@ if [[ $(uname -a) =~ ^Darwin ]]; then
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
     export TERM=xterm-256color
     export BASH_SILENCE_DEPRECATION_WARNING=1
+    export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
+    export PATH="/opt/homebrew/opt/arm-none-eabi-binutils/bin:$PATH"
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 export PATH=$HOME/.local/bin:$HOME/bin:$PATH
@@ -104,14 +106,6 @@ if [ -d ~/.cache/wal ]; then
     (cat ~/.cache/wal/sequences &)
     cat ~/.cache/wal/sequences
     source ~/.cache/wal/colors-tty.sh
-fi
-
-# For Akamai Krypton
-if [ -f "$(which akr 2>/dev/null)" ]; then
-    export SSH_AUTH_SOCK=$HOME/.akr/akr-ssh-agent.sock
-    if [[ $(uname -a) =~ ^Darwin ]]; then
-        export PATH=$(brew --prefix openssh)/bin:$PATH
-    fi
 fi
 
 #aliases
