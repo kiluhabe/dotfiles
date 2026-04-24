@@ -6,7 +6,7 @@ main() {
     arrow="➜"
     dirty=$([ -n "$is_git_dirty" ] && echo "✗" || echo "")
 
-    printf "$arrow $dirty"
+    printf "%s %s" "$arrow" "$dirty"
 }
 
 main

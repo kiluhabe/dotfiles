@@ -1,12 +1,9 @@
 [user]
   name = kiluhabe
-  email =  kiluhabe@users.noreply.github.com
+  email = kiluhabe@users.noreply.github.com
+  signingkey = ~/.ssh/sign_key.pub
 [color]
-  ui = always
-  status = always
-  branch = always
-  diff = always
-  interactive = always
+  ui = auto
 [alias]
   co = checkout
   sw = switch
@@ -22,12 +19,10 @@
   dfs = !git -c pager.diff='less -R' diff
 [core]
   excludesfile = $HOME/.gitignore_global
-  editor = emacs
+  editor = nano
   ignorecase = false
 [credential "https://source.developers.google.com"]
   helper = gcloud.sh
-[user]
-  signingkey = ~/.ssh/sign_key.pub
 [gpg]
   format = ssh
 [filter "lfs"]

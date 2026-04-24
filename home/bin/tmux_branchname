@@ -7,7 +7,7 @@ main() {
     if [ ${#branchname} -ge $max ]; then
         [ -n "$is_git_dirty" ] && echo "✗ ${branchname:0:$max}..." || echo "${branchname:0:$max}..."
     elif [ -n "$branchname" ]; then
-        [ -n "$is_git_dirty" ] && echo "✗ $branchname" || echo $branchname
+        [ -n "$is_git_dirty" ] && echo "✗ $branchname" || echo "$branchname"
     else
         echo "---"
     fi

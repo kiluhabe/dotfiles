@@ -30,5 +30,27 @@
     "[python]": {
         "editor.formatOnType": true
     },
-    "window.zoomLevel": -1
+    "window.zoomLevel": -1,
+    "sqldeveloper.sqlHistory.historyLimit": 500,
+    "sqldeveloper.datagrid.fontFamily": "Menlo, Monaco, 'Courier New', monospace",
+    "claudeCode.preferredLocation": "panel",
+    "json.schemaDownload.trustedDomains": {
+        "https://schemastore.azurewebsites.net/": true,
+        "https://raw.githubusercontent.com/microsoft/vscode/": true,
+        "https://raw.githubusercontent.com/devcontainers/spec/": true,
+        "https://www.schemastore.org/": true,
+        "https://json.schemastore.org/": true,
+        "https://json-schema.org/": true,
+        "https://developer.microsoft.com/json-schemas/": true,
+        "https://biomejs.dev": true
+    },
+    "claudeCode.useTerminal": true,
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+        }
+    },
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "remote.autoForwardPortsSource": "hybrid"
 }

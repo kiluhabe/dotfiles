@@ -2,8 +2,8 @@
 
 main() {
     ELPA_DIR="$HOME/.emacs.d/elpa/"
-    rm -r $ELPA_DIR/*
-    echo "$HOME" | emacs -batch -l ${HOME}/.emacs.d/init.el
+    rm -r "$ELPA_DIR"/*
+    echo "$HOME" | emacs -batch -l "$HOME/.emacs.d/init.el"
 }
 
 main

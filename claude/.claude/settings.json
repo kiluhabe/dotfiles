@@ -1,0 +1,13 @@
+{
+  "model": "opus",
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "sentry@claude-plugins-official": true
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.js",
+    "padding": 0
+  }
+}

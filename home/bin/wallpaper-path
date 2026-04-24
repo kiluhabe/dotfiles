@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 main() {
-        cat $HOME/.cache/wal/wal
+        cat "$HOME/.cache/wal/wal"
 }
 
 main

@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-main() {
-       sudo paccache -rk3; paru -Sc --aur --noconfirm
-}
-
-main
