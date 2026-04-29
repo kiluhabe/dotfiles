@@ -32,7 +32,18 @@ process.stdin.on('end', () => {
     let ctxColor = '\x1b[32m';
     if (ctxPct >= 60) ctxColor = '\x1b[33m';
     if (ctxPct >= 80) ctxColor = '\x1b[91m';
-    const ctxDisplay = `${ctxColor}🧠 ${ctxPct}%\x1b[0m`;
+
+    const fmtTokens = n =>
+      n >= 1_000_000 ? `${(n / 1_000_000).toFixed(1)}M`
+      : n >= 1_000 ? `${Math.round(n / 1_000)}k`
+      : `${n}`;
+    const totalIn = data.context_window?.total_input_tokens ?? 0;
+    const totalOut = data.context_window?.total_output_tokens ?? 0;
+    const sessionDisplay =
+      totalIn || totalOut
+        ? ` (in:${fmtTokens(totalIn)} out:${fmtTokens(totalOut)})`
+        : '';
+    const ctxDisplay = `${ctxColor}🧠 ${ctxPct}%${sessionDisplay}\x1b[0m`;
 
     // Cost (USD, client-side estimate; absent on first turn)
     const cost = data.cost?.total_cost_usd;

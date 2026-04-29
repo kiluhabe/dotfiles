@@ -103,13 +103,11 @@
 (setq enable-recursive-minibuffers t)
 
 ;; repeat-mode (replaces easy-repeat)
-(when (fboundp 'repeat-mode)
-  (repeat-mode 1))
+(repeat-mode 1)
 
 ;; which-key (built-in since Emacs 30)
-(when (fboundp 'which-key-mode)
-  (setq which-key-idle-delay 0.5)
-  (which-key-mode 1))
+(setq which-key-idle-delay 0.5)
+(which-key-mode 1)
 
 ;; recent files
 (recentf-mode 1)
@@ -120,16 +118,47 @@
 
 ;; project.el bindings (replaces projectile/fiplr/treemacs)
 (global-set-key (kbd "C-c C-f") 'project-find-file)
-(global-set-key (kbd "M-f") 'project-find-file)
 (global-set-key (kbd "M-r") 'recentf-open)
-(global-set-key (kbd "C-c s") 'project-find-regexp)
-(when (fboundp 'yank-from-kill-ring)
-  (global-set-key (kbd "M-y") 'yank-from-kill-ring))
+
+;; VSCode-like keybindings (terminal-friendly: C-c + p/P/f/F)
+;; Cmd+P     -> C-c p : Quick Open file
+;; Cmd+Sh+P  -> C-c P : Command palette
+;; Cmd+F     -> C-c f : Find in buffer
+;; Cmd+Sh+F  -> C-c F : Find in project
+(global-set-key (kbd "C-c p") #'project-find-file)
+(global-set-key (kbd "C-c P") #'execute-extended-command)
+(global-set-key (kbd "C-c f") #'isearch-forward)
+(global-set-key (kbd "C-c F") #'project-find-regexp)
+(global-set-key (kbd "C-c c") #'kill-ring-save)
+(global-set-key (kbd "C-c v") #'yank)
+(global-set-key (kbd "C-c z") #'undo)
+(global-set-key (kbd "C-c Z") #'undo-redo)
+
+;; Project tweaks: skip picker via default-directory fallback, and
+;; treat per-service manifest dirs as project roots inside monorepos.
+(with-eval-after-load 'project
+  (defun my/project-from-default-directory (dir)
+    (cons 'transient dir))
+  (add-to-list 'project-find-functions
+               #'my/project-from-default-directory t)
+  (setq project-vc-extra-root-markers
+        '("package.json"     ; Node / TS
+          "Cargo.toml"        ; Rust
+          "go.mod"            ; Go
+          "Gemfile"           ; Ruby
+          "pyproject.toml"    ; Python
+          "deno.json"         ; Deno
+          "stack.yaml"        ; Haskell
+          "*.cabal")))        ; Haskell
+
+;; Arrow keys jump between isearch matches.
+(with-eval-after-load 'isearch
+  (define-key isearch-mode-map (kbd "<down>") #'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "<up>")   #'isearch-repeat-backward))
+(global-set-key (kbd "M-y") 'yank-from-kill-ring)
 
 ;; tab-bar (workspace-level tabs)
 (setq tab-bar-show 1)
-(global-set-key (kbd "M-n") 'tab-bar-switch-to-next-tab)
-(global-set-key (kbd "M-p") 'tab-bar-switch-to-prev-tab)
 
 ;; tab-line: VSCode-like buffer tabs at the top of each window
 (setq tab-line-new-button-show nil)
@@ -161,8 +190,34 @@
 
 (setq tab-line-tabs-function #'my/tab-line-buffers-fn)
 (global-tab-line-mode 1)
-(global-set-key (kbd "M-p") 'tab-line-switch-to-prev-tab)
-(global-set-key (kbd "M-n") 'tab-line-switch-to-next-tab)
+
+;; Hide tab-line in transient result buffers like xref.
+(with-eval-after-load 'tab-line
+  (dolist (m '(xref--xref-buffer-mode))
+    (add-to-list 'tab-line-exclude-modes m)))
+
+;; Override map: ensure tab navigation beats major/minor mode keymaps that
+;; shadow M-n / M-p (comint history, xref/compilation nav, magit sections, ...).
+(defvar my/override-keys-map
+  (let ((m (make-sparse-keymap)))
+    (define-key m (kbd "M-n") #'tab-line-switch-to-next-tab)
+    (define-key m (kbd "M-p") #'tab-line-switch-to-prev-tab)
+    m))
+
+(define-minor-mode my/override-keys-mode
+  "Bindings here win over major and minor mode maps."
+  :init-value t :global t :lighter "" :keymap my/override-keys-map)
+
+(add-to-list 'emulation-mode-map-alists
+             '((my/override-keys-mode . my/override-keys-map)))
+
+;; Keep comint history (shell/REPL/ielm) on M-p / M-n by disabling override there.
+(add-hook 'comint-mode-hook (lambda () (my/override-keys-mode -1)))
+
+;; Xref: RET on a result jumps and closes the *xref* window.
+(with-eval-after-load 'xref
+  (define-key xref--xref-buffer-mode-map (kbd "RET")
+    (lambda () (interactive) (xref-goto-xref t))))
 
 ;; language
 (setq locale-coding-system 'utf-8)

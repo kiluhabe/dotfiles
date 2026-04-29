@@ -7,9 +7,7 @@
 
 (add-to-list 'custom-theme-load-path
              (expand-file-name "themes" user-emacs-directory))
-(setq custom-theme-directory
-      (expand-file-name "themes" user-emacs-directory))
-(load-theme 'twilight t)
+;; Theme is loaded via inits/30-theme.el (vscode-dark-plus).
 
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -18,18 +16,5 @@
           (lambda ()
             (setq gc-cons-threshold (* 16 1024 1024)
                   gc-cons-percentage 0.1)))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(package-selected-packages nil))
 
 ;;; init.el ends here

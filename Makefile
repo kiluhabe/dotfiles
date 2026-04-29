@@ -9,17 +9,11 @@ AUR_HELPER := paru
 CONFIG_DIR := ${HOME}/.config
 USER = $(shell whoami)
 
-RUBY_VERSION = $(shell ${HOME}/.rbenv/bin/rbenv install -L | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
-PYTHON_VERSION = $(shell ${HOME}/.pyenv/bin/pyenv install -l | grep -E "^  [0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
-NODE_VERSION = $(shell ${HOME}/.nodenv/bin/nodenv install -l | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
-GO_VERSION = $(shell ${HOME}/.goenv/bin/goenv install -l | grep -E "^  [0-9]+\.[0-9]+\.[0-9]+$$" | tail -n 1)
-TERRAFORM_VERSION = $(shell ${HOME}/.tfenv/bin/tfenv list-remote | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$$" | head -n 1)
-
 VS_CODE_COMMAND = $(shell which code 2>/dev/null)
 
 .DEFAULT_GOAL := install
 
-.PHONY: pacman ${AUR_HELPER} aur dotfiles group envs rust languages bundle vscode-extensions misc brew test
+.PHONY: pacman ${AUR_HELPER} aur dotfiles group languages bundle vscode-extensions misc brew test
 
 confirm:
 	@if [ "${SKIP_CONFIRM}" != "true" ]; then \
@@ -60,10 +54,10 @@ aur: /usr/sbin/${AUR_HELPER}
 ${CONFIG_DIR}:
 	mkdir -p ${CONFIG_DIR}
 
-${HOME}/.alacritty.yml:
+${HOME}/.alacritty.toml:
 	stow -v -t ${HOME} alacritty
 
-${HOME}/.emacss.d:
+${HOME}/.emacs.d:
 	stow -v -t ${HOME} emacs
 
 ${HOME}/.gitconfig ${HOME}/.gitignore_global:
@@ -84,8 +78,11 @@ ${HOME}/.config/wal: ${CONFIG_DIR}
 ${HOME}/.config/libinput-gestures.conf: ${CONFIG_DIR}
 	stow -v -t ${HOME} libinput-gestures
 
-${HOME}/.config/hypr/hypr/hyprland.conf: ${CONFIG_DIR}
+${HOME}/.config/hypr/hyprland.conf: ${CONFIG_DIR}
 	stow -v -t ${HOME} hypr
+
+${HOME}/.config/mise/config.toml: ${CONFIG_DIR}
+	stow -v -t ${HOME} mise
 
 ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css: ${CONFIG_DIR}
 	stow -v -t ${HOME} waybar
@@ -109,70 +106,18 @@ ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 		stow -v -t ${HOME} iterm2
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/hypr/hypr/hyprland.conf ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
+dotfiles: ${HOME}/.alacritty.toml ${HOME}/.emacs.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json ${HOME}/.config/mise/config.toml ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/hypr/hyprland.conf ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
 endif
 ifeq ($(shell uname -s), Darwin)
-dotfiles: ${HOME}/.alacritty.yml ${HOME}/.emacss.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
+dotfiles: ${HOME}/.alacritty.toml ${HOME}/.emacs.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json ${HOME}/.config/mise/config.toml ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
 endif
 
-# Languages
-${HOME}/.rbenv/bin/rbenv:
-	git clone https://github.com/rbenv/rbenv.git ${HOME}/.rbenv && \
-		git clone https://github.com/rbenv/ruby-build.git ${HOME}/.rbenv/plugins/ruby-build
+# Languages (managed by mise; declared in mise/.config/mise/config.toml)
+${HOME}/.local/bin/mise:
+	curl -fsSL https://mise.run | sh
 
-${HOME}/.rbenv/versions/${RUBY_VERSION}: ${HOME}/.rbenv/bin/rbenv
-	${HOME}/.rbenv/bin/rbenv install -s ${RUBY_VERSION} && \
-		${HOME}/.rbenv/bin/rbenv global ${RUBY_VERSION} && \
-		${HOME}/.rbenv/bin/rbenv rehash
-
-${HOME}/.pyenv/bin/pyenv:
-	 git clone https://github.com/pyenv/pyenv.git ${HOME}/.pyenv
-
-${HOME}/.pyenv/versions/${PYTHON_VERSION}: ${HOME}/.pyenv/bin/pyenv
-	${HOME}/.pyenv/bin/pyenv install -s ${PYTHON_VERSION} && \
-		${HOME}/.pyenv/bin/pyenv global ${PYTHON_VERSION} && \
-		${HOME}/.pyenv/bin/pyenv rehash
-
-${HOME}/.nodenv/bin/nodenv:
-	git clone https://github.com/nodenv/nodenv.git ${HOME}/.nodenv && \
-		git clone https://github.com/nodenv/node-build.git ${HOME}/.nodenv/plugins/node-build
-
-${HOME}/.nodenv/versions/${NODE_VERSION}: ${HOME}/.nodenv/bin/nodenv
-	${HOME}/.nodenv/bin/nodenv install -s ${NODE_VERSION} && \
-		${HOME}/.nodenv/bin/nodenv global ${NODE_VERSION} && \
-		${HOME}/.nodenv/bin/nodenv rehash
-
-${HOME}/.goenv/bin/goenv:
-	git clone https://github.com/syndbg/goenv.git ${HOME}/.goenv
-
-${HOME}/.goenv/versions/${GO_VERSION}: ${HOME}/.goenv/bin/goenv
-	${HOME}/.goenv/bin/goenv install -s ${GO_VERSION} && \
-		${HOME}/.goenv/bin/goenv global ${GO_VERSION} && \
-		${HOME}/.goenv/bin/goenv rehash
-
-${HOME}/.tfenv/bin/tfenv:
-	git clone https://github.com/tfutils/tfenv.git ${HOME}/.tfenv
-
-${HOME}/.tfenv/versions/${TERRAFORM_VERSION}: ${HOME}/.tfenv/bin/tfenv
-	${HOME}/.tfenv/bin/tfenv install ${TERRAFORM_VERSION} && \
-		${HOME}/.tfenv/bin/tfenv use ${TERRAFORM_VERSION}
-
-${HOME}/.jenv/bin/jenv:
-	git clone https://github.com/jenv/jenv.git ${HOME}/.jenv
-
-${HOME}/.cargo/bin/rustup:
-	curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-
-rust: ${HOME}/.cargo/bin/rustup ${HOME}/.cargo/bin/cargo
-	${HOME}/.cargo/bin/rustup update && \
-		${HOME}/.cargo/bin/rustup component add rust-src rls rust-analysis rustfmt clippy && \
-		${HOME}/.cargo/bin/cargo install cargo-edit cargo-compete && \
-		${HOME}/.cargo/bin/rustup toolchain install nightly
-
-${HOME}/.deno:
-	curl -fsSL https://deno.land/x/install/install.sh | sh
-
-languages: ${HOME}/.rbenv/versions/${RUBY_VERSION} ${HOME}/.pyenv/versions/${PYTHON_VERSION} ${HOME}/.nodenv/versions/${NODE_VERSION} ${HOME}/.goenv/versions/${GO_VERSION} ${HOME}/.tfenv/versions/${TERRAFORM_VERSION} ${HOME}/.jenv/bin/jenv rust ${HOME}/.deno
+languages: ${HOME}/.local/bin/mise ${HOME}/.config/mise/config.toml
+	${HOME}/.local/bin/mise install
 
 # Brew
 brew:
@@ -190,8 +135,8 @@ bundle: brew ${DOTFILES}/brew/.Brewfile
 
 
 # Misc
-${HOME}/.local/bin/wal: ${HOME}/.pyenv/versions/${PYTHON_VERSION}
-	${HOME}/.pyenv/shims/pip install --user pywal
+${HOME}/.local/bin/wal: languages
+	${HOME}/.local/bin/mise exec python -- pip install --user pywal
 
 ## Optout
 vscode-extentions:
@@ -208,6 +153,41 @@ test_emacs:
 
 test_pacman:
 	${HOME}/bin/pac-update-all
+
+# Docker test (Linux container; verifies the stow side of the install).
+DOCKER_TEST_IMAGE := dotfiles-test
+DOCKER_TEST_USER  := tester
+DOCKER_RUN := docker run --rm \
+	-v ${DOTFILES}:/home/${DOCKER_TEST_USER}/dotfiles:ro \
+	-w /home/${DOCKER_TEST_USER}/dotfiles \
+	${DOCKER_TEST_IMAGE}
+
+.PHONY: docker-build docker-test docker-test-languages docker-shell
+
+docker-build:
+	docker build -f Dockerfile.test -t ${DOCKER_TEST_IMAGE} .
+
+docker-test: docker-build
+	${DOCKER_RUN} bash -c '\
+		make dotfiles SKIP_CONFIRM=true && \
+		echo "--- symlink check ---" && \
+		ls -la \
+			~/.tmux.conf \
+			~/.gitconfig \
+			~/.emacs.d \
+			~/.config/mise/config.toml \
+			~/.alacritty.toml'
+
+docker-test-languages: docker-build
+	${DOCKER_RUN} bash -c '\
+		make dotfiles SKIP_CONFIRM=true && \
+		make languages SKIP_CONFIRM=true'
+
+docker-shell: docker-build
+	docker run --rm -it \
+		-v ${DOTFILES}:/home/${DOCKER_TEST_USER}/dotfiles:ro \
+		-w /home/${DOCKER_TEST_USER}/dotfiles \
+		${DOCKER_TEST_IMAGE} bash
 
 # Install
 ifeq ($(shell uname -s), Linux)
