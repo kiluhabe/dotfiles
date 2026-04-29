@@ -20,9 +20,74 @@
 
 ;; simple dired
 (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+(setq dired-kill-when-opening-new-dired-buffer t)
 (setq global-auto-revert-non-file-buffers t)
 (setq auto-revert-verbose nil)
 (global-auto-revert-mode 1)
+
+;; dired side-window as a lightweight file tree
+(defvar my/sidebar-buffer-name "*sidebar*")
+
+(defvar my/sidebar-mode-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map (kbd "RET") #'my/sidebar-find-file)
+    (define-key map (kbd "<mouse-1>") #'my/sidebar-find-file)
+    map))
+
+(define-minor-mode my/sidebar-mode
+  "Minor mode for the dired sidebar buffer."
+  :keymap my/sidebar-mode-map
+  (when my/sidebar-mode
+    (tab-line-mode -1)))
+
+(defun my/sidebar-find-file ()
+  "RET in the sidebar: dirs navigate in place, files open in the main area."
+  (interactive)
+  (let ((file (dired-get-file-for-visit)))
+    (cond
+     ((file-directory-p file)
+      (let ((win (selected-window)))
+        (set-window-dedicated-p win nil)
+        (find-alternate-file file)
+        (rename-buffer my/sidebar-buffer-name)
+        (my/sidebar-mode 1)
+        (set-window-dedicated-p win 'side)))
+     (t
+      (let ((buf (find-file-noselect file)))
+        (select-window
+         (display-buffer
+          buf
+          '((display-buffer-reuse-window
+             display-buffer-use-some-window
+             display-buffer-pop-up-window)
+            (inhibit-same-window . t)))))))))
+
+(defun my/sidebar--prepare (buf)
+  (with-current-buffer buf
+    (unless (string= (buffer-name) my/sidebar-buffer-name)
+      (rename-buffer my/sidebar-buffer-name))
+    (my/sidebar-mode 1)))
+
+(defun my/sidebar-toggle ()
+  "Toggle a dired side-window on the left."
+  (interactive)
+  (if-let ((win (get-buffer-window my/sidebar-buffer-name)))
+      (delete-window win)
+    (let* ((root (or (and (project-current) (project-root (project-current)))
+                     default-directory))
+           (buf (or (get-buffer my/sidebar-buffer-name)
+                    (let ((b (dired-noselect root)))
+                      (my/sidebar--prepare b)
+                      b))))
+      (display-buffer-in-side-window
+       buf
+       '((side . left)
+         (slot . 0)
+         (window-width . 32)
+         (preserve-size . (t . nil))))
+      (select-window (get-buffer-window buf)))))
+
+(global-set-key (kbd "<f8>") #'my/sidebar-toggle)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
@@ -34,6 +99,7 @@
 
 ;; minibuffer completion (replaces ivy/counsel/swiper)
 (fido-vertical-mode 1)
+(setq completion-styles '(flex basic))
 (setq enable-recursive-minibuffers t)
 
 ;; repeat-mode (replaces easy-repeat)
@@ -56,13 +122,47 @@
 (global-set-key (kbd "C-c C-f") 'project-find-file)
 (global-set-key (kbd "M-f") 'project-find-file)
 (global-set-key (kbd "M-r") 'recentf-open)
+(global-set-key (kbd "C-c s") 'project-find-regexp)
 (when (fboundp 'yank-from-kill-ring)
   (global-set-key (kbd "M-y") 'yank-from-kill-ring))
 
-;; tab-bar (replaces tabbar)
+;; tab-bar (workspace-level tabs)
 (setq tab-bar-show 1)
 (global-set-key (kbd "M-n") 'tab-bar-switch-to-next-tab)
 (global-set-key (kbd "M-p") 'tab-bar-switch-to-prev-tab)
+
+;; tab-line: VSCode-like buffer tabs at the top of each window
+(setq tab-line-new-button-show nil)
+(setq tab-line-close-button-show nil)
+
+(defvar my/tab-line-buffers nil
+  "File-visiting buffers in their original open order (for tab-line).")
+
+(defun my/tab-line-track ()
+  "Append the current buffer to `my/tab-line-buffers' if file-visiting."
+  (let ((b (current-buffer)))
+    (when (and (buffer-file-name b)
+               (not (memq b my/tab-line-buffers)))
+      (setq my/tab-line-buffers
+            (append my/tab-line-buffers (list b))))))
+
+(add-hook 'find-file-hook #'my/tab-line-track)
+
+(defun my/tab-line-buffers-fn ()
+  "Return tab-line buffers in stable open order."
+  (setq my/tab-line-buffers
+        (seq-filter #'buffer-live-p my/tab-line-buffers))
+  (dolist (b (reverse (buffer-list)))
+    (when (and (buffer-file-name b)
+               (not (memq b my/tab-line-buffers)))
+      (setq my/tab-line-buffers
+            (append my/tab-line-buffers (list b)))))
+  my/tab-line-buffers)
+
+(setq tab-line-tabs-function #'my/tab-line-buffers-fn)
+(global-tab-line-mode 1)
+(global-set-key (kbd "M-p") 'tab-line-switch-to-prev-tab)
+(global-set-key (kbd "M-n") 'tab-line-switch-to-next-tab)
 
 ;; language
 (setq locale-coding-system 'utf-8)

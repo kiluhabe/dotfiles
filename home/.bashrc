@@ -29,7 +29,7 @@ else
 fi
 export LC_ALL="$LANG"
 
-# mise (manages language runtimes & language servers; replaces rbenv/pyenv/nodenv/jenv/tfenv/goenv/rustup/deno)
+# mise
 if command -v mise &>/dev/null; then
     eval "$(mise activate bash)"
 fi
