@@ -29,64 +29,14 @@ else
 fi
 export LC_ALL="$LANG"
 
-# rbenv setup
-if [ -d "$HOME/.rbenv" ]; then
-  export RBENV_ROOT="$HOME/.rbenv"
-  export PATH="$RBENV_ROOT/bin:$PATH"
-  eval "$(rbenv init -)"
+# mise (manages language runtimes & language servers; replaces rbenv/pyenv/nodenv/jenv/tfenv/goenv/rustup/deno)
+if command -v mise &>/dev/null; then
+    eval "$(mise activate bash)"
 fi
 
-# pyenv setup
-if [ -d "$HOME/.pyenv" ]; then
-  export PYENV_ROOT="$HOME/.pyenv"
-  export PATH="$PYENV_ROOT/bin:$PATH"
-  eval "$(pyenv init -)"
-fi
-
-#node
-if [ -d "$HOME/.nodenv" ]; then
-  export NODENV_ROOT="$HOME/.nodenv"
-  export PATH="$NODENV_ROOT/bin:$PATH"
-  eval "$(nodenv init -)"
-fi
-
-# jenv
-if [ -d "$HOME/.jenv" ]; then
-    export JENV_ROOT="$HOME/.jenv"
-    export PATH="$JENV_ROOT/bin:$PATH"
-    eval "$(jenv init -)"
-fi
-
-# tfenv
-if [ -d "$HOME/.tfenv" ]; then
-    export TFENV_ROOT="$HOME/.tfenv"
-    export PATH="$TFENV_ROOT/bin:$PATH"
-fi
-
-# The next line enables shell command completion for gcloud.
+# gcloud
 if [ -d "$HOME/google-cloud-sdk/bin" ]; then
   export PATH="$PATH:$HOME/google-cloud-sdk/bin"
-fi
-
-# go
-if [ -d "$HOME/.goenv" ]; then
-  export GOENV_ROOT="$HOME/.goenv"
-  export PATH="$GOENV_ROOT/bin:$PATH"
-  eval "$(goenv init -)"
-fi
-
-# rust
-if [ -d "$HOME/.cargo" ]; then
-    export CARGO_HOME="$HOME/.cargo"
-    export RUSTUP_HOME="$HOME/.rustup"
-    export RUST_SRC_PATH="$(rustc --print sysroot 2>/dev/null)/lib/rustlib/src/rust/library"
-    source "$CARGO_HOME/env"
-fi
-
-# deno
-if [ -d "$HOME/.deno" ]; then
-    export DENO_INSTALL="$HOME/.deno"
-    export PATH="$DENO_INSTALL/bin:$PATH"
 fi
 
 # wal

@@ -1,0 +1,37 @@
+# mise — language runtimes & language servers
+#
+# Local: `mise install` (everything)
+# Pod:   `mise install ruby node npm:typescript-language-server gem:ruby-lsp`
+#        (declared-but-uninstalled tools are harmless; shims just error if invoked)
+#
+# All artifacts live under $HOME (no sudo, persists with home volume).
+
+[tools]
+# Languages
+ruby      = "4.0"
+python    = "3.14"
+node      = "24"           # Active LTS
+go        = "1.26"
+terraform = "1.14"
+java      = "temurin-25"   # LTS
+rust      = "stable"
+deno      = "latest"
+ghc       = "9.14"         # Haskell compiler (via mise-ghcup plugin)
+cabal     = "3.16"
+
+# Language servers (prebuilt binaries preferred — pod-friendly)
+"npm:typescript-language-server"         = "latest"
+"gem:ruby-lsp"                           = "latest"
+"github:rust-lang/rust-analyzer"         = "latest"
+"go:golang.org/x/tools/gopls"            = "latest"
+"aqua:hashicorp/terraform-ls"            = "latest"
+"github:haskell/haskell-language-server" = "latest"
+
+[settings]
+# Use prebuilt distributions instead of source builds (avoids apt build deps;
+# matches the upcoming default for ruby in 2026)
+python.compile = false
+ruby.compile   = false
+# Quiet status messages on directory enter
+status.show_tools = false
+status.show_env   = false

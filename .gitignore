@@ -13,6 +13,7 @@ emacs/.emacs.d/meghanada
 emacs/.emacs.d/quelpa
 emacs/.emacs.d/kkcrc
 emacs/.emacs.d/tree-sitter
+emacs/.emacs.d/history
 *.dat
 vscode/Library/Application Support/*
 !vscode/Library/Application Support/Code/User/settings.json

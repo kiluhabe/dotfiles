@@ -2,135 +2,61 @@
 
 const fs = require('fs');
 const path = require('path');
-const readline = require('readline');
 const { execSync } = require('child_process');
 
-// Constants
-const COMPACTION_THRESHOLD = 200000
-
-// Read JSON from stdin
 let input = '';
-process.stdin.on('data', chunk => input += chunk);
-process.stdin.on('end', async () => {
+process.stdin.on('data', chunk => (input += chunk));
+process.stdin.on('end', () => {
   try {
     const data = JSON.parse(input);
 
-    // Extract values
     const model = data.model?.display_name || 'Unknown';
     const currentDir = data.workspace?.current_dir || data.cwd || '.';
     const dirName = path.basename(currentDir);
-    const sessionId = data.session_id;
+    const sessionId = data.session_id || '';
 
-    // Get Git branch
+    // Git branch (cwd has a .git dir or file when in a worktree)
     let branch = '';
     if (currentDir && fs.existsSync(path.join(currentDir, '.git'))) {
       try {
-        const branchName = execSync('git --no-optional-locks branch --show-current 2>/dev/null', {
+        const name = execSync('git --no-optional-locks branch --show-current 2>/dev/null', {
           cwd: currentDir,
-          encoding: 'utf-8'
+          encoding: 'utf-8',
         }).trim();
-        if (branchName) {
-          branch = ` 🌿 ${branchName}`;
-        }
-      } catch (e) {
-        // Gitコマンドエラーは無視
-      }
+        if (name) branch = ` 🌿 ${name}`;
+      } catch {}
     }
 
-    // Calculate token usage for current session
-    let totalTokens = 0;
+    // Context window % (Claude Code pre-calculates this; do not recompute)
+    const ctxPct = Math.round(data.context_window?.used_percentage ?? 0);
+    let ctxColor = '\x1b[32m';
+    if (ctxPct >= 60) ctxColor = '\x1b[33m';
+    if (ctxPct >= 80) ctxColor = '\x1b[91m';
+    const ctxDisplay = `${ctxColor}🧠 ${ctxPct}%\x1b[0m`;
 
-    if (sessionId) {
-      // Find all transcript files
-      const projectsDir = path.join(process.env.HOME, '.claude', 'projects');
+    // Cost (USD, client-side estimate; absent on first turn)
+    const cost = data.cost?.total_cost_usd;
+    const costDisplay =
+      typeof cost === 'number' && cost > 0 ? ` | 💰 $${cost.toFixed(2)}` : '';
 
-      if (fs.existsSync(projectsDir)) {
-        // Get all project directories
-        const projectDirs = fs.readdirSync(projectsDir)
-          .map(dir => path.join(projectsDir, dir))
-          .filter(dir => fs.statSync(dir).isDirectory());
-
-        // Search for the current session's transcript file
-        for (const projectDir of projectDirs) {
-          const transcriptFile = path.join(projectDir, `${sessionId}.jsonl`);
-
-          if (fs.existsSync(transcriptFile)) {
-            totalTokens = await calculateTokensFromTranscript(transcriptFile);
-            break;
-          }
-        }
-      }
+    // Rate limits (Pro/Max only; each window may be absent independently)
+    const rl = data.rate_limits || {};
+    const rlParts = [];
+    if (typeof rl.five_hour?.used_percentage === 'number') {
+      rlParts.push(`5h:${Math.round(rl.five_hour.used_percentage)}%`);
     }
+    if (typeof rl.seven_day?.used_percentage === 'number') {
+      rlParts.push(`7d:${Math.round(rl.seven_day.used_percentage)}%`);
+    }
+    const rlDisplay = rlParts.length ? ` | ⏳ ${rlParts.join(' ')}` : '';
 
-    // Calculate percentage
-    const percentage = Math.min(100, Math.round((totalTokens / COMPACTION_THRESHOLD) * 100));
+    // Subagent execution (only present under --agent or agent settings)
+    const agent = data.agent?.name;
+    const agentDisplay = agent ? ` | 🤖 ${agent}` : '';
 
-    // Format token display
-    const tokenDisplay = formatTokenCount(totalTokens);
-
-    // Color coding for percentage (same ratio as original article with 160K base)
-    let percentageColor = '\x1b[32m'; // Green
-    if (percentage >= 56) percentageColor = '\x1b[33m'; // Yellow (112K/200K)
-    if (percentage >= 72) percentageColor = '\x1b[91m'; // Bright Red (144K/200K)
-
-    // Build status line
-    const statusLine = `[${model}] 📁 ${dirName}${branch} | 🪙 ${tokenDisplay} | ${percentageColor}${percentage}%\x1b[0m \x1b[90m| ${sessionId}\x1b[0m`;
-
-    console.log(statusLine);
-  } catch (error) {
-    // Fallback status line on error
+    const line = `[${model}] 📁 ${dirName}${branch} | ${ctxDisplay}${costDisplay}${rlDisplay}${agentDisplay} \x1b[90m| ${sessionId}\x1b[0m`;
+    console.log(line);
+  } catch {
     console.log('[Claude Code]');
   }
 });
-
-async function calculateTokensFromTranscript(filePath) {
-  return new Promise((resolve, reject) => {
-    let lastUsage = null;
-
-    const fileStream = fs.createReadStream(filePath);
-    const rl = readline.createInterface({
-      input: fileStream,
-      crlfDelay: Infinity
-    });
-
-    rl.on('line', (line) => {
-      try {
-        const entry = JSON.parse(line);
-
-        // Check if this is an assistant message with usage data
-        if (entry.type === 'assistant' && entry.message?.usage) {
-          lastUsage = entry.message.usage;
-        }
-      } catch (e) {
-        // Skip invalid JSON lines
-      }
-    });
-
-    rl.on('close', () => {
-      if (lastUsage) {
-        // The last usage entry contains cumulative tokens
-        const totalTokens = (lastUsage.input_tokens || 0) +
-          (lastUsage.output_tokens || 0) +
-          (lastUsage.cache_creation_input_tokens || 0) +
-          (lastUsage.cache_read_input_tokens || 0);
-        resolve(totalTokens);
-      } else {
-        resolve(0);
-      }
-    });
-
-    rl.on('error', (err) => {
-      reject(err);
-    });
-  });
-}
-
-function formatTokenCount(tokens) {
-  if (tokens >= 1000000) {
-    return `${(tokens / 1000000).toFixed(1)}M`;
-  } else if (tokens >= 1000) {
-    return `${(tokens / 1000).toFixed(1)}K`;
-  }
-  return tokens.toString();
-}
-
