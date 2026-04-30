@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SESSION="${1:-dev}"
+DIR="${2:-$PWD}"
+
+if [ -n "${TMUX:-}" ]; then
+  echo "already inside tmux" >&2
+  exit 1
+fi
+
+if tmux has-session -t "$SESSION" 2>/dev/null; then
+  exec tmux attach -t "$SESSION"
+fi
+
+TL=$(tmux new-session  -d -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')
+R=$( tmux split-window -h -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
+BL=$(tmux split-window -v -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
+
+tmux send-keys -t "$TL" 'claude' Enter
+tmux send-keys -t "$R"  'es .'   Enter
+: "$BL"
+
+tmux select-pane -t "$TL"
+exec tmux attach -t "$SESSION"
