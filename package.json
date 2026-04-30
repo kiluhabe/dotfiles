@@ -4,8 +4,12 @@
   "description": "[![Test](https://github.com/kiluhabe/dotfiles/actions/workflows/test.yml/badge.svg?branch=master&event=schedule)](https://github.com/kiluhabe/dotfiles/actions/workflows/test.yml)",
   "author": "kiluhabe",
   "license": "MIT",
+  "scripts": {
+    "prepare": "lefthook install"
+  },
   "devDependencies": {
-    "@secretlint/secretlint-rule-preset-recommend": "^6.2.3",
-    "secretlint": "^6.2.3"
+    "@secretlint/secretlint-rule-preset-recommend": "^12.3.1",
+    "lefthook": "^1.13.6",
+    "secretlint": "^12.3.1"
   }
 }

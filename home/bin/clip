@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 main() {
-       if [ -n "$(uname | grep Darwin)" ]; then
+       if uname | grep -q Darwin; then
           command -v pbcopy > /dev/null 2>&1 && command -v reattach-to-user-namespace > /dev/null 2>&1 && reattach-to-user-namespace pbcopy || exit 1
        else
           command -v wl-copy > /dev/null 2>&1 && wl-copy || exit 1

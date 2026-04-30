@@ -1,9 +1,10 @@
 @AGENTS.md
 
-## Claude Code 固有の補足
+## Claude Code specifics
 
-- 大きな探索や複数ファイル横断調査は Explore subagent / Agent ツールに委譲して
-  メインの context を保つ。委譲後は同じ検索をこちらで繰り返さない。
-- 計画合意が必要な変更は plan モードで合意してから着手する。
-- Bash 実行履歴は `~/.claude/audit.log` に PostToolUse hook で追記される。10 MB
-  超で `audit.log.1` に自動ローテ（1 世代のみ）。
+- Delegate large or cross-file exploration to the Explore subagent /
+  Agent tool to preserve main context. After delegating, don't re-run
+  the same search.
+- For changes that need plan agreement, use plan mode before starting.
+- Bash history is appended to `~/.claude/audit.log` via PostToolUse
+  hook. Auto-rotates to `audit.log.1` past 10 MB (1 generation only).

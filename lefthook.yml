@@ -1,0 +1,9 @@
+pre-commit:
+  parallel: true
+  commands:
+    secretlint:
+      glob: "*"
+      run: npx secretlint --secretlintignore .gitignore --maskSecrets {staged_files}
+    shellcheck:
+      glob: "{home/bin/*,claude/.claude/hooks/*.sh}"
+      run: command -v shellcheck >/dev/null && shellcheck {staged_files} || echo "shellcheck not installed locally — CI will run it"

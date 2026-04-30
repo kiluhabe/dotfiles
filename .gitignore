@@ -20,3 +20,4 @@ vscode/Library/Application Support/*
 home/bin/kr*
 node_modules
 emacs/.emacs.d/projects
+.gitleaks-report.json

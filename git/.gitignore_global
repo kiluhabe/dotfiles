@@ -7,3 +7,19 @@ bower_components/
 .node-version
 .sts4-cache
 .ruby-ersion
+
+# Secrets / credentials — never commit by default. Use `git add -f` to override.
+.env
+.env.*
+.envrc
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+id_ecdsa*
+*.kdbx
+.aws/
+.gnupg/
+service-account*.json
+*.tfstate
+*.tfstate.backup

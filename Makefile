@@ -145,6 +145,12 @@ vscode-extentions:
 
 misc: ${HOME}/.local/bin/wal
 
+# Security
+## One-shot history scan via Docker (no host install required).
+gitleaks-scan:
+	docker run --rm -v ${DOTFILES}:/repo zricethezav/gitleaks:latest \
+		detect --source /repo --no-banner --redact
+
 # Test
 test: test_emacs test_pacman
 
