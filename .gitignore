@@ -21,3 +21,22 @@ home/bin/kr*
 node_modules
 emacs/.emacs.d/projects
 .gitleaks-report.json
+
+# AI assistant local state and secrets
+.codex/auth.json
+.codex/history.jsonl
+.codex/sessions/
+.codex/logs/
+.codex/cache/
+.codex/tmp/
+.codex/memories/
+.codex/plugins/cache/
+.claude/settings.local.json
+.claude/projects/
+.claude/todos/
+.claude/statsig/
+.claude/shell-snapshots/
+.claude/ide/
+.claude/logs/
+.claude/cache/
+.claude/tmp/

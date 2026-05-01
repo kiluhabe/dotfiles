@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MODE="${1:-}"
+SESSIONS_DIR="${CODEX_HOME:-$HOME/.codex}/sessions"
+
+if ! command -v jq >/dev/null 2>&1; then
+  echo "codex-usage: jq is required" >&2
+  exit 1
+fi
+
+if [ ! -d "$SESSIONS_DIR" ]; then
+  echo "codex-usage: no sessions directory at $SESSIONS_DIR" >&2
+  exit 1
+fi
+
+latest_session=$(
+  find "$SESSIONS_DIR" -type f -name '*.jsonl' -print0 2>/dev/null |
+    while IFS= read -r -d '' file; do
+      mtime=$(stat -f '%m' "$file" 2>/dev/null || stat -c '%Y' "$file" 2>/dev/null || echo 0)
+      printf '%s\t%s\n' "$mtime" "$file"
+    done |
+    sort -nr |
+    awk -F '\t' 'NR == 1 { print $2 }'
+)
+
+if [ -z "$latest_session" ]; then
+  echo "codex-usage: no session files found" >&2
+  exit 1
+fi
+
+payload=$(jq -cs '
+  map(select(.type == "event_msg" and .payload.type == "token_count")) |
+  last |
+  .payload
+' "$latest_session")
+
+if [ "$payload" = "null" ]; then
+  echo "codex-usage: no token_count events in $latest_session" >&2
+  exit 1
+fi
+
+jq_program='
+  def n: if . == null then 0 else . end;
+  def pct($n; $d): if ($d | n) == 0 then 0 else (($n | n) * 100 / $d) end;
+  def fmt:
+    if . == null then "-"
+    elif . >= 1000000 then ((. / 1000000 * 10 | round) / 10 | tostring) + "M"
+    elif . >= 1000 then ((. / 1000 | round | tostring) + "k")
+    else tostring
+    end;
+  . as $p |
+  ($p.info.last_token_usage.input_tokens // 0) as $current_input |
+  ($p.info.model_context_window // 0) as $window |
+  ($p.info.total_token_usage // {}) as $total |
+  ($p.info.last_token_usage // {}) as $last |
+  ($p.rate_limits // {}) as $rl |
+  if $compact then
+    "ctx:" + (pct($current_input; $window) | round | tostring) + "% " +
+    "last:" + (($last.total_tokens // 0) | fmt) + " " +
+    "5h:" + (($rl.primary.used_percent // null) | if . == null then "-" else (round | tostring) + "%" end) + " " +
+    "7d:" + (($rl.secondary.used_percent // null) | if . == null then "-" else (round | tostring) + "%" end)
+  else
+    "Session: " + $session + "\n" +
+    "Current context estimate: " + (pct($current_input; $window) | round | tostring) + "% " +
+      "(input " + ($current_input | fmt) + " / window " + ($window | fmt) + ")\n" +
+    "Last request tokens: in " + (($last.input_tokens // 0) | fmt) +
+      ", cached " + (($last.cached_input_tokens // 0) | fmt) +
+      ", out " + (($last.output_tokens // 0) | fmt) +
+      ", reasoning " + (($last.reasoning_output_tokens // 0) | fmt) + "\n" +
+    "Session cumulative tokens: in " + (($total.input_tokens // 0) | fmt) +
+      ", cached " + (($total.cached_input_tokens // 0) | fmt) +
+      ", out " + (($total.output_tokens // 0) | fmt) +
+      ", reasoning " + (($total.reasoning_output_tokens // 0) | fmt) + "\n" +
+    "Rate limits: 5h " + (($rl.primary.used_percent // null) | if . == null then "-" else (round | tostring) + "%" end) +
+      ", 7d " + (($rl.secondary.used_percent // null) | if . == null then "-" else (round | tostring) + "%" end) +
+      ", plan " + (($rl.plan_type // null) // "-") +
+      (if ($rl.credits? != null) then "\nCredits: " + ($rl.credits | tostring) else "" end)
+  end
+'
+
+if [ "$MODE" = "--compact" ]; then
+  jq -r --arg session "$latest_session" --argjson compact true "$jq_program" <<<"$payload"
+else
+  jq -r --arg session "$latest_session" --argjson compact false "$jq_program" <<<"$payload"
+fi

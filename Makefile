@@ -13,7 +13,7 @@ VS_CODE_COMMAND = $(shell which code 2>/dev/null)
 
 .DEFAULT_GOAL := install
 
-.PHONY: pacman ${AUR_HELPER} aur dotfiles group languages bundle vscode-extensions misc brew test
+.PHONY: pacman ${AUR_HELPER} aur dotfiles group languages bundle vscode-extensions misc brew test codex-dotfiles
 
 confirm:
 	@if [ "${SKIP_CONFIRM}" != "true" ]; then \
@@ -68,6 +68,9 @@ ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin:
 	rm -f ${HOME}/.bashrc ${HOME}/.bash_profile 2> /dev/null
 	stow -v -t ${HOME} home
 
+${HOME}/bin/codex-usage:
+	stow -v -t ${HOME} home
+
 ${HOME}/.tmux.conf:
 	stow -v -t ${HOME} tmux
 
@@ -90,6 +93,10 @@ ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css: ${CONFIG_DIR}
 ${HOME}/.claude/settings.json:
 	stow -v -t ${HOME} claude
 
+codex-dotfiles:
+	rm -f ${HOME}/.codex/config.toml ${HOME}/.codex/AGENTS.md ${HOME}/.codex/hooks.json 2> /dev/null
+	stow -v -t ${HOME} codex
+
 ## Darwin
 ${HOME}/.Brewfile:
 	stow -v -t ${HOME} brew
@@ -106,10 +113,10 @@ ${HOME}/Library/Preferences/com.googlecode.iterm2.plist:
 		stow -v -t ${HOME} iterm2
 
 ifeq ($(shell uname -s), Linux)
-dotfiles: ${HOME}/.alacritty.toml ${HOME}/.emacs.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json ${HOME}/.config/mise/config.toml ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/hypr/hyprland.conf ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
+dotfiles: ${HOME}/.alacritty.toml ${HOME}/.emacs.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/bin/codex-usage ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json codex-dotfiles ${HOME}/.config/mise/config.toml ${HOME}/.config/libinput-gestures.conf ${HOME}/.config/hypr/hyprland.conf ${HOME}/.config/waybar/config ${HOME}/.config/waybar/style.css
 endif
 ifeq ($(shell uname -s), Darwin)
-dotfiles: ${HOME}/.alacritty.toml ${HOME}/.emacs.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json ${HOME}/.config/mise/config.toml ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
+dotfiles: ${HOME}/.alacritty.toml ${HOME}/.emacs.d ${HOME}/.gitconfig ${HOME}/.gitignore_global ${HOME}/.bashrc ${HOME}/.bash_profile ${HOME}/.inputrc ${HOME}/bin ${HOME}/bin/codex-usage ${HOME}/.tmux.conf ${HOME}/.config/wal ${HOME}/.claude/settings.json codex-dotfiles ${HOME}/.config/mise/config.toml ${HOME}/.Brewfile ${HOME}/com.googlecode.iterm2.plist ${HOME}/Library/Application\ Support/Code/User/settings.json ${HOME}/Library/Preferences/com.googlecode.iterm2.plist
 endif
 
 # Languages (managed by mise; declared in mise/.config/mise/config.toml)
