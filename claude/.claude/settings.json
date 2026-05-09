@@ -1,17 +1,5 @@
 {
-  "model": "opus",
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "slack@claude-plugins-official": true,
-    "sentry@claude-plugins-official": true
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.js",
-    "padding": 0
-  },
   "permissions": {
-    "defaultMode": "default",
     "deny": [
       "Bash(sudo:*)",
       "Bash(curl:*)",
@@ -29,8 +17,10 @@
     ],
     "ask": [
       "Bash(git push:*)"
-    ]
+    ],
+    "defaultMode": "default"
   },
+  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -121,5 +111,16 @@
         ]
       }
     ]
-  }
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.js",
+    "padding": 0
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "sentry@claude-plugins-official": true
+  },
+  "agentPushNotifEnabled": true
 }
