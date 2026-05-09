@@ -29,6 +29,10 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/guard-bash.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/nudge-bash.sh"
           }
         ]
       },
