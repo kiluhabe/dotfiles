@@ -10,3 +10,7 @@
   hook. Auto-rotates to `audit.log.1` past 10 MB (1 generation only).
 - Fire independent Read / Bash / Agent calls in parallel within a single
   message. Serialize only when later calls depend on earlier results.
+- When a subagent cannot write files (e.g. Explore, Plan, or any
+  read-only agent), have it return the proposed content in its summary.
+  The main agent reviews it and performs the actual Write/Edit. Don't
+  swap in a write-capable agent just to skip the review step.

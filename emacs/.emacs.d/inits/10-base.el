@@ -134,22 +134,34 @@
 (global-set-key (kbd "C-c z") #'undo)
 (global-set-key (kbd "C-c Z") #'undo-redo)
 
-;; Project tweaks: skip picker via default-directory fallback, and
-;; treat per-service manifest dirs as project roots inside monorepos.
+;; After C-c z / C-c Z, bare z / Z keep (un)doing while repeat-mode is on.
+(defvar my/undo-repeat-map
+  (let ((m (make-sparse-keymap)))
+    (define-key m (kbd "z") #'undo)
+    (define-key m (kbd "Z") #'undo-redo)
+    m))
+(put 'undo 'repeat-map 'my/undo-repeat-map)
+(put 'undo-redo 'repeat-map 'my/undo-repeat-map)
+
+;; Pin the project root to the directory Emacs was launched in. Priority:
+;; a directory passed on the command line, otherwise the shell CWD at
+;; startup. This avoids project.el silently re-rooting into a subdirectory
+;; whenever you open a file deeper in the tree.
+(require 'cl-lib)
+(defvar my/project-root
+  (file-name-as-directory
+   (expand-file-name
+    (or (cl-find-if (lambda (a)
+                      (and (stringp a)
+                           (not (string-prefix-p "-" a))
+                           (file-directory-p (expand-file-name a))))
+                    (cdr command-line-args))
+        default-directory)))
+  "Directory treated as the project root for `project.el' this session.")
+
 (with-eval-after-load 'project
-  (defun my/project-from-default-directory (dir)
-    (cons 'transient dir))
-  (add-to-list 'project-find-functions
-               #'my/project-from-default-directory t)
-  (setq project-vc-extra-root-markers
-        '("package.json"     ; Node / TS
-          "Cargo.toml"        ; Rust
-          "go.mod"            ; Go
-          "Gemfile"           ; Ruby
-          "pyproject.toml"    ; Python
-          "deno.json"         ; Deno
-          "stack.yaml"        ; Haskell
-          "*.cabal")))        ; Haskell
+  (setq project-find-functions
+        (list (lambda (_dir) (cons 'transient my/project-root)))))
 
 ;; Arrow keys jump between isearch matches.
 (with-eval-after-load 'isearch

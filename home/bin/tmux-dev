@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SESSION="${1:-dev}"
+EXPLICIT_NAME="${1:-}"
+SESSION="${EXPLICIT_NAME:-dev}"
 DIR="${2:-$PWD}"
 
 if [ -n "${TMUX:-}" ]; then
@@ -9,8 +10,18 @@ if [ -n "${TMUX:-}" ]; then
   exit 1
 fi
 
-if tmux has-session -t "$SESSION" 2>/dev/null; then
-  exec tmux attach -t "$SESSION"
+if [ -n "$EXPLICIT_NAME" ]; then
+  # Explicit name: attach to the existing session if any.
+  if tmux has-session -t "$SESSION" 2>/dev/null; then
+    exec tmux attach -t "$SESSION"
+  fi
+else
+  # No name given: always start a new session by finding a free suffix.
+  i=2
+  while tmux has-session -t "$SESSION" 2>/dev/null; do
+    SESSION="dev-${i}"
+    i=$((i + 1))
+  done
 fi
 
 TL=$(tmux new-session  -d -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')
