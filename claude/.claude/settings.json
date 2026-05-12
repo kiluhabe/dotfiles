@@ -56,6 +56,15 @@
         ]
       },
       {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.claude/hooks/nudge-textlint.sh"
+          }
+        ]
+      },
+      {
         "hooks": [
           {
             "type": "command",
