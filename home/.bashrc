@@ -30,8 +30,10 @@ fi
 export LC_ALL="$LANG"
 
 # mise
+# --quiet silences hook-env's "missing: ..." WARN on each prompt;
+# declared-but-uninstalled tools are intentional (see mise/config.toml).
 if command -v mise &>/dev/null; then
-    eval "$(mise activate bash)"
+    eval "$(mise activate bash --quiet)"
 fi
 
 # gcloud

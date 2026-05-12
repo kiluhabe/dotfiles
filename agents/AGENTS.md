@@ -21,6 +21,12 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - When uncertainty is high, asking the user once is almost always cheaper
   than reading widely.
 
+## File edits
+
+- Batch changes to one file into a single Write or Edit call. Don't
+  issue several small sequential Edits to the same file when one larger
+  change would do.
+
 ## Multi-topic requests
 
 - If a request bundles independent topics (research + implementation +
@@ -37,6 +43,12 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - Never force-push, hard reset, wipe worktree (`clean -fdx` etc.), or
   skip hooks (`--no-verify` etc.) without explicit instruction. If
   pre-commit / pre-push fails, fix the cause.
+
+## Branches and pull requests
+
+- New branches: prefix with `kiluhabe/` (e.g. `kiluhabe/fix-foo`).
+- Pull requests: open as drafts (`gh pr create --draft`). The user
+  flips them to ready-for-review.
 
 ## Destructive and irreversible operations
 

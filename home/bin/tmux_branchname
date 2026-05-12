@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+# Run by tmux status-interval (1s) per pane. Without this, `git status`
+# would race for `.git/index.lock` against interactive git pull/switch.
+export GIT_OPTIONAL_LOCKS=0
+
 main() {
     branchname="$(git rev-parse --abbrev-ref HEAD 2> /dev/null)"
     is_git_dirty=$(git status -s --ignore-submodules=dirty 2> /dev/null)

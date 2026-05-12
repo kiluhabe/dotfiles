@@ -35,3 +35,7 @@ ruby.compile   = false
 # Quiet status messages on directory enter
 status.show_tools = false
 status.show_env   = false
+# ghc is registered with conda as default backend; conda init leaks
+# `get_or_create_subdir` debug prints on every mise invocation. Disable
+# conda so ghc falls back to asdf:mise-plugins/mise-ghcup (intended backend).
+disable_backends = ["conda"]

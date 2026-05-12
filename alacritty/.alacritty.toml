@@ -52,6 +52,21 @@ style = "Regular"
 x = 0
 y = 4
 
+[[hints.enabled]]
+command         = "open"
+hyperlinks      = true
+post_processing = true
+persist         = false
+regex           = '''(https?|ftp|file|git|ssh|ipfs|ipns|gemini|gopher)://[^\s<>"`'{}|\\^]+|(mailto|news|magnet):[^\s<>"`'{}|\\^]+'''
+
+[hints.enabled.mouse]
+enabled = true
+mods    = "Command"
+
+[hints.enabled.binding]
+key  = "U"
+mods = "Control|Shift"
+
 [[keyboard.bindings]]
 action = "ClearLogNotice"
 key = "L"
