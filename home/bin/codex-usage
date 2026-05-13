@@ -40,6 +40,7 @@ if [ "$payload" = "null" ]; then
   exit 1
 fi
 
+# shellcheck disable=SC2016  # jq variables, not shell expansion
 jq_program='
   def n: if . == null then 0 else . end;
   def pct($n; $d): if ($d | n) == 0 then 0 else (($n | n) * 100 / $d) end;

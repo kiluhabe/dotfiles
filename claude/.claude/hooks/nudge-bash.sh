@@ -9,6 +9,7 @@ CMD=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 [ -z "$CMD" ] && exit 0
 
 nudge() {
+  # shellcheck disable=SC2016  # printf format string, not shell expansion
   printf 'BLOCKED by nudge-bash: use %s instead of `%s`\nCommand: %s\n' "$2" "$1" "$CMD" >&2
   exit 2
 }
