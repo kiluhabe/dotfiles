@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # PostToolUse hook for the Write/Edit tools.
 # Lints .md files with textlint-rule-preset-japanese and nudges Claude
-# to fix only the parts it just wrote. Skips silently if textlint isn't
-# resolvable via `npx --no-install` (user explicitly opted into this).
+# to fix only the parts it just wrote. First invocation lets npx fetch
+# textlint into its cache; subsequent runs are fast.
 set -uo pipefail
 
 INPUT=$(cat)
@@ -23,15 +23,15 @@ command -v npx >/dev/null 2>&1 || exit 0
 CONFIG="${HOME}/.claude/hooks/textlint.config.json"
 [ -f "$CONFIG" ] || exit 0
 
-OUTPUT=$(npx --no-install -p textlint -p textlint-rule-preset-japanese -- \
+OUTPUT=$(npx --yes -p textlint -p textlint-rule-preset-japanese -- \
   textlint --no-color --config "$CONFIG" -f stylish "$FILE" 2>&1)
 RC=$?
 
 # Exit 0 = clean; nothing to say.
 [ $RC -eq 0 ] && exit 0
 
-# Non-zero without the file path in output means npx couldn't resolve
-# textlint (or another tooling error) — skip silently per user policy.
+# Non-zero without the file path in output = tooling error (network down,
+# install failed, etc.). Skip silently rather than spam Claude.
 if ! printf '%s' "$OUTPUT" | grep -qF "$FILE"; then
   exit 0
 fi

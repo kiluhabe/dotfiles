@@ -1,7 +1,6 @@
 [user]
   name = kiluhabe
   email = kiluhabe@users.noreply.github.com
-  signingkey = ~/.ssh/sign_key.pub
 [color]
   ui = auto
 [alias]
@@ -23,8 +22,6 @@
   ignorecase = false
 [credential "https://source.developers.google.com"]
   helper = gcloud.sh
-[gpg]
-  format = ssh
 [filter "lfs"]
   required = true
   clean = git-lfs clean -- %f
@@ -48,7 +45,3 @@
   diffFilter = delta --color-only
 [pull]
   rebase = false
-[commit]
-  gpgSign = true
-[tag]
-  forceSignAnnotated = true
