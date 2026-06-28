@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# tmux status segment: warn when the macOS input source is in a
+# non-ASCII (zenkaku / CJK) mode that would mangle shell commands.
+# Requires `macism` (brew install macism). Silent if macism is absent
+# or if the current source is direct ASCII input.
+
+src=$(macism 2>/dev/null) || exit 0
+[ -z "$src" ] && exit 0
+
+case "$src" in
+  # Direct ASCII from a JP IME (Google IME .Roman / Kotoeri RomajiTyping.Roman)
+  # or any plain keyboard layout — safe.
+  *Japanese.Roman|*RomajiTyping.Roman|com.apple.keylayout.*)
+    ;;
+  # Anything CJK / kana / hangul / pinyin: alert.
+  *Japanese*|*Kotoeri*|*Chinese*|*Korean*|*Hangul*|*Pinyin*)
+    printf '#[fg=red,bold,reverse] 全角 #[default] | '
+    ;;
+esac

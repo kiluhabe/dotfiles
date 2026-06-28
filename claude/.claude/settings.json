@@ -18,7 +18,7 @@
     "ask": [
       "Bash(git push:*)"
     ],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "model": "opus",
   "hooks": {
@@ -28,19 +28,11 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/guard-bash.sh"
+            "command": "~/.agents/hooks/guard-bash.sh"
           },
           {
             "type": "command",
-            "command": "~/.claude/hooks/nudge-bash.sh"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh send-tool-status.sh"
+            "command": "~/.agents/hooks/nudge-bash.sh"
           }
         ]
       }
@@ -51,7 +43,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.claude/hooks/audit-log.sh"
+            "command": "~/.agents/hooks/audit-log.sh claude"
           }
         ]
       },
@@ -61,65 +53,6 @@
           {
             "type": "command",
             "command": "~/.claude/hooks/nudge-textlint.sh"
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh send-status.sh WORKING"
-          }
-        ]
-      }
-    ],
-    "Notification": [
-      {
-        "matcher": "idle_prompt",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh send-status.sh INPUT"
-          }
-        ]
-      }
-    ],
-    "PermissionRequest": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh permission-listener.sh"
-          }
-        ]
-      }
-    ],
-    "UserPromptSubmit": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh send-status.sh WORKING"
-          }
-        ]
-      }
-    ],
-    "PostToolUseFailure": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh send-status.sh ERROR"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/clawy.sh send-status.sh DONE"
           }
         ]
       }
@@ -137,5 +70,6 @@
     "typescript-lsp@claude-plugins-official": true,
     "clangd-lsp@claude-plugins-official": true
   },
-  "agentPushNotifEnabled": true
+  "agentPushNotifEnabled": true,
+  "skipAutoPermissionPrompt": true
 }

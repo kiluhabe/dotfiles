@@ -49,6 +49,7 @@ if [ -d ~/.cache/wal ]; then
 fi
 
 #aliases
+alias codex='codex --profile default'
 alias xcopy='xsel --clipboard --input'
 alias es="env TERM=xterm emacs"
 alias tm="tmux -u"

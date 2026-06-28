@@ -23,6 +23,7 @@ emacs/.emacs.d/projects
 .gitleaks-report.json
 
 # AI assistant local state and secrets
+codex/.codex/config.toml
 .codex/auth.json
 .codex/history.jsonl
 .codex/sessions/

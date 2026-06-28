@@ -6,9 +6,15 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.codex/hooks/guard-bash.sh",
+            "command": "~/.agents/hooks/guard-bash.sh",
             "timeout": 30,
             "statusMessage": "Checking Bash command"
+          },
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/nudge-bash.sh",
+            "timeout": 30,
+            "statusMessage": "Checking Bash command usage"
           }
         ]
       }
@@ -19,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "~/.codex/hooks/audit-log.sh",
+            "command": "~/.agents/hooks/audit-log.sh codex",
             "timeout": 30
           }
         ]

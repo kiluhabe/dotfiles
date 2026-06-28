@@ -14,6 +14,8 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 
 - For large files (~500 lines / 50 KB+), grep first, then Read with
   offset/limit. Don't read the whole file.
+- Delegate large or cross-file exploration to a read-only/explore subagent
+  when it will preserve main context.
 - Don't duplicate searches between main session and subagent. After
   delegating, take the summary -- don't re-run the same query.
 - Delegate when a search will likely exceed 3 queries; otherwise narrow
@@ -26,12 +28,17 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - Batch changes to one file into a single Write or Edit call. Don't
   issue several small sequential Edits to the same file when one larger
   change would do.
+- When a read-only subagent proposes file content, review the proposed content
+  and perform the actual write/edit in the main session.
 
 ## Multi-topic requests
 
 - If a request bundles independent topics (research + implementation +
   lookup), delegate each in parallel and merge summaries. Don't serialize
   when there's no dependency.
+- Fire independent read/search/delegation calls in parallel when the tool
+  environment supports it. Serialize only when later calls depend on earlier
+  results.
 - Tell delegates what to return and the word cap. Don't accept raw logs.
 - Skip delegation for 1-2 step lookups. Delegate when: 3+ serial queries,
   mixed independent topics, or expected output > 5 KB. Keep dependent

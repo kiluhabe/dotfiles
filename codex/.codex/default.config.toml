@@ -10,24 +10,16 @@ approval_policy = "on-request"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
 
-[features]
-codex_hooks = true
-
 [tui]
-status_line = ["model-with-reasoning", "current-dir"]
+status_line = ["model-with-reasoning", "context-remaining", "current-dir"]
 terminal_title = ["spinner", "project"]
 
 [tui.model_availability_nux]
 "gpt-5.5" = 1
 
-[projects."/Users/kiluhabe"]
-trust_level = "trusted"
-
-[projects."/Users/kiluhabe/dotfiles"]
-trust_level = "trusted"
-
-[plugins."figma@openai-curated"]
+[plugins."superpowers@openai-curated"]
 enabled = true
 
-[plugins."google-drive@openai-curated"]
-enabled = true
+# Profile-scoped feature flags. This file is loaded via `codex --profile default`.
+[features]
+hooks = true

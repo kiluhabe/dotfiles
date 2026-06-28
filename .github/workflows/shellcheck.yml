@@ -12,4 +12,4 @@ jobs:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
       - name: Run shellcheck
-        run: shellcheck home/bin/* claude/.claude/hooks/*.sh
+        run: shellcheck home/bin/* claude/.claude/hooks/*.sh agents/.agents/hooks/*.sh
