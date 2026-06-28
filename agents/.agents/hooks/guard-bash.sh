@@ -2,6 +2,11 @@
 # Shared PreToolUse hook for agent Bash commands.
 set -uo pipefail
 
+if ! command -v jq >/dev/null 2>&1; then
+  printf 'BLOCKED by guard-bash: jq not found (security control requires jq)\n' >&2
+  exit 2
+fi
+
 INPUT=$(cat)
 CMD=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 [ -z "$CMD" ] && exit 0

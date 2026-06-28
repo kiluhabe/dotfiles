@@ -14,21 +14,43 @@ nudge() {
 
 check_segment() {
   local seg="$1"
-  local head_seg="${seg%%|*}"
-  head_seg="${head_seg#"${head_seg%%[![:space:]]*}"}"
-  head_seg="${head_seg%"${head_seg##*[![:space:]]}"}"
-  [ -z "$head_seg" ] && return 0
+  seg="${seg#"${seg%%[![:space:]]*}"}"
+  seg="${seg%"${seg##*[![:space:]]}"}"
+  [ -z "$seg" ] && return 0
 
-  local first="${head_seg%%[[:space:]]*}"
+  local first="${seg%%[[:space:]]*}"
+  first="${first##*/}"
+
+  if [ "$first" = "xargs" ]; then
+    local -a toks
+    read -r -a toks <<<"$seg"
+    local skip_next=0 target=""
+    local i
+    for ((i=1; i<${#toks[@]}; i++)); do
+      local w="${toks[i]}"
+      if [ "$skip_next" = "1" ]; then skip_next=0; continue; fi
+      case "$w" in
+        -n|-P|-L|-I|-E|-d|-s|-a|--max-args|--max-procs|--max-lines|--replace|--eof|--delimiter|--max-chars|--arg-file)
+          skip_next=1; continue ;;
+        -*) continue ;;
+        *) target="$w"; break ;;
+      esac
+    done
+    if [ -n "$target" ]; then
+      check_segment "$target"
+    fi
+    return 0
+  fi
+
   case "$first" in
     cat|bat|less|more|head)
-      if printf '%s' "$head_seg" | grep -qE '<<-?[[:space:]]*'\''?[A-Za-z_]'; then
+      if printf '%s' "$seg" | grep -qE '<<-?[[:space:]]*'\''?[A-Za-z_]'; then
         return 0
       fi
       nudge "$first" "Read tool (use offset/limit for large files)"
       ;;
     tail)
-      if printf '%s' "$head_seg" | grep -qE '[[:space:]]-[a-zA-Z]*[fF]'; then
+      if printf '%s' "$seg" | grep -qE '[[:space:]]-[a-zA-Z]*[fF]'; then
         return 0
       fi
       nudge "tail" "Read tool (use offset to read end of file)"
@@ -39,12 +61,26 @@ check_segment() {
   esac
 }
 
-TMP="${CMD//&&/$'\n'}"
-TMP="${TMP//||/$'\n'}"
-TMP="${TMP//;/$'\n'}"
+split_chains() {
+  local s="$1"
+  s="${s//&&/$'\n'}"
+  s="${s//||/$'\n'}"
+  s="${s//|/$'\n'}"
+  s="${s//;/$'\n'}"
+  printf '%s' "$s"
+}
 
+TMP=$(split_chains "$CMD")
 while IFS= read -r seg; do
   check_segment "$seg"
 done <<<"$TMP"
+
+SUBS=$(printf '%s' "$CMD" | grep -oE '\$\([^()]*\)|`[^`]*`' | sed -E 's/^\$\(|\)$|^`|`$//g')
+if [ -n "$SUBS" ]; then
+  SUBS=$(split_chains "$SUBS")
+  while IFS= read -r seg; do
+    check_segment "$seg"
+  done <<<"$SUBS"
+fi
 
 exit 0

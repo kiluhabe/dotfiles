@@ -1,0 +1,46 @@
+# Match Claude's Bash permission defaults for Codex commands that request to run
+# outside the sandbox.
+prefix_rule(
+    pattern = ["sudo"],
+    decision = "forbidden",
+    justification = "Do not run privileged commands from Codex.",
+    match = [
+        "sudo apt update",
+        "sudo rm -rf /tmp/example",
+    ],
+)
+
+prefix_rule(
+    pattern = ["curl"],
+    decision = "forbidden",
+    justification = "Use an approved network path instead of direct curl.",
+    match = [
+        "curl https://example.com",
+        "curl --location https://example.com/file",
+    ],
+)
+
+prefix_rule(
+    pattern = ["wget"],
+    decision = "forbidden",
+    justification = "Use an approved network path instead of direct wget.",
+    match = [
+        "wget https://example.com/file",
+        "wget --output-document file https://example.com/file",
+    ],
+)
+
+prefix_rule(
+    pattern = ["git", "push"],
+    decision = "prompt",
+    justification = "Confirm before pushing changes to a remote.",
+    match = [
+        "git push",
+        "git push origin main",
+        "git push --set-upstream origin feature",
+    ],
+    not_match = [
+        "git status",
+        "git pull",
+    ],
+)

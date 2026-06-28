@@ -5,7 +5,7 @@ model_reasoning_effort = "medium"
 model_verbosity = "low"
 personality = "pragmatic"
 
-sandbox_mode = "workspace-write"
+default_permissions = "personal-workspace"
 approval_policy = "on-request"
 project_doc_fallback_filenames = ["CLAUDE.md"]
 project_doc_max_bytes = 65536
@@ -19,6 +19,22 @@ terminal_title = ["spinner", "project"]
 
 [plugins."superpowers@openai-curated"]
 enabled = true
+
+[permissions.personal-workspace]
+description = "Workspace access with sensitive local and environment files denied."
+extends = ":workspace"
+
+[permissions.personal-workspace.filesystem]
+glob_scan_max_depth = 3
+"~/.ssh" = "deny"
+"~/.aws" = "deny"
+"~/.gnupg" = "deny"
+
+[permissions.personal-workspace.filesystem.":workspace_roots"]
+".env" = "deny"
+".env.*" = "deny"
+"**/.env" = "deny"
+"**/.env.*" = "deny"
 
 # Profile-scoped feature flags. This file is loaded via `codex --profile default`.
 [features]
