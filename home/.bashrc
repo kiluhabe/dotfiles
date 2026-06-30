@@ -48,6 +48,8 @@ if [ -d ~/.cache/wal ]; then
     source ~/.cache/wal/colors-tty.sh
 fi
 
+export CLAUDE_CODE_ENABLE_TELEMETRY=1
+
 #aliases
 alias codex='codex --profile default'
 alias xcopy='xsel --clipboard --input'
