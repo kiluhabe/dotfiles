@@ -20,7 +20,7 @@
     ],
     "defaultMode": "auto"
   },
-  "model": "opus",
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {
@@ -71,6 +71,7 @@
     "clangd-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
   },
+  "effortLevel": "low",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }

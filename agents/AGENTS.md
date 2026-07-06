@@ -31,18 +31,14 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - When a read-only subagent proposes file content, review the proposed content
   and perform the actual write/edit in the main session.
 
-## Multi-topic requests
+## Task decomposition and parallelism
 
-- If a request bundles independent topics (research + implementation +
-  lookup), delegate each in parallel and merge summaries. Don't serialize
-  when there's no dependency.
-- Fire independent read/search/delegation calls in parallel when the tool
-  environment supports it. Serialize only when later calls depend on earlier
-  results.
+- Default to parallel. Break a request into independent subtasks first.
+  Run independent ones concurrently.
+- Serialize only when a step depends on a prior step's output.
+- Also serialize when splitting costs more than it saves (trivial
+  1-2 step work).
 - Tell delegates what to return and the word cap. Don't accept raw logs.
-- Skip delegation for 1-2 step lookups. Delegate when: 3+ serial queries,
-  mixed independent topics, or expected output > 5 KB. Keep dependent
-  steps inside one delegate; parallelize independent ones.
 
 ## Commits and history
 
