@@ -48,6 +48,13 @@ if [ -d ~/.cache/wal ]; then
     source ~/.cache/wal/colors-tty.sh
 fi
 
+# pnpm
+export PNPM_HOME="~/.pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
+esac
+
 export CLAUDE_CODE_ENABLE_TELEMETRY=1
 
 #aliases
@@ -59,3 +66,4 @@ alias tmux="tmux -u"
 alias reload-x="xrdb $HOME/.Xresources"
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
 alias comp="cargo compete"
+
