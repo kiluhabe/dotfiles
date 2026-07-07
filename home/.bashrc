@@ -49,7 +49,7 @@ if [ -d ~/.cache/wal ]; then
 fi
 
 # pnpm
-export PNPM_HOME="~/.pnpm"
+export PNPM_HOME="$HOME/.pnpm"
 case ":$PATH:" in
   *":$PNPM_HOME/bin:"*) ;;
   *) export PATH="$PNPM_HOME/bin:$PATH" ;;
