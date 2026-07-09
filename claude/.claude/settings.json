@@ -46,15 +46,6 @@
             "command": "~/.agents/hooks/audit-log.sh claude"
           }
         ]
-      },
-      {
-        "matcher": "Write|Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/nudge-textlint.sh"
-          }
-        ]
       }
     ]
   },
