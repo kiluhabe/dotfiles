@@ -8,16 +8,20 @@
 
 ### Subagent model / effort routing
 
-- Default to session inheritance. When unsure, leave model/effort
-  unspecified and inherit.
-- Guideline: Haiku for mechanical work (simple search, formatting,
+- Route by default. Every time you spawn a subagent, classify the
+  task and set model/effort explicitly. Don't fall back to session
+  inheritance as the normal path.
+- Tiers: Haiku for mechanical work (simple search, formatting,
   enumeration). Sonnet for most research/implementation. Opus for
   high-stakes work (design decisions, multi-step reasoning,
   adversarial review).
 - Set effort by how multi-step the task is. Low for simple, medium
   for standard, high+ for involved reasoning.
-- This is guidance, not a hard branch. Scale up with the cost of
-  being wrong. Scale down when the work is cheap and reversible.
+- When the tier is genuinely unclear, round up, don't inherit. A
+  misjudged-down subagent fails and gets re-delegated, which costs
+  more than starting one tier higher.
+- Scale up with the cost of being wrong. Scale down when the work is
+  cheap and reversible.
 - A subagent that gets stuck should not push through. Return early
   with what it reached, the blocker, and what's missing.
   The caller can then re-delegate on a stronger model.
