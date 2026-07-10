@@ -6,26 +6,29 @@
 - Bash history is appended to `~/.claude/audit.log` via PostToolUse
   hook. Auto-rotates to `audit.log.1` past 10 MB (1 generation only).
 
-### Subagent model / effort routing
+### Model Orchestration
 
-- Route by default. Every time you spawn a subagent, classify the
-  task and set model/effort explicitly. Don't fall back to session
-  inheritance as the normal path.
-- Tiers: Haiku for mechanical work (simple search, formatting,
-  enumeration). Sonnet for most research/implementation. Opus for
-  high-stakes work (design decisions, multi-step reasoning,
-  adversarial review).
-- Set effort by how multi-step the task is. Low for simple, medium
-  for standard, high+ for involved reasoning.
-- When the tier is genuinely unclear, round up, don't inherit. A
-  misjudged-down subagent fails and gets re-delegated, which costs
-  more than starting one tier higher.
-- Scale up with the cost of being wrong. Scale down when the work is
-  cheap and reversible.
-- A subagent that gets stuck should not push through. Return early
-  with what it reached, the blocker, and what's missing.
-  The caller can then re-delegate on a stronger model.
-- Escalate on signal, not reflex. Watch for repeated failure,
-  irreducible ambiguity, or a design call surfacing mid-task.
-- Step up one tier at a time, roughly once per subtask. If a second
-  bump is needed, rethink the split instead.
+- You, the main agent, act as the orchestrator. You decompose the
+  request, route each piece to the right subagent, and integrate the
+  results. Prefer delegating over doing the work inline.
+- Route by task, not by inheritance. Match each piece to a subagent:
+  - `mechanical` (Haiku) — simple search, enumeration, formatting,
+    well-specified edits.
+  - `implementer` (Sonnet) — most research and implementation; the
+    default.
+  - `architect` (Opus) — high-stakes work: design decisions, multi-step
+    reasoning, adversarial review.
+- My phrasing sets the pattern explicitly. When I open with one of
+  these, follow it over the by-task default:
+  - 「検討してください」 → `architect` (Opus). A judgment call; reason it
+    through on the top tier.
+  - 「調査お願いします」 → `implementer` (Sonnet) does the investigation,
+    then `architect` (Opus) synthesizes the findings (総括).
+  - 「実装してください」 → `implementer` (Sonnet) implements, then
+    `architect` (Opus) reviews the change.
+- When tasks are independent, dispatch several subagents in parallel
+  (one message, multiple Agent calls). Serialize only when a step
+  depends on a prior step's output.
+- Escalate on signal, not reflex — repeated failure, irreducible
+  ambiguity, or a design call surfacing mid-task. Step up one tier at a
+  time; if a second bump is needed, rethink the split instead.
