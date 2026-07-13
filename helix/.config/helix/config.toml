@@ -1,6 +1,6 @@
 # Helix config — Emacs 設定 (emacs/.emacs.d) からの移植。
 # modal エディタと相性が悪い Emacs 側の VSCode 風 C-c キーバインドは持ち込まず、
-# 対応する Helix ネイティブ操作を末尾コメントに記す。
+# 対応する Helix ネイティブ操作を末尾コメントに記す(追加割り当ては最小限)。
 
 theme = "dark_plus"  # Emacs の vscode-dark-plus に最も近い Helix 同梱テーマ
 
@@ -34,12 +34,19 @@ render = true
 # project-find-file 相当。ドットファイルも候補に出す。
 hidden = false
 
-# ── Emacs → Helix キーバインド対応(独自割り当てはしない。方針: 標準準拠) ──
+# ── Emacs → Helix キーバインド対応(基本は標準準拠。追加は下の [keys] のみ) ──
 # C-c p  project-find-file    -> Space f   (file picker)
+# C-c P  M-x / command 一覧   -> Space ?   (command palette) または : (command mode)
 # C-c F  project-find-regexp  -> Space /   (global search)
-# C-c f  isearch-forward      -> /         (buffer search)
-# C-c P  M-x                  -> :         (command mode)
+# C-c f  isearch-forward      -> /         (buffer search / n・N で移動)
 # C-c z / C-c Z  undo/redo    -> u / U
-# multiple-cursors            -> C (下) / Alt-C (上) / s (選択内 regex)
-# M-r  recentf-open           -> 相当なし(Space f で代替)
-# f8   dired サイドバー       -> Helix 25.07 mainline にツリー explorer なし
+# C-c c / C-c v  copy/paste   -> y / p(OS クリップボードは Space y / Space p)
+# multiple-cursors 次/全      -> C(下)/ Alt-C(上)/ % で全選択→s で regex 分割
+# M-r  recentf-open           -> Space ' (last_picker) / Space j (jumplist) /
+#                                ga(最後に開いた file)/ gm(最後に変更した file)
+# f8   dired サイドバー       -> Space e(下の [keys] で file_explorer を割り当て)
+
+# file_explorer は 25.07 に存在するがデフォルト未割り当てなので、Emacs の
+# f8 サイドバー相当として Space e に割り当てる(ワークスペース root のツリー)。
+[keys.normal.space]
+e = "file_explorer"
