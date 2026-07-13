@@ -1,0 +1,19 @@
+# インデントは Emacs 設定 (typescript-ts-mode-indent-offset 2) を踏襲し
+# TS/TSX/JS は 2 スペース。他言語は Helix デフォルトに委ねる。
+
+[[language]]
+name = "typescript"
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "tsx"
+indent = { tab-width = 2, unit = "  " }
+
+[[language]]
+name = "javascript"
+indent = { tab-width = 2, unit = "  " }
+
+# 40-major-modes.el と同様、solargraph ではなく ruby-lsp(mise 管理)を使う。
+[[language]]
+name = "ruby"
+language-servers = ["ruby-lsp"]
