@@ -1,0 +1,45 @@
+# Helix config — Emacs 設定 (emacs/.emacs.d) からの移植。
+# modal エディタと相性が悪い Emacs 側の VSCode 風 C-c キーバインドは持ち込まず、
+# 対応する Helix ネイティブ操作を末尾コメントに記す。
+
+theme = "dark_plus"  # Emacs の vscode-dark-plus に最も近い Helix 同梱テーマ
+
+[editor]
+# indent-tabs-mode nil / delete-trailing-whitespace / electric-pair-mode /
+# global-tab-line-mode の移植。
+bufferline = "multiple"          # バッファが複数のときだけタブを表示
+auto-pairs = true                # electric-pair-mode
+trim-trailing-whitespace = true  # before-save-hook delete-trailing-whitespace
+trim-final-newlines = true
+color-modes = true
+cursorline = true
+true-color = true
+
+[editor.statusline]
+# 20-modeline.el 相当: モード / ファイル名 / 読み取り専用 / 変更フラグ /
+# 診断 / メジャーモード(file-type) / 位置(行:列)。
+left = ["mode", "spinner", "file-name", "read-only-indicator", "file-modification-indicator"]
+center = []
+right = ["diagnostics", "file-type", "position"]
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "underline"
+
+[editor.indent-guides]
+render = true
+
+[editor.file-picker]
+# project-find-file 相当。ドットファイルも候補に出す。
+hidden = false
+
+# ── Emacs → Helix キーバインド対応(独自割り当てはしない。方針: 標準準拠) ──
+# C-c p  project-find-file    -> Space f   (file picker)
+# C-c F  project-find-regexp  -> Space /   (global search)
+# C-c f  isearch-forward      -> /         (buffer search)
+# C-c P  M-x                  -> :         (command mode)
+# C-c z / C-c Z  undo/redo    -> u / U
+# multiple-cursors            -> C (下) / Alt-C (上) / s (選択内 regex)
+# M-r  recentf-open           -> 相当なし(Space f で代替)
+# f8   dired サイドバー       -> Helix 25.07 mainline にツリー explorer なし
