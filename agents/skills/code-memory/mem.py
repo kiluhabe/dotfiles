@@ -97,11 +97,11 @@ def cmd_save(args):
     rel = rel_path(repo_root, args.file)
     payload = json.loads(sys.stdin.read() or "{}")
     existing = md_path(repo_id, rel)
-    if existing.exists() and payload.get("findings"):
+    if existing.exists():
         prev = parse_md(existing)
         payload.setdefault("role", prev["role"])
         payload["symbols"] = payload.get("symbols") or prev["symbols"]
-        payload["findings"] = prev["findings"] + payload["findings"]
+        payload["findings"] = prev["findings"] + payload.get("findings", [])
     path = write_md(repo_id, rel, sha256_of(args.file), payload)
     print(path)
     return 0

@@ -81,6 +81,43 @@ class SaveAndParse(unittest.TestCase):
         self.assertEqual(parsed["role"], "editor config")
         self.assertIn("loads lazily", parsed["findings"])
 
+    def test_save_without_findings_preserves_prior_findings(self):
+        first = json.dumps({"role": "R1", "symbols": ["s1"],
+                             "findings": ["f1"]})
+        subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=first.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True)
+
+        second = json.dumps({"findings": ["f2"]})
+        out = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=second.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+
+        parsed = mem.parse_md(Path(out))
+        self.assertEqual(parsed["role"], "R1")
+        self.assertIn("s1", parsed["symbols"])
+        self.assertEqual(parsed["findings"], ["f1", "f2"])
+
+    def test_save_with_no_findings_key_keeps_prior_findings(self):
+        first = json.dumps({"role": "R1", "symbols": ["s1"],
+                             "findings": ["f1"]})
+        subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=first.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True)
+
+        out = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=b"{}", cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+
+        parsed = mem.parse_md(Path(out))
+        self.assertEqual(parsed["role"], "R1")
+        self.assertIn("s1", parsed["symbols"])
+        self.assertEqual(parsed["findings"], ["f1"])
+
 
 if __name__ == "__main__":
     unittest.main()
