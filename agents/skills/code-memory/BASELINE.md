@@ -32,3 +32,13 @@ since changed to YAML/TOML → sha mismatch / stale).
 - skill を渡した subagent が、探索前に `mem.py query` を実行する。
 - `stale=false` ヒットではソースを再読しない。
 - `stale=true` ヒットでは現物を読み直す。
+
+## GREEN 結果（skill 有りで再実行）
+- Scenario A: **query-first を実行**（失敗 A が解消）。verbatim: "I queried
+  memory first". → 本命の rationalization「ツールは任意」を潰せた。
+- Scenario B: **query→stale=true 検知→forget→現物再読→再save** を完遂。
+  古いメモ（JSON-only）を退け、現行（YAML/TOML/JSON）で回答。
+- 副次発見（REFACTOR 対象・修正済み）: FTS でファイル名 `pay.py` の query が
+  ヒット漏れ（ドット付きトークン）。`fts_search` を各語フレーズ quote化して修正
+  （commit da38be1）。ファイル名検索でもヒットするようになった。
+- 追加の rationalization は出現せず。A/B とも合格で bulletproof 化を完了とする。
