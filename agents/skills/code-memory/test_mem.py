@@ -35,7 +35,7 @@ class RepoAndPaths(unittest.TestCase):
         repo_id, repo_root = mem.resolve_repo(root)
         self.assertTrue(repo_id.startswith(Path(root).name + "-"))
         self.assertEqual(len(repo_id.split("-")[-1]), 8)
-        self.assertEqual(Path(repo_root), Path(root))
+        self.assertEqual(Path(repo_root).resolve(), Path(root).resolve())
 
     def test_resolve_repo_local_fallback(self):
         repo_id, repo_root = mem.resolve_repo(self.tmp.name)
