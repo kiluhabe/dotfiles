@@ -197,7 +197,8 @@ def reindex(repo_id):
 
 def fts_search(repo_id, text):
     con = _connect()
-    q = " OR ".join(t for t in text.split() if t) or text
+    q = " OR ".join(f'"{t.replace(chr(34), "")}"'
+                     for t in text.split() if t) or text
     try:
         rows = con.execute(
             "SELECT path FROM notes WHERE repo = ? AND notes MATCH ? "

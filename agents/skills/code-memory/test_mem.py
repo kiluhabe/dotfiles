@@ -219,6 +219,21 @@ class Sqlite(unittest.TestCase):
         self.assertEqual(rows[0]["path"], "auth.py")
 
 
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_dotted_filename_query_matches(self):
+        f = Path(self.tmp.name) / "pay.py"
+        f.write_text("def charge(): pass\n")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                        str(f)], cwd=self.tmp.name,
+                       input=b'{"role":"entry point for charging a '
+                             b'customer via the gateway"}', check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "pay.py"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertIn("pay.py", [r["path"] for r in rows])
+
+
 class ReindexNoSqlite(unittest.TestCase):
     def setUp(self):
         self.tmp = tempfile.TemporaryDirectory()
