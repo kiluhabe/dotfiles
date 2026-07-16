@@ -155,5 +155,40 @@ class CheckForget(unittest.TestCase):
         self.assertEqual(self._run("check", str(self.f)), 2)
 
 
+class Query(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        os.environ["MEM_NO_SQLITE"] = "1"   # grep 経路を強制
+        self.f = Path(self.tmp.name) / "webhooks.py"
+        self.f.write_text("def stripe(): pass\n")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                        str(self.f)], cwd=self.tmp.name,
+                       input=b'{"role":"handles stripe webhook signature"}',
+                       check=True)
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+        os.environ.pop("MEM_NO_SQLITE", None)
+
+    def _query(self, text):
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", text], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        return [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+
+    def test_query_hit_not_stale(self):
+        rows = self._query("stripe webhook")
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["path"], "webhooks.py")
+        self.assertFalse(rows[0]["stale"])
+
+    def test_query_marks_stale_after_edit(self):
+        self.f.write_text("def stripe(): return 1\n")
+        rows = self._query("stripe")
+        self.assertTrue(rows[0]["stale"])
+
+
 if __name__ == "__main__":
     unittest.main()

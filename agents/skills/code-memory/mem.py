@@ -129,12 +129,49 @@ def cmd_forget(args):
     return 0
 
 
+def iter_md(repo_id):
+    base = mem_root() / repo_id
+    if base.exists():
+        yield from base.rglob("*.md")
+
+
+def grep_search(repo_id, terms):
+    hits = []
+    for md in iter_md(repo_id):
+        low = md.read_text().lower()
+        score = sum(low.count(t.lower()) for t in terms)
+        if score:
+            hits.append((score, md))
+    return [m for _, m in sorted(hits, key=lambda x: -x[0])]
+
+
+def _row_for(repo_id, repo_root, md):
+    parsed = parse_md(md)
+    rel = parsed["meta"].get("path")
+    src = Path(repo_root) / rel
+    current = sha256_of(str(src)) if src.exists() else None
+    recorded = parsed["meta"].get("sha256")
+    return {"path": rel, "role_excerpt": parsed["role"][:200],
+            "recorded_sha": recorded, "current_sha": current,
+            "stale": current != recorded}
+
+
+def cmd_query(args):
+    repo_id, repo_root = resolve_repo(os.getcwd())
+    terms = [t for t in args.text.split() if t]
+    mds = grep_search(repo_id, terms)   # SQLite 経路は Task 5 で分岐追加
+    for md in mds:
+        print(json.dumps(_row_for(repo_id, repo_root, md)))
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="mem")
     sub = p.add_subparsers(dest="cmd")
     sp = sub.add_parser("save"); sp.add_argument("file")
     cp = sub.add_parser("check"); cp.add_argument("file")
     fp = sub.add_parser("forget"); fp.add_argument("file")
+    qp = sub.add_parser("query"); qp.add_argument("text")
     args = p.parse_args(argv)
     if args.cmd == "save":
         return cmd_save(args)
@@ -142,6 +179,8 @@ def main(argv=None):
         return cmd_check(args)
     if args.cmd == "forget":
         return cmd_forget(args)
+    if args.cmd == "query":
+        return cmd_query(args)
     p.print_help(); return 0
 
 
