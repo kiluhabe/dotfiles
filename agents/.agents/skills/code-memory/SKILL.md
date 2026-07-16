@@ -1,44 +1,101 @@
 ---
 name: code-memory
-description: Use when about to investigate, read, or grep source files in a repository you may have explored before — recall remembered file roles before re-reading code, and refresh notes whose source has changed. Symptoms: "what does X do", "where is Y handled", re-reading a file you looked at earlier, repeated codebase spelunking across sessions.
+description: >-
+  Use when investigating, reading, or searching source files in a repository
+  that may have been explored before, especially for repeated codebase
+  spelunking, file role lookup, design overview recall, or stale per-file notes.
 ---
 
 # code-memory
 
 Persistent per-file notes about what source files do, invalidated by sha256.
-Consulting memory before exploring is not optional — it is the first step.
+Memory is an exploration index and understanding cache, not a substitute for
+the current source file.
 
-MEM=`~/dotfiles/agents/skills/code-memory/mem.py`
+MEM=`~/dotfiles/agents/.agents/skills/code-memory/mem.py`
 (Storage lives under `$XDG_CACHE_HOME/agent-memory`; no setup needed.)
 
-## 起動ガード
-1. `python3 --version` が失敗 → このスキルは使用不可。「code-memory は Python3 が
-   必要なため使えない。通常どおり調査する」とユーザーに伝え、以降の手順をスキップ。
-2. `python3 $MEM query` 実行時に "sqlite3/FTS5 unavailable" 警告が出ても**停止しない**
-   （grep で継続）。導入ガイダンス行はユーザーに一度だけ伝える。
+## Startup Guard
 
-## フロー（探索の前後で必ず）
-1. **コードを読む/grep する前に**必ず: `python3 $MEM query "<問い>"`。
-   JSONL の各行 = `{path, role_excerpt, recorded_sha, current_sha, stale}`。
-2. `stale=false` のヒット → **そのファイルを読まない**。role_excerpt と .md を使う。
-   問いに情報が不足していれば**その1ファイルだけ**読み、
-   `python3 $MEM save <file>`（stdin に `{"findings":["…"]}`）で追記。
-3. `stale=true` のヒット → `python3 $MEM forget <file>` してから現物を読み直す。
-4. メモリに無いファイルを実際に探索したら → mechanical(Haiku) subagent に
-   「Role 1段落＋Key symbols」を要約させ、`python3 $MEM save <file>` に
-   `{"role":"…","symbols":["…"]}` を渡す（要約で main context を汚さない）。
-5. 分業を厳守: hash/検索/削除/reindex = `mem.py`（決定論）、役割要約・不足判定 = Haiku。
+1. If `python3 --version` fails, this skill is unavailable. Tell the user
+   "code-memory requires Python3, so I will investigate normally" and skip the
+   rest of this skill.
+2. If `python3 $MEM query` prints the "sqlite3/FTS5 unavailable" warning, do
+   not stop. Search continues through the grep fallback. Mention the setup
+   guidance once if it matters to the user.
 
-## Red Flags — STOP
-- 「ファイルを読もう / grep しよう」と思った → **まだ query していないなら STOP**。先に query。
-- 「メモリツールはあれば便利なオプション」→ 違う。探索の前提。必ず引く。
-- 「今回は単純だから query しなくていい」→ 単純かどうかは query してから決まる。
-- 「role_excerpt にこう書いてある（stale 未確認）」→ `stale` を見ずに信じない。
-- 「役割要約を自分で書く」→ Haiku に委譲する。
+## Flow
 
-## Rationalization table
-| 言い訳 | 現実 |
+1. Before reading or grepping code, run `python3 $MEM query "<question>"`.
+   Each JSONL row is `{path, role_excerpt, recorded_sha, current_sha, stale}`.
+2. Use `stale=false` hits to choose files, recall file roles, confirm known
+   design summaries, and review previously found caveats.
+3. For `stale=true` hits, run `python3 $MEM forget <file>`, then read the
+   current file.
+4. For implementation edits, line-level explanations, current concrete
+   behavior, and security decisions, read the source file even when memory says
+   `stale=false`.
+5. Save only when the content has reuse value:
+   `python3 $MEM save <file>` with
+   `{"role":"...","symbols":["..."],"findings":["..."]}` on stdin.
+6. If Markdown memories are edited by hand, run `python3 $MEM reindex`.
+   Normal `query` searches the SQLite cache and does not reread every Markdown
+   file.
+7. Keep responsibilities separate: `mem.py` handles deterministic hashing,
+   search, deletion, and reindexing. The LLM decides file roles, missing
+   context, and whether a note is worth saving.
+
+## When Memory Is Enough
+
+Use memory for:
+- Choosing candidate files to inspect
+- Recalling file roles or known design summaries
+- Checking prior caveats, constraints, and related symbols
+
+Read the source file for:
+- Implementation edits, reviews, and security decisions
+- Line-level explanations or current behavior claims
+- Cases where `stale=false` is not precise enough for the question
+- Cases where role/findings are not enough evidence
+
+## When To Save
+
+Save when at least one is true:
+- The file is likely to be referenced again
+- The file role is not obvious from a quick read
+- Understanding required multiple files
+- You found reusable design decisions, constraints, or caveats
+- Exploration took meaningful time or multiple searches
+
+Do not save:
+- Simple configuration files
+- Obvious components
+- Facts that are quick to rediscover
+- Files that are unlikely to be read again
+
+## Search Limits
+
+SQLite FTS and the grep fallback are tuned for word searches across path,
+role, symbol, and finding text. Japanese natural-language queries may be
+unstable with the current tokenizer. Prefer paths, symbols, alphanumeric
+keywords, and short split terms.
+
+## Red Flags - STOP
+
+- About to read or grep code without querying memory first? Query first.
+- Treating this as an optional convenience? It is the exploration index.
+- Skipping query because the file seems simple? Query first; then decide.
+- Trusting `role_excerpt` without checking `stale`? Check `stale`.
+- Assuming `stale=false` means source is unnecessary? Read source for edits,
+  line details, behavior claims, and security decisions.
+- Saving just because a file was read? Save only when the save criteria match.
+
+## Rationalization Table
+
+| Excuse | Reality |
 |---|---|
-| ツールの存在は知っているが直接読む方が速い | query は数百ms。既存 role があれば再読の数千トークンを丸ごと省ける |
-| メモが古いかもしれないから最初から読む | query は `stale` を返す。古ければそこだけ捨てればよく、全再読は不要 |
-| メモに無いはずだから query は無駄 | 無ければ空 JSONL が返るだけ。コストはほぼ0、当たれば大きい |
+| Reading directly is faster. | Query is cheap, and a valid role can save thousands of tokens. |
+| The note might be stale, so I should read everything. | Query reports `stale`; forget only stale hits and reread those files. |
+| There probably is no memory, so query is pointless. | Empty output is cheap; a hit is valuable. |
+| Memory exists, so I do not need source. | Memory is an index. Source is the evidence for implementation and correctness. |
+| Saving everything helps future runs. | Obvious notes increase context cost and search noise. |

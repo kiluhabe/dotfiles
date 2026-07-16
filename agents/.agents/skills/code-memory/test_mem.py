@@ -1,4 +1,4 @@
-import json, os, subprocess, sys, tempfile, unittest, hashlib
+import json, os, shutil, sqlite3, subprocess, sys, tempfile, unittest, hashlib
 from pathlib import Path
 import importlib.util
 
@@ -36,6 +36,20 @@ class RepoAndPaths(unittest.TestCase):
         self.assertTrue(repo_id.startswith(Path(root).name + "-"))
         self.assertEqual(len(repo_id.split("-")[-1]), 8)
         self.assertEqual(Path(repo_root).resolve(), Path(root).resolve())
+
+    def test_worktree_shares_repo_id(self):
+        root = Path(self.tmp.name) / "repo"
+        wt = Path(self.tmp.name) / "repo-wt"
+        root.mkdir()
+        _git(root, "init")
+        _git(root, "-c", "user.email=a@b.c", "-c", "user.name=t",
+             "commit", "--allow-empty", "-m", "root")
+        _git(root, "worktree", "add", "-b", "wt", str(wt))
+
+        repo_id, _ = mem.resolve_repo(str(root))
+        wt_repo_id, _ = mem.resolve_repo(str(wt))
+
+        self.assertEqual(wt_repo_id, repo_id)
 
     def test_resolve_repo_local_fallback(self):
         repo_id, repo_root = mem.resolve_repo(self.tmp.name)
@@ -117,6 +131,33 @@ class SaveAndParse(unittest.TestCase):
         self.assertEqual(parsed["role"], "R1")
         self.assertIn("s1", parsed["symbols"])
         self.assertEqual(parsed["findings"], ["f1"])
+
+    def test_save_deduplicates_exact_findings(self):
+        first = json.dumps({"role": "R1", "findings": ["f1", "f2"]})
+        subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=first.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True)
+
+        second = json.dumps({"findings": ["f2", "f3", "f1"]})
+        out = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=second.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+
+        parsed = mem.parse_md(Path(out))
+        self.assertEqual(parsed["findings"], ["f1", "f2", "f3"])
+
+    def test_save_ignores_empty_findings(self):
+        payload = json.dumps({"role": "R1",
+                              "findings": ["", "   ", "\t", "useful"]})
+        out = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=payload.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+
+        parsed = mem.parse_md(Path(out))
+        self.assertEqual(parsed["findings"], ["useful"])
 
 
 class CheckForget(unittest.TestCase):
@@ -237,6 +278,81 @@ class Sqlite(unittest.TestCase):
         rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
         self.assertEqual(rows[0]["path"], "auth.py")
 
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_save_indexes_memory_for_query(self):
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "jwt login"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "auth.py")
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_manual_markdown_edit_requires_reindex(self):
+        repo_id, _ = mem.resolve_repo(self.tmp.name)
+        md = mem.md_path(repo_id, "auth.py")
+        text = md.read_text()
+        md.write_text(text + "\n- manual-only-token\n")
+
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "manual-only-token"],
+                             cwd=self.tmp.name, stdout=subprocess.PIPE,
+                             check=True).stdout
+        self.assertEqual(out.decode().strip(), "")
+
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "reindex"],
+                       cwd=self.tmp.name, stdout=subprocess.PIPE, check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "manual-only-token"],
+                             cwd=self.tmp.name, stdout=subprocess.PIPE,
+                             check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "auth.py")
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_forget_removes_memory_from_query(self):
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "forget",
+                        str(self.f)], cwd=self.tmp.name, check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "jwt login"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        self.assertEqual(out.decode().strip(), "")
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_reindex_rebuilds_deleted_db_from_markdown(self):
+        mem._db_path().unlink()
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "reindex"],
+                       cwd=self.tmp.name, stdout=subprocess.PIPE, check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "jwt login"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "auth.py")
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_reindex_rebuilds_corrupt_db(self):
+        mem._db_path().write_bytes(b"not a sqlite database")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "reindex"],
+                       cwd=self.tmp.name, stdout=subprocess.PIPE, check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "jwt login"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "auth.py")
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_reindex_rebuilds_old_non_fts_schema(self):
+        mem._db_path().unlink()
+        con = sqlite3.connect(mem._db_path())
+        con.execute("CREATE TABLE notes(repo TEXT, path TEXT)")
+        con.commit(); con.close()
+
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "reindex"],
+                       cwd=self.tmp.name, stdout=subprocess.PIPE, check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "jwt login"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "auth.py")
 
     @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
     def test_dotted_filename_query_matches(self):
@@ -251,6 +367,42 @@ class Sqlite(unittest.TestCase):
                              stdout=subprocess.PIPE, check=True).stdout
         rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
         self.assertIn("pay.py", [r["path"] for r in rows])
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_query_matches_symbol_and_finding(self):
+        f = Path(self.tmp.name) / "billing.py"
+        f.write_text("def charge_customer(): pass\n")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                        str(f)], cwd=self.tmp.name,
+                       input=(b'{"role":"customer billing",'
+                              b'"symbols":["charge_customer"],'
+                              b'"findings":["uses idempotency keys"]}'),
+                       check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "charge_customer idempotency"],
+                             cwd=self.tmp.name, stdout=subprocess.PIPE,
+                             check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "billing.py")
+
+
+class SkillDoc(unittest.TestCase):
+    def test_skill_frontmatter_is_valid_yaml(self):
+        if not shutil.which("ruby"):
+            self.skipTest("ruby YAML parser unavailable")
+        text = (HERE / "SKILL.md").read_text()
+        self.assertTrue(text.startswith("---\n"))
+        end = text.index("\n---", 4)
+        frontmatter = text[4:end]
+        r = subprocess.run(
+            ["ruby", "-ryaml", "-e", "YAML.safe_load(STDIN.read)"],
+            input=frontmatter.encode(), stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE)
+        self.assertEqual(r.returncode, 0, r.stderr.decode())
+
+    def test_skill_doc_is_ascii(self):
+        text = (HERE / "SKILL.md").read_text()
+        self.assertTrue(text.isascii())
 
 
 class ReindexNoSqlite(unittest.TestCase):

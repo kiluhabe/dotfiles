@@ -25,8 +25,15 @@ def resolve_repo(cwd: str):
     roots = _git_out(top, "rev-list", "--max-parents=0", "HEAD")
     if not roots:
         return "local-" + Path(top).name, top
+    common = _git_out(top, "rev-parse", "--path-format=absolute",
+                      "--git-common-dir")
+    repo_name = Path(top).name
+    if common:
+        common_path = Path(common)
+        if common_path.name == ".git":
+            repo_name = common_path.parent.name
     root8 = sorted(roots.split("\n"))[0][:8]
-    return f"{Path(top).name}-{root8}", top
+    return f"{repo_name}-{root8}", top
 
 
 def rel_path(repo_root: str, file: str) -> str:
@@ -58,6 +65,18 @@ def _fmt_md(repo_id, rel, sha, payload):
     for fi in payload.get("findings", []):
         lines.append(f"- {fi}")
     return "\n".join(lines) + "\n"
+
+
+def _dedupe_findings(findings):
+    out, seen = [], set()
+    for finding in findings:
+        if not isinstance(finding, str) or not finding.strip():
+            continue
+        if finding in seen:
+            continue
+        out.append(finding)
+        seen.add(finding)
+    return out
 
 
 def write_md(repo_id, rel, sha, payload):
@@ -101,8 +120,12 @@ def cmd_save(args):
         prev = parse_md(existing)
         payload.setdefault("role", prev["role"])
         payload["symbols"] = payload.get("symbols") or prev["symbols"]
-        payload["findings"] = prev["findings"] + payload.get("findings", [])
+        payload["findings"] = _dedupe_findings(
+            prev["findings"] + payload.get("findings", []))
+    else:
+        payload["findings"] = _dedupe_findings(payload.get("findings", []))
     path = write_md(repo_id, rel, sha256_of(args.file), payload)
+    index_one(repo_id, rel)
     print(path)
     return 0
 
@@ -169,6 +192,15 @@ def _db_path():
     return mem_root() / "index.sqlite"
 
 
+def _notes_schema_state(con):
+    row = con.execute(
+        "SELECT sql FROM sqlite_master WHERE name = 'notes'").fetchone()
+    if not row:
+        return None
+    sql = (row[0] or "").lower()
+    return "virtual table" in sql and "fts5" in sql
+
+
 def sqlite_ok():
     if os.environ.get("MEM_NO_SQLITE"):
         return False
@@ -183,10 +215,50 @@ def sqlite_ok():
 
 def _connect():
     mem_root().mkdir(parents=True, exist_ok=True)
+    con, _ = _connect_with_status()
+    return con
+
+
+def _connect_with_status():
+    mem_root().mkdir(parents=True, exist_ok=True)
+    rebuilt = False
     con = sqlite3.connect(_db_path())
+    try:
+        state = _notes_schema_state(con)
+        if state is False:
+            raise sqlite3.DatabaseError("notes table is not an FTS5 index")
+        con.execute("CREATE VIRTUAL TABLE IF NOT EXISTS notes "
+                    "USING fts5(repo, path, role, body)")
+        state = _notes_schema_state(con)
+        if state is not True:
+            raise sqlite3.DatabaseError("notes FTS5 index unavailable")
+    except sqlite3.DatabaseError:
+        con.close()
+        try:
+            _db_path().unlink()
+        except FileNotFoundError:
+            pass
+        con = sqlite3.connect(_db_path())
+        rebuilt = True
     con.execute("CREATE VIRTUAL TABLE IF NOT EXISTS notes "
                 "USING fts5(repo, path, role, body)")
-    return con
+    return con, rebuilt
+
+
+def index_one(repo_id, rel):
+    if not sqlite_ok():
+        return
+    md = md_path(repo_id, rel)
+    if not md.exists():
+        return
+    p = parse_md(md)
+    con = _connect()
+    con.execute("DELETE FROM notes WHERE repo = ? AND path = ?",
+                (repo_id, rel))
+    con.execute("INSERT INTO notes(repo, path, role, body) VALUES(?,?,?,?)",
+                (repo_id, p["meta"].get("path", ""), p["role"],
+                 " ".join(p["symbols"] + p["findings"])))
+    con.commit(); con.close()
 
 
 def reindex(repo_id):
@@ -202,6 +274,14 @@ def reindex(repo_id):
         n += 1
     con.commit(); con.close()
     return n
+
+
+def ensure_index(repo_id):
+    existed = _db_path().exists()
+    con, rebuilt = _connect_with_status()
+    con.close()
+    if not existed or rebuilt:
+        reindex(repo_id)
 
 
 def fts_search(repo_id, text):
@@ -232,7 +312,7 @@ def cmd_reindex(args):
 def cmd_query(args):
     repo_id, repo_root = resolve_repo(os.getcwd())
     if sqlite_ok():
-        reindex(repo_id)
+        ensure_index(repo_id)
         mds = fts_search(repo_id, args.text)
     else:
         sys.stderr.write(
