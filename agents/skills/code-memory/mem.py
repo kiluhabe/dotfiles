@@ -210,6 +210,11 @@ def fts_search(repo_id, text):
 
 def cmd_reindex(args):
     repo_id, _ = resolve_repo(os.getcwd())
+    if not sqlite_ok():
+        sys.stderr.write(
+            "[code-memory] sqlite3/FTS5 unavailable; reindex skipped. "
+            "Install a Python3 with sqlite3 to enable FTS.\n")
+        return 1
     print(reindex(repo_id))
     return 0
 

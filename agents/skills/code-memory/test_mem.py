@@ -219,5 +219,30 @@ class Sqlite(unittest.TestCase):
         self.assertEqual(rows[0]["path"], "auth.py")
 
 
+class ReindexNoSqlite(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        os.environ["MEM_NO_SQLITE"] = "1"
+        self.f = Path(self.tmp.name) / "webhooks.py"
+        self.f.write_text("def stripe(): pass\n")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                        str(self.f)], cwd=self.tmp.name,
+                       input=b'{"role":"handles stripe webhook signature"}',
+                       check=True)
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+        os.environ.pop("MEM_NO_SQLITE", None)
+
+    def test_reindex_skipped_without_sqlite(self):
+        r = subprocess.run([sys.executable, str(HERE / "mem.py"), "reindex"],
+                           cwd=self.tmp.name, stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE)
+        self.assertEqual(r.returncode, 1)
+        self.assertIn("reindex skipped", r.stderr.decode())
+
+
 if __name__ == "__main__":
     unittest.main()
