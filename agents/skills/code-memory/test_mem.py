@@ -154,6 +154,25 @@ class CheckForget(unittest.TestCase):
         self.assertEqual(self._run("forget", str(self.f)), 0)
         self.assertEqual(self._run("check", str(self.f)), 2)
 
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_forget_deindexes_fts_row(self):
+        self._save()
+        repo_id, _ = mem.resolve_repo(self.tmp.name)
+        mem.reindex(repo_id)
+        con = mem._connect()
+        rows = con.execute(
+            "SELECT path FROM notes WHERE repo = ?", (repo_id,)).fetchall()
+        con.close()
+        self.assertEqual(len(rows), 1)
+
+        self.assertEqual(self._run("forget", str(self.f)), 0)
+
+        con = mem._connect()
+        rows = con.execute(
+            "SELECT path FROM notes WHERE repo = ?", (repo_id,)).fetchall()
+        con.close()
+        self.assertEqual(rows, [])
+
 
 class Query(unittest.TestCase):
     def setUp(self):
@@ -284,6 +303,47 @@ class Prune(unittest.TestCase):
         r = subprocess.run([sys.executable, str(HERE / "mem.py"), "check",
                             str(self.f)], cwd=self.tmp.name)
         self.assertEqual(r.returncode, 2)
+
+    def test_prune_deletes_when_source_stale(self):
+        self.f.write_text("y=2\n")
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"), "prune"],
+                             cwd=self.tmp.name, stdout=subprocess.PIPE,
+                             check=True).stdout.decode()
+        self.assertIn("1", out)
+        r = subprocess.run([sys.executable, str(HERE / "mem.py"), "check",
+                            str(self.f)], cwd=self.tmp.name)
+        self.assertEqual(r.returncode, 2)
+
+
+class GitEndToEnd(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        os.environ["MEM_NO_SQLITE"] = "1"
+        _git(self.tmp.name, "init")
+        _git(self.tmp.name, "-c", "user.email=a@b.c", "-c", "user.name=t",
+             "commit", "--allow-empty", "-m", "root")
+        self.f = Path(self.tmp.name) / "billing.py"
+        self.f.write_text("def charge_customer(): pass\n")
+        subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            cwd=self.tmp.name,
+            input=b'{"role":"handles customer billing and invoices"}',
+            check=True)
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+        os.environ.pop("MEM_NO_SQLITE", None)
+
+    def test_save_then_query_in_git_repo(self):
+        out = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "query", "billing"],
+            cwd=self.tmp.name, stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["path"], "billing.py")
+        self.assertFalse(rows[0]["stale"])
 
 
 if __name__ == "__main__":

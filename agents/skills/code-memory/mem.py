@@ -118,7 +118,11 @@ def cmd_check(args):
     if not path.exists():
         return 2
     recorded = parse_md(path)["meta"].get("sha256")
-    return 0 if recorded == sha256_of(args.file) else 1
+    try:
+        current = sha256_of(args.file)
+    except OSError:
+        return 1
+    return 0 if recorded == current else 1
 
 
 def cmd_forget(args):
@@ -126,6 +130,11 @@ def cmd_forget(args):
     path = md_path(repo_id, rel)
     if path.exists():
         path.unlink()
+    if sqlite_ok():
+        con = _connect()
+        con.execute("DELETE FROM notes WHERE repo = ? AND path = ?",
+                    (repo_id, rel))
+        con.commit(); con.close()
     return 0
 
 
@@ -241,7 +250,15 @@ def cmd_prune(args):
     for md in list(iter_md(repo_id)):
         p = parse_md(md)
         src = Path(repo_root) / p["meta"].get("path", "")
-        if not src.exists() or sha256_of(str(src)) != p["meta"].get("sha256"):
+        if not src.exists():
+            md.unlink()
+            removed += 1
+            continue
+        try:
+            current = sha256_of(str(src))
+        except OSError:
+            continue
+        if current != p["meta"].get("sha256"):
             md.unlink()
             removed += 1
     print(removed)
