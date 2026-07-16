@@ -244,5 +244,32 @@ class ReindexNoSqlite(unittest.TestCase):
         self.assertIn("reindex skipped", r.stderr.decode())
 
 
+class Prune(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        os.environ["MEM_NO_SQLITE"] = "1"
+        self.f = Path(self.tmp.name) / "gone.py"
+        self.f.write_text("y=1\n")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                        str(self.f)], cwd=self.tmp.name,
+                       input=b'{"role":"temp"}', check=True)
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+        os.environ.pop("MEM_NO_SQLITE", None)
+
+    def test_prune_deletes_when_source_removed(self):
+        self.f.unlink()
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"), "prune"],
+                             cwd=self.tmp.name, stdout=subprocess.PIPE,
+                             check=True).stdout.decode()
+        self.assertIn("1", out)
+        r = subprocess.run([sys.executable, str(HERE / "mem.py"), "check",
+                            str(self.f)], cwd=self.tmp.name)
+        self.assertEqual(r.returncode, 2)
+
+
 if __name__ == "__main__":
     unittest.main()

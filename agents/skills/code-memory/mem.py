@@ -234,6 +234,19 @@ def cmd_query(args):
     return 0
 
 
+def cmd_prune(args):
+    repo_id, repo_root = resolve_repo(os.getcwd())
+    removed = 0
+    for md in list(iter_md(repo_id)):
+        p = parse_md(md)
+        src = Path(repo_root) / p["meta"].get("path", "")
+        if not src.exists() or sha256_of(str(src)) != p["meta"].get("sha256"):
+            md.unlink()
+            removed += 1
+    print(removed)
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="mem")
     sub = p.add_subparsers(dest="cmd")
@@ -242,6 +255,7 @@ def main(argv=None):
     fp = sub.add_parser("forget"); fp.add_argument("file")
     qp = sub.add_parser("query"); qp.add_argument("text")
     sub.add_parser("reindex")
+    sub.add_parser("prune")
     args = p.parse_args(argv)
     if args.cmd == "save":
         return cmd_save(args)
@@ -253,6 +267,8 @@ def main(argv=None):
         return cmd_query(args)
     if args.cmd == "reindex":
         return cmd_reindex(args)
+    if args.cmd == "prune":
+        return cmd_prune(args)
     p.print_help(); return 0
 
 
