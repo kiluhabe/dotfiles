@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """code-memory: deterministic store for per-source-file code notes."""
-import argparse, hashlib, json, os, subprocess, sys
+import argparse, datetime, hashlib, json, os, subprocess, sys
 from pathlib import Path
 
 
@@ -45,12 +45,76 @@ def sha256_of(path: str) -> str:
     return h.hexdigest()
 
 
+def _fmt_md(repo_id, rel, sha, payload):
+    at = datetime.datetime.now(datetime.timezone.utc).strftime(
+        "%Y-%m-%dT%H:%M:%SZ")
+    lines = ["---", "mem: 1", f"repo: {repo_id}", f"path: {rel}",
+             f"sha256: {sha}", f"at: {at}", "---", "",
+             f"# {rel}", "", "## Role", payload.get("role", "").strip(), "",
+             "## Key symbols"]
+    for s in payload.get("symbols", []):
+        lines.append(f"- {s}")
+    lines += ["", "## Findings"]
+    for fi in payload.get("findings", []):
+        lines.append(f"- {fi}")
+    return "\n".join(lines) + "\n"
+
+
+def write_md(repo_id, rel, sha, payload):
+    path = md_path(repo_id, rel)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(_fmt_md(repo_id, rel, sha, payload))
+    return path
+
+
+def parse_md(path):
+    text = Path(path).read_text()
+    meta, body = {}, text
+    if text.startswith("---\n"):
+        end = text.index("\n---", 4)
+        for line in text[4:end].splitlines():
+            if ":" in line:
+                k, v = line.split(":", 1)
+                meta[k.strip()] = v.strip()
+        body = text[end + 4:]
+    role, symbols, findings, section = "", [], [], None
+    for line in body.splitlines():
+        if line.startswith("## "):
+            section = line[3:].strip().lower()
+            continue
+        if section == "role" and line.strip():
+            role = (role + " " + line.strip()).strip()
+        elif section == "key symbols" and line.startswith("- "):
+            symbols.append(line[2:])
+        elif section == "findings" and line.startswith("- "):
+            findings.append(line[2:])
+    return {"meta": meta, "role": role, "symbols": symbols,
+            "findings": findings}
+
+
+def cmd_save(args):
+    repo_id, repo_root = resolve_repo(os.getcwd())
+    rel = rel_path(repo_root, args.file)
+    payload = json.loads(sys.stdin.read() or "{}")
+    existing = md_path(repo_id, rel)
+    if existing.exists() and payload.get("findings"):
+        prev = parse_md(existing)
+        payload.setdefault("role", prev["role"])
+        payload["symbols"] = payload.get("symbols") or prev["symbols"]
+        payload["findings"] = prev["findings"] + payload["findings"]
+    path = write_md(repo_id, rel, sha256_of(args.file), payload)
+    print(path)
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="mem")
-    p.add_subparsers(dest="cmd")
+    sub = p.add_subparsers(dest="cmd")
+    sp = sub.add_parser("save"); sp.add_argument("file")
     args = p.parse_args(argv)
-    p.print_help()
-    return 0
+    if args.cmd == "save":
+        return cmd_save(args)
+    p.print_help(); return 0
 
 
 if __name__ == "__main__":

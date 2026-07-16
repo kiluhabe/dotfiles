@@ -1,4 +1,4 @@
-import os, subprocess, tempfile, unittest, hashlib
+import json, os, subprocess, sys, tempfile, unittest, hashlib
 from pathlib import Path
 import importlib.util
 
@@ -51,6 +51,35 @@ class RepoAndPaths(unittest.TestCase):
         self.assertEqual(mem.rel_path(self.tmp.name, str(f)), "sub/a.py")
         self.assertEqual(mem.md_path("repo-x", "sub/a.py"),
                          mem.mem_root() / "repo-x" / "sub" / "a.py.md")
+
+
+class SaveAndParse(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        self.f = Path(self.tmp.name) / "vim" / "config.lua"
+        self.f.parent.mkdir(parents=True)
+        self.f.write_text("return {}\n")
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+
+    def test_save_writes_md_and_roundtrips(self):
+        payload = json.dumps({"role": "editor config",
+                              "symbols": ["setup() L1"],
+                              "findings": ["loads lazily"]})
+        out = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=payload.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, check=True).stdout.decode().strip()
+        md = Path(out)
+        self.assertTrue(md.exists())
+        parsed = mem.parse_md(md)
+        self.assertEqual(parsed["meta"]["path"], "vim/config.lua")
+        self.assertEqual(parsed["meta"]["sha256"], mem.sha256_of(str(self.f)))
+        self.assertEqual(parsed["role"], "editor config")
+        self.assertIn("loads lazily", parsed["findings"])
 
 
 if __name__ == "__main__":
