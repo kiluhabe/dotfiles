@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """code-memory: deterministic store for per-source-file code notes."""
-import argparse, datetime, hashlib, json, os, subprocess, sys
+import argparse, datetime, hashlib, json, os, sqlite3, subprocess, sys
 from pathlib import Path
 
 
@@ -156,10 +156,74 @@ def _row_for(repo_id, repo_root, md):
             "stale": current != recorded}
 
 
+def _db_path():
+    return mem_root() / "index.sqlite"
+
+
+def sqlite_ok():
+    if os.environ.get("MEM_NO_SQLITE"):
+        return False
+    try:
+        con = sqlite3.connect(":memory:")
+        con.execute("CREATE VIRTUAL TABLE t USING fts5(x)")
+        con.close()
+        return True
+    except sqlite3.OperationalError:
+        return False
+
+
+def _connect():
+    mem_root().mkdir(parents=True, exist_ok=True)
+    con = sqlite3.connect(_db_path())
+    con.execute("CREATE VIRTUAL TABLE IF NOT EXISTS notes "
+                "USING fts5(repo, path, role, body)")
+    return con
+
+
+def reindex(repo_id):
+    con = _connect()
+    con.execute("DELETE FROM notes WHERE repo = ?", (repo_id,))
+    n = 0
+    for md in iter_md(repo_id):
+        p = parse_md(md)
+        con.execute("INSERT INTO notes(repo, path, role, body) "
+                    "VALUES(?,?,?,?)",
+                    (repo_id, p["meta"].get("path", ""), p["role"],
+                     " ".join(p["symbols"] + p["findings"])))
+        n += 1
+    con.commit(); con.close()
+    return n
+
+
+def fts_search(repo_id, text):
+    con = _connect()
+    q = " OR ".join(t for t in text.split() if t) or text
+    try:
+        rows = con.execute(
+            "SELECT path FROM notes WHERE repo = ? AND notes MATCH ? "
+            "ORDER BY rank", (repo_id, q)).fetchall()
+    except sqlite3.OperationalError:
+        rows = []
+    con.close()
+    return [md_path(repo_id, r[0]) for r in rows]
+
+
+def cmd_reindex(args):
+    repo_id, _ = resolve_repo(os.getcwd())
+    print(reindex(repo_id))
+    return 0
+
+
 def cmd_query(args):
     repo_id, repo_root = resolve_repo(os.getcwd())
-    terms = [t for t in args.text.split() if t]
-    mds = grep_search(repo_id, terms)   # SQLite 経路は Task 5 で分岐追加
+    if sqlite_ok():
+        reindex(repo_id)
+        mds = fts_search(repo_id, args.text)
+    else:
+        sys.stderr.write(
+            "[code-memory] sqlite3/FTS5 unavailable; using grep. "
+            "Install a Python3 with sqlite3 for faster search.\n")
+        mds = grep_search(repo_id, [t for t in args.text.split() if t])
     for md in mds:
         print(json.dumps(_row_for(repo_id, repo_root, md)))
     return 0
@@ -172,6 +236,7 @@ def main(argv=None):
     cp = sub.add_parser("check"); cp.add_argument("file")
     fp = sub.add_parser("forget"); fp.add_argument("file")
     qp = sub.add_parser("query"); qp.add_argument("text")
+    sub.add_parser("reindex")
     args = p.parse_args(argv)
     if args.cmd == "save":
         return cmd_save(args)
@@ -181,6 +246,8 @@ def main(argv=None):
         return cmd_forget(args)
     if args.cmd == "query":
         return cmd_query(args)
+    if args.cmd == "reindex":
+        return cmd_reindex(args)
     p.print_help(); return 0
 
 

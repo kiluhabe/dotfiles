@@ -190,5 +190,34 @@ class Query(unittest.TestCase):
         self.assertTrue(rows[0]["stale"])
 
 
+class Sqlite(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        os.environ.pop("MEM_NO_SQLITE", None)
+        self.f = Path(self.tmp.name) / "auth.py"
+        self.f.write_text("def login(): pass\n")
+        subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                        str(self.f)], cwd=self.tmp.name,
+                       input=b'{"role":"session login and jwt issuance"}',
+                       check=True)
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_reindex_then_query_via_fts(self):
+        n = subprocess.run([sys.executable, str(HERE / "mem.py"), "reindex"],
+                           cwd=self.tmp.name, stdout=subprocess.PIPE,
+                           check=True).stdout.decode()
+        self.assertIn("1", n)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "jwt login"], cwd=self.tmp.name,
+                             stdout=subprocess.PIPE, check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(rows[0]["path"], "auth.py")
+
+
 if __name__ == "__main__":
     unittest.main()
