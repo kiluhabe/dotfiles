@@ -2,7 +2,7 @@
 
 main() {
     pkill waybar
-    wal -R && waybar --style "$HOME/.cache/wal/waybar.css"
+    waybar
 }
 
 main

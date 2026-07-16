@@ -76,9 +76,10 @@ Do not save:
 ## Search Limits
 
 SQLite FTS and the grep fallback are tuned for word searches across path,
-role, symbol, and finding text. Japanese natural-language queries may be
-unstable with the current tokenizer. Prefer paths, symbols, alphanumeric
-keywords, and short split terms.
+role, symbol, and finding text. Markdown memory text and query text are
+English-only because the current tokenizer is not reliable for Japanese
+natural-language search. Use paths, symbols, alphanumeric keywords, and short
+split English terms.
 
 ## Red Flags - STOP
 

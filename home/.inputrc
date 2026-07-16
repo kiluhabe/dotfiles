@@ -4,10 +4,3 @@ set visible-stats on
 
 "\e[A":history-search-backward
 "\e[B":history-search-forward
-
-# keybinds
-"\C-t": "fh\C-m"
-"\C-f": "fff\C-m"
-"\C-g": "git-fco\C-m"
-"\C-y": "mpsyt\C-m"
-"\C-l": "clear"

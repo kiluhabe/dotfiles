@@ -159,6 +159,15 @@ class SaveAndParse(unittest.TestCase):
         parsed = mem.parse_md(Path(out))
         self.assertEqual(parsed["findings"], ["useful"])
 
+    def test_save_rejects_non_ascii_memory_text(self):
+        payload = json.dumps({"role": "日本語 role"})
+        r = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            input=payload.encode(), cwd=self.tmp.name,
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("English-only", r.stderr.decode())
+
 
 class CheckForget(unittest.TestCase):
     def setUp(self):
@@ -385,6 +394,31 @@ class Sqlite(unittest.TestCase):
         rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
         self.assertEqual(rows[0]["path"], "billing.py")
 
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_query_limits_fts_results_to_10(self):
+        for i in range(12):
+            f = Path(self.tmp.name) / f"limited_{i}.py"
+            f.write_text(f"def limited_{i}(): pass\n")
+            subprocess.run([sys.executable, str(HERE / "mem.py"), "save",
+                            str(f)], cwd=self.tmp.name,
+                           input=b'{"role":"shared limit token"}',
+                           check=True)
+        out = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                              "query", "shared limit token"],
+                             cwd=self.tmp.name, stdout=subprocess.PIPE,
+                             check=True).stdout
+        rows = [json.loads(l) for l in out.decode().splitlines() if l.strip()]
+        self.assertEqual(len(rows), 10)
+
+    @unittest.skipUnless(mem.sqlite_ok(), "sqlite3/FTS5 unavailable")
+    def test_query_rejects_non_ascii_text(self):
+        r = subprocess.run([sys.executable, str(HERE / "mem.py"),
+                            "query", "日本語"],
+                           cwd=self.tmp.name, stdout=subprocess.PIPE,
+                           stderr=subprocess.PIPE)
+        self.assertNotEqual(r.returncode, 0)
+        self.assertIn("English-only", r.stderr.decode())
+
 
 class SkillDoc(unittest.TestCase):
     def test_skill_frontmatter_is_valid_yaml(self):
@@ -403,6 +437,12 @@ class SkillDoc(unittest.TestCase):
     def test_skill_doc_is_ascii(self):
         text = (HERE / "SKILL.md").read_text()
         self.assertTrue(text.isascii())
+
+    def test_skill_doc_declares_english_only_memory_and_queries(self):
+        text = (HERE / "SKILL.md").read_text()
+        self.assertIn("English-only", text)
+        self.assertIn("Markdown memory text", text)
+        self.assertIn("query text", text)
 
 
 class ReindexNoSqlite(unittest.TestCase):

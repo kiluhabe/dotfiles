@@ -1,4 +1,4 @@
-export EDITOR=nano
+export EDITOR="${EDITOR:-nano}"
 
 # path
 if [[ $(uname -a) =~ ^Darwin ]]; then
@@ -41,13 +41,6 @@ if [ -d "$HOME/google-cloud-sdk/bin" ]; then
   export PATH="$PATH:$HOME/google-cloud-sdk/bin"
 fi
 
-# wal
-if [ -d ~/.cache/wal ]; then
-    (cat ~/.cache/wal/sequences &)
-    cat ~/.cache/wal/sequences
-    source ~/.cache/wal/colors-tty.sh
-fi
-
 # pnpm
 export PNPM_HOME="$HOME/.pnpm"
 case ":$PATH:" in
@@ -66,4 +59,3 @@ alias tmux="tmux -u"
 alias reload-x="xrdb $HOME/.Xresources"
 alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
 alias comp="cargo compete"
-

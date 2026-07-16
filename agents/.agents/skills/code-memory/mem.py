@@ -79,6 +79,22 @@ def _dedupe_findings(findings):
     return out
 
 
+def _assert_english_only(value, label="memory text"):
+    if isinstance(value, str):
+        if not value.isascii():
+            raise ValueError(f"{label} must be English-only ASCII text")
+        return
+    if isinstance(value, list):
+        for item in value:
+            _assert_english_only(item, label)
+
+
+def validate_payload(payload):
+    _assert_english_only(payload.get("role", ""), "memory text")
+    _assert_english_only(payload.get("symbols", []), "memory text")
+    _assert_english_only(payload.get("findings", []), "memory text")
+
+
 def write_md(repo_id, rel, sha, payload):
     path = md_path(repo_id, rel)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -115,6 +131,11 @@ def cmd_save(args):
     repo_id, repo_root = resolve_repo(os.getcwd())
     rel = rel_path(repo_root, args.file)
     payload = json.loads(sys.stdin.read() or "{}")
+    try:
+        validate_payload(payload)
+    except ValueError as exc:
+        sys.stderr.write(f"[code-memory] {exc}\n")
+        return 2
     existing = md_path(repo_id, rel)
     if existing.exists():
         prev = parse_md(existing)
@@ -174,7 +195,7 @@ def grep_search(repo_id, terms):
         score = sum(low.count(t.lower()) for t in terms)
         if score:
             hits.append((score, md))
-    return [m for _, m in sorted(hits, key=lambda x: -x[0])]
+    return [m for _, m in sorted(hits, key=lambda x: -x[0])[:10]]
 
 
 def _row_for(repo_id, repo_root, md):
@@ -291,7 +312,7 @@ def fts_search(repo_id, text):
     try:
         rows = con.execute(
             "SELECT path FROM notes WHERE repo = ? AND notes MATCH ? "
-            "ORDER BY rank", (repo_id, q)).fetchall()
+            "ORDER BY rank LIMIT 10", (repo_id, q)).fetchall()
     except sqlite3.OperationalError:
         rows = []
     con.close()
@@ -311,6 +332,11 @@ def cmd_reindex(args):
 
 def cmd_query(args):
     repo_id, repo_root = resolve_repo(os.getcwd())
+    try:
+        _assert_english_only(args.text, "query text")
+    except ValueError as exc:
+        sys.stderr.write(f"[code-memory] {exc}\n")
+        return 2
     if sqlite_ok():
         ensure_index(repo_id)
         mds = fts_search(repo_id, args.text)
