@@ -107,13 +107,41 @@ def cmd_save(args):
     return 0
 
 
+def _resolve(file):
+    repo_id, repo_root = resolve_repo(os.getcwd())
+    return repo_id, rel_path(repo_root, file)
+
+
+def cmd_check(args):
+    repo_id, rel = _resolve(args.file)
+    path = md_path(repo_id, rel)
+    if not path.exists():
+        return 2
+    recorded = parse_md(path)["meta"].get("sha256")
+    return 0 if recorded == sha256_of(args.file) else 1
+
+
+def cmd_forget(args):
+    repo_id, rel = _resolve(args.file)
+    path = md_path(repo_id, rel)
+    if path.exists():
+        path.unlink()
+    return 0
+
+
 def main(argv=None):
     p = argparse.ArgumentParser(prog="mem")
     sub = p.add_subparsers(dest="cmd")
     sp = sub.add_parser("save"); sp.add_argument("file")
+    cp = sub.add_parser("check"); cp.add_argument("file")
+    fp = sub.add_parser("forget"); fp.add_argument("file")
     args = p.parse_args(argv)
     if args.cmd == "save":
         return cmd_save(args)
+    if args.cmd == "check":
+        return cmd_check(args)
+    if args.cmd == "forget":
+        return cmd_forget(args)
     p.print_help(); return 0
 
 

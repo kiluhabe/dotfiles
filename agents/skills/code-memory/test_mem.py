@@ -119,5 +119,41 @@ class SaveAndParse(unittest.TestCase):
         self.assertEqual(parsed["findings"], ["f1"])
 
 
+class CheckForget(unittest.TestCase):
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.cache = tempfile.TemporaryDirectory()
+        os.environ["XDG_CACHE_HOME"] = self.cache.name
+        self.f = Path(self.tmp.name) / "a.py"
+        self.f.write_text("x=1\n")
+
+    def tearDown(self):
+        self.tmp.cleanup(); self.cache.cleanup()
+
+    def _run(self, *a, code=None):
+        r = subprocess.run([sys.executable, str(HERE / "mem.py"), *a],
+                           cwd=self.tmp.name, input=code)
+        return r.returncode
+
+    def _save(self):
+        self._run_in = subprocess.run(
+            [sys.executable, str(HERE / "mem.py"), "save", str(self.f)],
+            cwd=self.tmp.name, input=b'{"role":"r"}', check=True)
+
+    def test_check_unrecorded(self):
+        self.assertEqual(self._run("check", str(self.f)), 2)
+
+    def test_check_match_then_mismatch(self):
+        self._save()
+        self.assertEqual(self._run("check", str(self.f)), 0)
+        self.f.write_text("x=2\n")
+        self.assertEqual(self._run("check", str(self.f)), 1)
+
+    def test_forget_removes(self):
+        self._save()
+        self.assertEqual(self._run("forget", str(self.f)), 0)
+        self.assertEqual(self._run("check", str(self.f)), 2)
+
+
 if __name__ == "__main__":
     unittest.main()
