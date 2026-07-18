@@ -41,3 +41,5 @@ codex/.codex/config.toml
 .claude/logs/
 .claude/cache/
 .claude/tmp/
+
+.agents/state
