@@ -21,12 +21,18 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "^Bash$",
+        "matcher": "^.*$",
         "hooks": [
           {
             "type": "command",
             "command": "~/.agents/hooks/audit-log.sh codex",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/context-economy.sh",
+            "timeout": 30,
+            "statusMessage": "Checking context economy"
           }
         ]
       }

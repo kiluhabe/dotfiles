@@ -39,11 +39,15 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Bash",
+        "matcher": ".*",
         "hooks": [
           {
             "type": "command",
             "command": "~/.agents/hooks/audit-log.sh claude"
+          },
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/context-economy.sh"
           }
         ]
       }
@@ -62,7 +66,7 @@
     "clangd-lsp@claude-plugins-official": true,
     "security-guidance@claude-plugins-official": true
   },
-  "effortLevel": "low",
+  "effortLevel": "high",
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
 }
