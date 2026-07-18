@@ -24,22 +24,22 @@ emacs/.emacs.d/projects
 
 # AI assistant local state and secrets
 codex/.codex/config.toml
-.codex/auth.json
-.codex/history.jsonl
-.codex/sessions/
-.codex/logs/
-.codex/cache/
-.codex/tmp/
-.codex/memories/
-.codex/plugins/cache/
-.claude/settings.local.json
-.claude/projects/
-.claude/todos/
-.claude/statsig/
-.claude/shell-snapshots/
-.claude/ide/
-.claude/logs/
-.claude/cache/
-.claude/tmp/
+claude/.claude.codex/auth.json
+claude/.codex/history.jsonl
+claude/.codex/sessions/
+claude/.codex/logs/
+claude/.codex/cache/
+claude/.codex/tmp/
+codex/.codex/memories/
+codex/.codex/plugins/cache/
+claude/.claude/settings.local.json
+claude/.claude/projects/
+claude/.claude/todos/
+claude/.claude.claude/statsig/
+claude/.claude/shell-snapshots/
+claude/.claude/ide/
+claude/.claude/logs/
+claude/.claude/cache/
+claude/.claude/tmp/
 
-.agents/state
+agents/.agents/state/
