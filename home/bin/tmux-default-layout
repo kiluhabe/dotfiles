@@ -28,8 +28,8 @@ TL=$(tmux new-session  -d -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')
 R=$( tmux split-window -h -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
 BL=$(tmux split-window -v -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
 
-tmux send-keys -t "$TL" 'claude' Enter
-tmux send-keys -t "$R"  'es .'   Enter
+tmux send-keys -t "$R" 'hx .' Enter
+: "$TL"
 : "$BL"
 
 tmux select-pane -t "$TL"

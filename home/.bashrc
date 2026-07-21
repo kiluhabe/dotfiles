@@ -53,9 +53,6 @@ export CLAUDE_CODE_ENABLE_TELEMETRY=1
 #aliases
 alias codex='codex --profile default'
 alias xcopy='xsel --clipboard --input'
-alias es="env TERM=xterm emacs"
-alias tm="tmux -u"
-alias tmux="tmux -u"
-alias reload-x="xrdb $HOME/.Xresources"
-alias roficlip="rofi -modi 'clipmenu:env CM_LAUNCHER=rofi-script clipmenu' -show clipmenu"
-alias comp="cargo compete"
+alias tx="tmux -u"
+alias txsw="tmux-switch"
+alias txdf="tmux-default-layout"

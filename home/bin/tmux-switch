@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -n "${TMUX:-}" ]; then
+  echo "already inside tmux" >&2
+  exit 1
+fi
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf not found" >&2
+  exit 1
+fi
+
+SESSIONS=$(tmux list-sessions -F '#{session_name}' 2>/dev/null || true)
+
+if [ -z "$SESSIONS" ]; then
+  echo "no tmux sessions" >&2
+  exit 0
+fi
+
+SELECTED=$(echo "$SESSIONS" | fzf --preview 'tmux list-windows -t {}')
+
+if [ -n "$SELECTED" ]; then
+  exec tmux attach -t "$SELECTED"
+fi
