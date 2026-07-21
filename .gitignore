@@ -23,6 +23,7 @@ emacs/.emacs.d/projects
 .gitleaks-report.json
 
 # AI assistant local state and secrets
+claude/.claude/CLAUDE.WORK.md
 codex/.codex/config.toml
 claude/.claude.codex/auth.json
 claude/.codex/history.jsonl

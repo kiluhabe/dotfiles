@@ -1,4 +1,5 @@
 @AGENTS.md
+@CLAUDE.WORK.md
 
 ## Claude Code specifics
 
