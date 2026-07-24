@@ -23,3 +23,5 @@ id_ecdsa*
 service-account*.json
 *.tfstate
 *.tfstate.backup
+
+docs/superpowers
