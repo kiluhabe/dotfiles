@@ -23,9 +23,31 @@ Two rules make this real:
 
 ## The Procedure
 
-1. **Refine the goal to a sufficient condition.** Restate the goal so that "goal met" ⟺ "issue/task satisfied", and so it is *checkable* (you can state a pass/fail condition). Refine the gap by:
-   - **Searching** the issue's linked issues/PRs/dashboards and related topics for missing context.
+1. **Refine the goal to a sufficient condition.** Restate the goal so that "goal met" ⟺ "issue/task satisfied", and so it is *checkable* (you can state a pass/fail condition).
+
+   **1a. Diagnose definability first.** Before refining, check whether a completion function f(artifact) -> {done, not done} can be defined so that independent implementers converge on the same verdict. Run this once against the goal as a whole, not per-phase.
+
+   Score two axes (do not score the five symptoms independently — they are correlated; treat them as a symptom checklist per axis, not five separate deductions):
+
+   - **Axis (a) — is there an observable signal at all?**
+     - *Verifiability*: can you write a test/observation procedure? (bug fix: repro steps + expected behavior; improvement: a metric + a measurement method)
+     - *Boundedness*: does the scope have a hard edge? ("etc.", "as needed", "on an ongoing basis" are deduction signals)
+     - *Observability*: is the judgment material observable from the artifact itself? ("satisfaction" and similarly unobservable qualities are deduction signals)
+   - **Axis (b) — does the signal map to a threshold multiple people share?**
+     - *Uniqueness*: would independent implementers picture the same done-state? ("appropriately", "flexibly", "as needed" are deduction signals)
+     - *External-dependency fixation*: does the verdict avoid depending on a reviewer's/stakeholder's taste, mood, or nuance?
+
+   Classify the goal:
+   - **Defined** — both axes hold with what you already know. Proceed to refine (below).
+   - **Definable** — an axis fails only for lack of information that could close the gap. Before asking the user, search first (see Searching below) — investigate as much as you can on your own. Then ask the user the specific missing piece(s). On answer, re-run this diagnosis (Defined / Definable / Indefinable again). No retry limit — keep asking until it resolves.
+   - **Indefinable** — an axis fails for a reason that no added information fixes (e.g. an inherently aesthetic judgment, a scope with no closable edge). **Stop here.** Tell the user f cannot be defined to converge across independent judges, and ask them to redefine the goal. Do not proceed to phase-splitting. No retry limit — wait for the redefinition.
+
+   Note: passing this check is a floor, not a quality bar — a trivial, vacuous f (e.g. one that only confirms "something changed") can pass Defined and still be useless. Watch for that when accepting a Defined verdict.
+
+   Refine the gap by:
+   - **Searching.** Before asking the user anything, investigate as much as you can yourself. Search isn't limited to the issue's linked issues/PRs/dashboards — extend into the codebase: existing implementation, whether tests/CI/benchmarks already exist for this area, prior art for similar features, and spec docs (README, AGENTS.md/CLAUDE.md). Delegate broad or multi-file exploration to the Explore subagent (read-only, doesn't consume main context). This search directly feeds the definability diagnosis above — confirm whether verification means (tests/CI/benchmarks) actually exist in code before scoring Axis (a) low; don't guess.
    - **Asking the user** the minimum questions that close the remaining gap.
+
    Stop when the goal is a checkable sufficient condition. A goal you cannot make checkable is itself a signal (step 3).
 2. **Split into phases.** Typical: investigate → decide/scope → implement → verify. Later steps classify each separately.
 3. **Classify each phase by verifiability:**
@@ -40,6 +62,7 @@ Two rules make this real:
 State exactly these, in order. This is the whole deliverable:
 
 - **Goal:** the refined, checkable sufficient condition.
+- **Definability:** Defined / Definable / Indefinable for the goal as a whole. If it took more than one round (Definable → re-diagnosed), note briefly what closed the gap.
 - **Questions:** resolved (with answers) and any still open.
 - **Phases:** a table — `phase | mode (HITL/HOTL) | why (verifiable-by-X / not-verifiable / irreversible) | gate (what the human approves, if HITL)`.
 - **Proposed new verification:** the means to introduce (if any) and the reclassification it enables.
@@ -48,6 +71,8 @@ State exactly these, in order. This is the whole deliverable:
 Write it to a **handoff file outside the codebase** (a scratch/plan location, not tracked source) so the planning tool consumes it and the repo history stays clean.
 
 ## Per-Phase Decision
+
+This graph runs only after step 1a has classified the goal as **Defined** (or reclassified to Defined via Definable). An **Indefinable** or unresolved **Definable** goal never reaches phase-splitting.
 
 ```dot
 digraph oversight {
@@ -75,3 +100,5 @@ digraph oversight {
 - **Treating "success is subjective" as permanently HITL** without asking whether a verification means could be introduced (step 5). Introducing a screenshot/benchmark often converts a human gate into an automated check.
 - **Skipping goal refinement.** A vague goal is not verifiable, so everything collapses to HITL. Refine to a checkable condition first.
 - **Leaving the goal un-checkable.** If you cannot state a pass/fail condition, you have not refined enough — or the phase is genuinely HITL. Say which.
+- **Skipping 1a and going straight to goal refinement.** If the goal is inherently Indefinable, repeated refinement attempts loop forever without converging. Diagnose definability first — don't discover it's impossible after several refinement passes.
+- **Asking the user a Definable question before checking the codebase.** If the answer is discoverable from existing tests, CI config, or prior art, searching first is cheaper than a round-trip to the user.
