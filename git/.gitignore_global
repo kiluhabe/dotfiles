@@ -24,4 +24,4 @@ service-account*.json
 *.tfstate
 *.tfstate.backup
 
-docs/superpowers
+docs/superpowers/
