@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+_agent_watch_mark_pane() {
+  local kind=${1:-}
+  if [ -n "${TMUX_PANE:-}" ] && command -v tmux >/dev/null 2>&1; then
+    tmux set-option -p -t "$TMUX_PANE" @agent-watch-kind "$kind" >/dev/null 2>&1 || true
+    tmux set-option -p -t "$TMUX_PANE" @agent-watch-state idle >/dev/null 2>&1 || true
+  fi
+}
+
+_agent_watch_unmark_pane() {
+  if [ -n "${TMUX_PANE:-}" ] && command -v tmux >/dev/null 2>&1; then
+    tmux set-option -p -u -t "$TMUX_PANE" @agent-watch-kind >/dev/null 2>&1 || true
+    tmux set-option -p -u -t "$TMUX_PANE" @agent-watch-state >/dev/null 2>&1 || true
+  fi
+}
+
+_agent_watch_usage() {
+  printf 'usage: _agent-watch-agent claude|codex [args...]\n' >&2
+}
+
+_agent_watch_run() {
+  local kind=${1:-}
+  if [ $# -gt 0 ]; then
+    shift
+  fi
+
+  case "$kind" in
+    claude|codex) ;;
+    *)
+      _agent_watch_usage
+      return 2
+      ;;
+  esac
+
+  local status=0
+  _agent_watch_mark_pane "$kind"
+  trap '_agent_watch_unmark_pane' EXIT HUP INT TERM
+  case "$kind" in
+    claude)
+      AGENT_WATCH_KIND=claude command claude "$@" || status=$?
+      ;;
+    codex)
+      AGENT_WATCH_KIND=codex command codex "$@" || status=$?
+      ;;
+  esac
+  _agent_watch_unmark_pane
+  trap - EXIT HUP INT TERM
+  return "$status"
+}
+
+_agent_watch_run "$@"

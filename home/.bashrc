@@ -13,7 +13,7 @@ export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
 
 #prompt
 unset PROMPT_COMMAND
-PROMPT_COMMAND='printf "\n"'
+PROMPT_COMMAND='printf "\033]0;%s\007\n" "${PWD/#$HOME/~}"'
 PS1="\$(prompt) "
 
 # direnv
@@ -51,7 +51,8 @@ esac
 export CLAUDE_CODE_ENABLE_TELEMETRY=1
 
 #aliases
-alias codex='codex --profile default'
+alias claude='_agent-watch-agent claude'
+alias codex='_agent-watch-agent codex --profile default'
 alias xcopy='xsel --clipboard --input'
 alias tx="tmux -u"
 alias txsw="tmux-switch"

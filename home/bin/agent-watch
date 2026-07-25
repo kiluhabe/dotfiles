@@ -1,0 +1,248 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+TMUX_CMD=${AGENT_WATCH_TMUX:-tmux}
+REFRESH_SECONDS=${AGENT_WATCH_REFRESH_SECONDS:-5}
+
+rows=()
+pane_ids=()
+focus_windows=()
+status_message=""
+
+die() {
+  printf 'agent-watch: %s\n' "$1" >&2
+  exit 1
+}
+
+tmux_cmd() {
+  "$TMUX_CMD" "$@"
+}
+
+truncate_to_width() {
+  local width=$1
+  local text=$2
+  if [ "${#text}" -le "$width" ]; then
+    printf '%s\n' "$text"
+  elif [ "$width" -le 3 ]; then
+    printf '\n'
+  else
+    printf '%s...\n' "${text:0:width-3}"
+  fi
+}
+
+agent_kind() {
+  local marker=$1
+  local command=$2
+
+  case "$marker" in
+    claude|codex)
+      printf '%s\n' "$marker"
+      return
+      ;;
+  esac
+
+  case "$command" in
+    claude|claude-*)
+      printf 'claude\n'
+      return
+      ;;
+    codex|codex-*)
+      printf 'codex\n'
+      return
+      ;;
+  esac
+
+  printf '\n'
+}
+
+current_path() {
+  local path=$1
+  path=${path%/}
+  printf '%s\n' "${path##*/}"
+}
+
+load_rows() {
+  rows=()
+  pane_ids=()
+  focus_windows=()
+
+  local format
+  format=$'#{session_name}\t#{window_index}\t#{pane_index}\t#{pane_id}\t#{pane_current_path}\t#{pane_current_command}\t#{pane_active}\t#{@agent-watch-kind}\t#{@agent-watch-state}'
+
+  local panes
+  if ! panes=$(tmux_cmd list-panes -a -F "$format" 2>/dev/null); then
+    status_message='No tmux sessions'
+    return 0
+  fi
+
+  local session window pane pane_id cwd command active marker state
+  while IFS=$'\t' read -r session window pane pane_id cwd command active marker state; do
+    local agent
+    agent=$(agent_kind "$marker" "$command")
+    [ -n "$agent" ] || continue
+
+    local path row
+    path=$(current_path "$cwd")
+    [ -n "$state" ] || state=idle
+    row=$(printf '%s %s %s' "$path" "$agent" "$state")
+    rows+=("$row")
+    pane_ids+=("$pane_id")
+    focus_windows+=("$session:$window")
+  done <<< "$panes"
+
+  if [ "${#rows[@]}" -eq 0 ]; then
+    status_message='No Claude/Codex panes'
+  else
+    status_message=''
+  fi
+}
+
+draw_once() {
+  local width=${COLUMNS:-80}
+  local selected=${1:-0}
+
+  if [ "${#rows[@]}" -eq 0 ]; then
+    printf '%s\n' "$status_message"
+    return
+  fi
+
+  local i marker line
+  for i in "${!rows[@]}"; do
+    marker=' '
+    if [ "$i" -eq "$selected" ]; then
+      marker='>'
+    fi
+    line=$(truncate_to_width "$((width - 2))" "${rows[$i]}")
+    printf '%s %s\n' "$marker" "$line"
+  done
+
+  if [ -n "$status_message" ]; then
+    printf '%s\n' "$status_message"
+  fi
+}
+
+focus_index() {
+  local index=$1
+  if [ "$index" -lt 0 ] || [ "$index" -ge "${#pane_ids[@]}" ]; then
+    status_message='focus failed: invalid selection'
+    return 1
+  fi
+  if [ -z "${TMUX:-}" ]; then
+    status_message='focus disabled outside tmux'
+    return 1
+  fi
+  if ! tmux_cmd switch-client -t "${focus_windows[$index]}" 2>/dev/null; then
+    status_message="focus failed: ${focus_windows[$index]}"
+    return 1
+  fi
+  if ! tmux_cmd select-pane -t "${pane_ids[$index]}" 2>/dev/null; then
+    status_message="focus failed: ${pane_ids[$index]}"
+    return 1
+  fi
+}
+
+enter_raw_mode() {
+  if [ -t 0 ]; then
+    old_stty=$(stty -g)
+    stty -echo -icanon time 0 min 0
+    trap 'leave_raw_mode' EXIT INT TERM
+  fi
+}
+
+leave_raw_mode() {
+  if [ -n "${old_stty:-}" ]; then
+    stty "$old_stty"
+    old_stty=""
+  fi
+}
+
+read_key() {
+  local key rest
+  IFS= read -rsn1 -t 1 key || return 1
+  if [ -z "$key" ] || [ "$key" = $'\r' ]; then
+    printf '__ENTER__'
+    return 0
+  fi
+  if [ "$key" = $'\033' ]; then
+    IFS= read -rsn2 -t 1 rest || rest=""
+    key="$key$rest"
+  fi
+  printf '%s' "$key"
+}
+
+clear_screen() {
+  if [ -t 1 ]; then
+    clear
+  fi
+}
+
+main() {
+  command -v "$TMUX_CMD" >/dev/null 2>&1 || die "tmux command not found: $TMUX_CMD"
+
+  load_rows
+
+  if [ -n "${AGENT_WATCH_FOCUS_INDEX:-}" ]; then
+    focus_index "$AGENT_WATCH_FOCUS_INDEX" || true
+  fi
+
+  if [ "${AGENT_WATCH_ONCE:-}" = 1 ]; then
+    draw_once
+    return 0
+  fi
+
+  local selected=0
+  local last_refresh
+  local now key
+  last_refresh=$(date +%s)
+
+  enter_raw_mode
+  clear_screen
+  draw_once "$selected"
+
+  while :; do
+    now=$(date +%s)
+    if [ "$((now - last_refresh))" -ge "$REFRESH_SECONDS" ]; then
+      load_rows
+      if [ "${#rows[@]}" -eq 0 ]; then
+        selected=0
+      elif [ "$selected" -ge "${#rows[@]}" ]; then
+        selected=$((${#rows[@]} - 1))
+      fi
+      clear_screen
+      draw_once "$selected"
+      last_refresh=$now
+    fi
+
+    key=$(read_key || true)
+    case "$key" in
+      q)
+        break
+        ;;
+      j|$'\033[B')
+        if [ "${#rows[@]}" -gt 0 ]; then
+          selected=$(((selected + 1) % ${#rows[@]}))
+          clear_screen
+          draw_once "$selected"
+        fi
+        ;;
+      k|$'\033[A')
+        if [ "${#rows[@]}" -gt 0 ]; then
+          selected=$(((selected + ${#rows[@]} - 1) % ${#rows[@]}))
+          clear_screen
+          draw_once "$selected"
+        fi
+        ;;
+      "")
+        ;;
+      __ENTER__)
+        focus_index "$selected" || true
+        clear_screen
+        draw_once "$selected"
+        ;;
+    esac
+  done
+
+  leave_raw_mode
+}
+
+main "$@"

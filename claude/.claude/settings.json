@@ -22,7 +22,27 @@
   },
   "model": "sonnet",
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh answering"
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh working"
+          }
+        ]
+      },
       {
         "matcher": "Bash",
         "hooks": [
@@ -48,6 +68,21 @@
           {
             "type": "command",
             "command": "~/.agents/hooks/context-economy.sh"
+          },
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh answering"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh idle"
           }
         ]
       }

@@ -24,10 +24,12 @@ else
   done
 fi
 
-TL=$(tmux new-session  -d -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')
-R=$( tmux split-window -h -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
-BL=$(tmux split-window -v -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
+WATCH=$(tmux new-session -d -x "$(tput cols)" -y "$(tput lines)" -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')
+TL=$(   tmux split-window -h -t "$WATCH"   -l 90% -c "$DIR" -P -F '#{pane_id}')
+R=$(    tmux split-window -h -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
+BL=$(   tmux split-window -v -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
 
+tmux send-keys -t "$WATCH" 'agent-watch' Enter
 tmux send-keys -t "$R" 'hx .' Enter
 : "$TL"
 : "$BL"

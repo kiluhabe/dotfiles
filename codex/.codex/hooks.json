@@ -1,6 +1,28 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "^.*$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh answering",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
+      {
+        "matcher": "^.*$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh working",
+            "timeout": 5
+          }
+        ]
+      },
       {
         "matcher": "^Bash$",
         "hooks": [
@@ -33,6 +55,23 @@
             "command": "~/.agents/hooks/context-economy.sh",
             "timeout": 30,
             "statusMessage": "Checking context economy"
+          },
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh answering",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "^.*$",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/agent-watch-state.sh idle",
+            "timeout": 5
           }
         ]
       }
