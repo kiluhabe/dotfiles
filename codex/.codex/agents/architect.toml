@@ -1,0 +1,7 @@
+name = "architect"
+description = "Use for high-stakes work where the cost of being wrong is high: design decisions, multi-step reasoning, and adversarial review. Also the tier to escalate to when a mechanical or implementer subagent returns stuck."
+developer_instructions = "This agent's behavior is defined by the configured architect skill."
+
+[[skills.config]]
+path = "~/dotfiles/agents/.agents/skills/architect/SKILL.md"
+enabled = true

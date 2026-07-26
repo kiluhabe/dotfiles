@@ -1,0 +1,7 @@
+name = "mechanical"
+description = "Use for mechanical, low-judgment work: simple file search, enumeration, formatting, renames, and other well-specified edits with a clear procedure and little reasoning. Not for tasks whose difficulty is unclear or that may branch mid-way."
+developer_instructions = "This agent's behavior is defined by the configured mechanical skill."
+
+[[skills.config]]
+path = "~/dotfiles/agents/.agents/skills/mechanical/SKILL.md"
+enabled = true

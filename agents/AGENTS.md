@@ -40,6 +40,37 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
   1-2 step work).
 - Tell delegates what to return and the word cap. Don't accept raw logs.
 
+## Model Routing
+
+The main agent acts as the orchestrator. Decompose the request, route each
+piece to the right subagent, and integrate the results. Prefer delegating
+over doing the work inline when the split is meaningful.
+
+Route by task, not by inheritance. Match each piece to a subagent:
+
+- `mechanical`: simple search, enumeration, formatting, and
+  well-specified edits.
+- `implementer`: most research and implementation; the default.
+- `architect`: high-stakes work, design decisions, multi-step reasoning,
+  adversarial review, and synthesis after lower-tier agents get stuck.
+
+User phrasing sets the pattern explicitly. When a request opens with one
+of these, follow it over the by-task default:
+
+- 「検討してください」 -> `architect`. A judgment call; reason it through
+  at the highest available interface.
+- 「調査お願いします」 -> `implementer` investigates, then `architect`
+  synthesizes the findings (総括).
+- 「実装してください」 -> `implementer` implements, then `architect`
+  reviews the change.
+
+When tasks are independent, dispatch several subagents in parallel. Serialize
+only when a step depends on a prior step's output.
+
+Escalate on signal, not reflex: repeated failure, irreducible ambiguity, or
+a design call surfacing mid-task. Step up one interface at a time; if a
+second bump is needed, rethink the split instead.
+
 ## Commits and history
 
 - New commits by default. Amend only when explicitly asked.
