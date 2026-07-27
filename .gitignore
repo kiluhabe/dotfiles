@@ -45,3 +45,4 @@ claude/.claude/tmp/
 
 agents/.agents/state/
 docs/superpowers/
+__pycache__/

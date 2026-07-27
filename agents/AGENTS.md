@@ -12,14 +12,15 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 
 ## File search and context economy
 
+- Delegation is the default for search; it preserves your own context.
+  Run it yourself only when it's 1-2 tool calls with a known target. Wider
+  search with a known shape goes to `mechanical`; exploration whose shape
+  you can't state up front goes to `implementer`. Discard returned output
+  once you've used it.
 - For large files (~500 lines / 50 KB+), grep first, then Read with
   offset/limit. Don't read the whole file.
-- Delegate large or cross-file exploration to a read-only/explore subagent
-  when it will preserve main context.
 - Don't duplicate searches between main session and subagent. After
   delegating, take the summary -- don't re-run the same query.
-- Delegate when a search will likely exceed 3 queries; otherwise narrow
-  incrementally and discard output that's no longer needed.
 - When uncertainty is high, asking the user once is almost always cheaper
   than reading widely.
 
@@ -28,8 +29,12 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - Batch changes to one file into a single Write or Edit call. Don't
   issue several small sequential Edits to the same file when one larger
   change would do.
-- When a read-only subagent proposes file content, review the proposed content
-  and perform the actual write/edit in the main session.
+- Once an edit is fully specified (exact file, exact change), hand it to
+  `mechanical` to write. Do it inline only when the edit still needs
+  judgment about what to change.
+- When a read-only agent proposes file content, don't write it blind --
+  review the content first, then either write it yourself or pass the
+  reviewed text to `mechanical`.
 
 ## Task decomposition and parallelism
 
@@ -42,17 +47,25 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 
 ## Model Routing
 
-The main agent acts as the orchestrator. Decompose the request, route each
-piece to the right subagent, and integrate the results. Prefer delegating
-over doing the work inline when the split is meaningful.
+Route by role, not by which model happens to be running. The orchestrator
+specifies (turns intent into a task the delegate can't misread) and
+integrates (judges and merges what comes back). It doesn't execute
+mechanical work itself.
 
-Route by task, not by inheritance. Match each piece to a subagent:
-
-- `mechanical`: simple search, enumeration, formatting, and
-  well-specified edits.
-- `implementer`: most research and implementation; the default.
+- `mechanical`: the execution tier. Search, enumeration, formatting,
+  renames, and edits whose target and shape are already decided. Most tool
+  calls land here -- but only work you can state up front; it STOPs on
+  anything that branches.
+- `implementer`: research and implementation needing judgment. Specifies
+  and integrates the same way, pushing mechanical parts down to
+  `mechanical` unless it has no Agent tool.
 - `architect`: high-stakes work, design decisions, multi-step reasoning,
   adversarial review, and synthesis after lower-tier agents get stuck.
+
+An `implementer` change gets an `architect` review by default, commissioned
+by the caller that dispatched it, in a fresh context, with the original
+requirement and the diff -- not the implementer's own summary, which only
+invites agreement. One round; then the caller decides what to act on.
 
 User phrasing sets the pattern explicitly. When a request opens with one
 of these, follow it over the by-task default:
@@ -64,12 +77,14 @@ of these, follow it over the by-task default:
 - 「実装してください」 -> `implementer` implements, then `architect`
   reviews the change.
 
-When tasks are independent, dispatch several subagents in parallel. Serialize
-only when a step depends on a prior step's output.
-
 Escalate on signal, not reflex: repeated failure, irreducible ambiguity, or
 a design call surfacing mid-task. Step up one interface at a time; if a
 second bump is needed, rethink the split instead.
+
+Escalation runs through the caller, not sideways. A stuck subagent returns
+early with what it reached, the blocker, and what's missing; the caller
+re-delegates. Subagents don't pick their own successor -- that judgment is
+exactly what they were stuck on.
 
 ## Commits and history
 

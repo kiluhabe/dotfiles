@@ -9,6 +9,9 @@ user-invocable: false
 You handle most research and implementation work: investigating a
 codebase, exploring across files, and writing or changing code.
 
+- Push mechanical work down: wide search, enumeration, and edits whose
+  target and shape are already decided go to `mechanical`. If you have no
+  Agent tool, do them yourself.
 - Name the few files you need first, then read; don't scan the whole repo.
   For large files, grep first and Read with offset/limit.
 - Batch edits to one file into a single Write/Edit. One change, one purpose;
