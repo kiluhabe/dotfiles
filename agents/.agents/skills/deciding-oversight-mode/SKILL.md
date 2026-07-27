@@ -23,9 +23,19 @@ Two rules make this real:
 
 ## The Procedure
 
+0. **Take inventory of references, then filter.** Before diagnosing anything, list every external reference the goal, the acceptance criteria, and the comments point at — Figma nodes, Slack threads, other issues/PRs, design docs, dashboards, and any component/file/tool the text claims already exists. Open each one. Record each as one line: `read` (plus a one-line summary of what it actually says) or `unread` (plus why — unauthenticated, no permission, dead link, does not exist in the codebase).
+
+   Then filter: **only `read` lines are material for the diagnosis in 1a.**
+
+   - A reference's *existence* is not evidence about its *content*. A node id, URL, or component name proves a pointer was given, nothing more.
+   - If an `unread` reference is the only thing that would fix a symptom's threshold, that symptom is failing. The missing information is that reference's content.
+   - If any `unread` reference remains, the verdict cannot be **Defined**. Getting it readable is one of the questions for the user.
+
+   You do not get to assume a reference is favorable. "The design lives at node X" tells you nothing about whether node X contains that design.
+
 1. **Refine the goal to a sufficient condition.** Restate the goal so that "goal met" ⟺ "issue/task satisfied", and so it is *checkable* (you can state a pass/fail condition).
 
-   **1a. Diagnose definability first.** Before refining, check whether a completion function f(artifact) -> {done, not done} can be defined so that independent implementers converge on the same verdict. Run this once against the goal as a whole, not per-phase.
+   **1a. Diagnose definability first.** Before refining, check whether a completion function f(artifact) -> {done, not done} can be defined so that independent implementers converge on the same verdict. Run this once against the goal as a whole, not per-phase. Score it against the `read` references from step 0 only.
 
    Score two axes (do not score the five symptoms independently — they are correlated; treat them as a symptom checklist per axis, not five separate deductions):
 
@@ -38,7 +48,7 @@ Two rules make this real:
      - *External-dependency fixation*: does the verdict avoid depending on a reviewer's/stakeholder's taste, mood, or nuance?
 
    Classify the goal:
-   - **Defined** — both axes hold with what you already know. Proceed to refine (below).
+   - **Defined** — both axes hold on `read` references alone, **and** no blocking question is still open. An open blocker plus a Defined verdict is a contradiction: if something still has to be answered before work can start, the goal is Definable.
    - **Definable** — an axis fails only for lack of information that could close the gap. Before asking the user, search first (see Searching below) — investigate as much as you can on your own. Then ask the user the specific missing piece(s). On answer, re-run this diagnosis (Defined / Definable / Indefinable again). No retry limit — keep asking until it resolves.
    - **Indefinable** — an axis fails for a reason that no added information fixes (e.g. an inherently aesthetic judgment, a scope with no closable edge). **Stop here.** Tell the user f cannot be defined to converge across independent judges, and ask them to redefine the goal. Do not proceed to phase-splitting. No retry limit — wait for the redefinition.
 
@@ -61,6 +71,7 @@ Two rules make this real:
 
 State exactly these, in order. This is the whole deliverable:
 
+- **References:** the step 0 table — every external reference, each marked `read` (with what it says) or `unread` (with why). This is the input to the next entry, so it comes first.
 - **Goal:** the refined, checkable sufficient condition.
 - **Definability:** Defined / Definable / Indefinable for the goal as a whole. If it took more than one round (Definable → re-diagnosed), note briefly what closed the gap.
 - **Questions:** resolved (with answers) and any still open.
@@ -101,4 +112,5 @@ digraph oversight {
 - **Skipping goal refinement.** A vague goal is not verifiable, so everything collapses to HITL. Refine to a checkable condition first.
 - **Leaving the goal un-checkable.** If you cannot state a pass/fail condition, you have not refined enough — or the phase is genuinely HITL. Say which.
 - **Skipping 1a and going straight to goal refinement.** If the goal is inherently Indefinable, repeated refinement attempts loop forever without converging. Diagnose definability first — don't discover it's impossible after several refinement passes.
+- **Treating an unread reference as if you had read it.** A Figma node id, a Slack link, or "the existing shared component" scores nothing until you open it and can say what it contains. This is how a Definable goal gets declared Defined: the pointer stands in for the spec, and the aesthetic dependency looks closed when it is untouched. If a reference contradicts the goal (the linked node holds something else; the named component is not in the tree), that is a finding, not noise.
 - **Asking the user a Definable question before checking the codebase.** If the answer is discoverable from existing tests, CI config, or prior art, searching first is cheaper than a round-trip to the user.
