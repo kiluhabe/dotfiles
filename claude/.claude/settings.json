@@ -55,6 +55,24 @@
             "command": "~/.agents/hooks/nudge-bash.sh"
           }
         ]
+      },
+      {
+        "matcher": "Agent",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/nudge-agent-tier.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "TaskCreate",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/nudge-task-owner-create.sh"
+          }
+        ]
       }
     ],
     "PostToolUse": [
@@ -83,6 +101,10 @@
           {
             "type": "command",
             "command": "~/.agents/hooks/agent-watch-state.sh idle"
+          },
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/enforce-task-owner.sh"
           }
         ]
       }
