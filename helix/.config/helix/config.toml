@@ -34,6 +34,9 @@ render = true
 # project-find-file 相当。ドットファイルも候補に出す。
 hidden = false
 
+[editor.soft-wrap]
+enable = true
+
 # ── Emacs → Helix キーバインド対応(基本は標準準拠。追加は下の [keys] のみ) ──
 # C-c p  project-find-file    -> Space f   (file picker)
 # C-c P  M-x / command 一覧   -> Space ?   (command palette) または : (command mode)
