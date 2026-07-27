@@ -37,6 +37,13 @@ Two rules make this real:
 
    **1a. Diagnose definability first.** Before refining, check whether a completion function f(artifact) -> {done, not done} can be defined so that independent implementers converge on the same verdict. Run this once against the goal as a whole, not per-phase. Score it against the `read` references from step 0 only.
 
+   **What 1a scores, and what it does not.** 1a scores one thing: whether the done-state converges *given that the work is done*. Assume the work will be done. Whether it is worth doing, whether it should be done now or sit in the backlog, and how large the production impact is are **priority questions, and priority is not an input to 1a.** A goal whose fix is unambiguous is **Defined** even if nobody has decided to fund it.
+
+   - Do **not** count "do it" vs "don't do it" as two done-states. That is not a Uniqueness failure; it is an undecided priority.
+   - Do **not** count "the deliverable might be a Won't-fix" as a Boundedness failure. Score the scope of the fix, not the odds of shipping it.
+   - "independent implementers would split between fixing it and WONTFIX" is not a finding. Strike the WONTFIX branch and ask whether the remaining ways to fix it converge.
+   - If the issue's *goal is itself the decision* (「対応方針を検討したい」), then the artifact is the decision, f is "the team agreed on the 方針", and it fails Axis (b) on **External-dependency fixation** — say that, not "priority is unclear". Priority then appears where it belongs: as a HITL gate in the phase table.
+
    Score two axes (do not score the five symptoms independently — they are correlated; treat them as a symptom checklist per axis, not five separate deductions):
 
    - **Axis (a) — is there an observable signal at all?**
@@ -113,4 +120,5 @@ digraph oversight {
 - **Leaving the goal un-checkable.** If you cannot state a pass/fail condition, you have not refined enough — or the phase is genuinely HITL. Say which.
 - **Skipping 1a and going straight to goal refinement.** If the goal is inherently Indefinable, repeated refinement attempts loop forever without converging. Diagnose definability first — don't discover it's impossible after several refinement passes.
 - **Treating an unread reference as if you had read it.** A Figma node id, a Slack link, or "the existing shared component" scores nothing until you open it and can say what it contains. This is how a Definable goal gets declared Defined: the pointer stands in for the spec, and the aesthetic dependency looks closed when it is untouched. If a reference contradicts the goal (the linked node holds something else; the named component is not in the tree), that is a finding, not noise.
+- **Scoring priority as definability.** "The impact looks small", "it may not be worth fixing", "this might end up a Won't-fix" say nothing about whether the done-state converges. Fold them into an axis and every unfunded issue becomes Definable, which costs 1a all of its discriminating power. Judge the fix as if it were already approved; a missing *threshold number* (the metric nobody has agreed on) is a real Axis (a) deduction, a missing *decision to proceed* is not.
 - **Asking the user a Definable question before checking the codebase.** If the answer is discoverable from existing tests, CI config, or prior art, searching first is cheaper than a round-trip to the user.
