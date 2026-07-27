@@ -42,7 +42,7 @@ Two rules make this real:
    - Do **not** count "do it" vs "don't do it" as two done-states. That is not a Uniqueness failure; it is an undecided priority.
    - Do **not** count "the deliverable might be a Won't-fix" as a Boundedness failure. Score the scope of the fix, not the odds of shipping it.
    - "independent implementers would split between fixing it and WONTFIX" is not a finding. Strike the WONTFIX branch and ask whether the remaining ways to fix it converge.
-   - If the issue's *goal is itself the decision* (「対応方針を検討したい」), then the artifact is the decision, f is "the team agreed on the 方針", and it fails Axis (b) on **External-dependency fixation** — say that, not "priority is unclear". Priority then appears where it belongs: as a HITL gate in the phase table.
+   - If the issue's *goal is itself the decision* (「対応方針を検討したい」), then the artifact is the decision and f is "the team agreed on the 方針". That fails Axis (a) on **Observability** — agreement is not readable from the artifact, exactly like "satisfaction". It is *not* External-dependency fixation, which is about a reviewer's taste, mood, or nuance; a decision is not a taste. Naming the wrong criterion here is what splits the verdict, because no information makes an unobservable quality observable: an Observability failure of this kind is **Indefinable**, and the goal must be redefined as a target state ("the N+1 is gone") before anything else. Say that, not "priority is unclear".
 
    Score two axes (do not score the five symptoms independently — they are correlated; treat them as a symptom checklist per axis, not five separate deductions):
 
@@ -82,7 +82,11 @@ State exactly these, in order. This is the whole deliverable:
 - **Goal:** the refined, checkable sufficient condition.
 - **Definability:** Defined / Definable / Indefinable for the goal as a whole. If it took more than one round (Definable → re-diagnosed), note briefly what closed the gap.
 - **Questions:** resolved (with answers) and any still open.
-- **Phases:** a table — `phase | mode (HITL/HOTL) | why (verifiable-by-X / not-verifiable / irreversible) | gate (what the human approves, if HITL)`.
+- **Phases:** this slot is required, but what goes in it depends on the verdict above. **Only a Defined goal gets a table** — `phase | mode (HITL/HOTL) | why (verifiable-by-X / not-verifiable / irreversible) | gate (what the human approves, if HITL)`. If the verdict is **Definable** or **Indefinable**, write exactly one line and nothing else:
+
+  `not reached — goal is <verdict>`
+
+  Phase-splitting has not happened, so there is nothing to report. A provisional, draft, or "likely" table is the same violation as a real one: it is a plan, written before the goal that plans are derived from exists. Do not label it tentative and write it anyway.
 - **Proposed new verification:** the means to introduce (if any) and the reclassification it enables.
 - **Handoff:** which planning tool takes this next (Superpowers plan / OpenSpec / AI-DLC).
 
@@ -90,7 +94,7 @@ Write it to a **handoff file outside the codebase** (a scratch/plan location, no
 
 ## Per-Phase Decision
 
-This graph runs only after step 1a has classified the goal as **Defined** (or reclassified to Defined via Definable). An **Indefinable** or unresolved **Definable** goal never reaches phase-splitting.
+This graph runs only after step 1a has classified the goal as **Defined** (or reclassified to Defined via Definable). An **Indefinable** or unresolved **Definable** goal never reaches phase-splitting — its Phases slot says `not reached`, per the Output Contract.
 
 ```dot
 digraph oversight {
