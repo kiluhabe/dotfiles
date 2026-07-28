@@ -14,7 +14,7 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 
 - Delegation is the default for search; it preserves your own context.
   Run it yourself only when it's 1-2 tool calls with a known target. Wider
-  search with a known shape goes to `mechanical`; exploration whose shape
+  search with a known shape goes to `scout`; exploration whose shape
   you can't state up front goes to `implementer`. Discard returned output
   once you've used it.
 - For large files (~500 lines / 50 KB+), grep first, then Read with
@@ -52,10 +52,14 @@ specifies (turns intent into a task the delegate can't misread) and
 integrates (judges and merges what comes back). It doesn't execute
 mechanical work itself.
 
-- `mechanical`: the execution tier. Search, enumeration, formatting,
-  renames, and edits whose target and shape are already decided. Most tool
-  calls land here -- but only work you can state up front; it STOPs on
-  anything that branches.
+- `scout`: the read-only search tier. Locating code, enumerating call
+  sites, mapping where a concern lives. Holds no edit or command tools, so
+  a wide sweep can't write. Returns `path:line` plus a note, never file
+  contents.
+- `mechanical`: the execution tier. Formatting, renames, and edits whose
+  target and shape are already decided. Most tool calls land here -- but
+  only work you can state up front; it STOPs on anything that branches,
+  and it doesn't find its own edit sites.
 - `implementer`: research and implementation needing judgment. Specifies
   and integrates the same way, pushing mechanical parts down to
   `mechanical` unless it has no Agent tool.

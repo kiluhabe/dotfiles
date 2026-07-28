@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
-# Steers subagent routing toward role-based tiers (architect/implementer/mechanical).
-# Dual-mode:
-#   Claude Code — PreToolUse hook for the Agent tool. Reads .tool_input.subagent_type;
-#     denylist: blocks generic default routing (general-purpose/claude/empty), passes
-#     purpose-specific agents (Explore, Plan, etc.).
-#   Codex — SubagentStart hook. Reads .agent_type; allowlist: the roster is exactly the
-#     three tiers, so anything else is blocked.
+# Steers subagent routing to the role-based roster.
+# The roster is closed: architect / implementer / mechanical / scout.
+# Built-in agents (general-purpose, claude, Explore, Plan) are blocked because
+# their model is unpinned — they inherit the session's, so a wide sweep lands on
+# the expensive tier. scout covers read-only search at a fixed model; producing a
+# plan is implementer + writing-plans, reviewed by architect.
+# Dual-mode: Claude Code PreToolUse on the Agent tool (.tool_input.subagent_type),
+# Codex SubagentStart (.agent_type). Same allowlist on both paths.
 set -uo pipefail
 
 command -v jq >/dev/null 2>&1 || exit 0
@@ -14,23 +15,14 @@ INPUT=$(cat)
 CODEX_TYPE=$(printf '%s' "$INPUT" | jq -r '.agent_type // empty')
 
 if [ -n "$CODEX_TYPE" ]; then
-  # Codex path: allowlist the three tiers.
-  case "$CODEX_TYPE" in
-    architect|implementer|mechanical) exit 0 ;;
-    *)
-      printf 'BLOCKED by nudge-agent-tier: route by role — use architect / implementer / mechanical. Got: %s\n' "$CODEX_TYPE" >&2
-      exit 2
-      ;;
-  esac
+  TYPE="$CODEX_TYPE"
+else
+  TYPE=$(printf '%s' "$INPUT" | jq -r '.tool_input.subagent_type // empty')
 fi
 
-# Claude Code path: denylist generic default routing.
-TYPE=$(printf '%s' "$INPUT" | jq -r '.tool_input.subagent_type // empty')
 case "$TYPE" in
-  general-purpose|claude|"")
-    printf 'BLOCKED by nudge-agent-tier: route by role — use architect / implementer / mechanical (or a purpose-specific agent like Explore). Got: %s\n' "${TYPE:-<none>}" >&2
-    exit 2
-    ;;
+  architect|implementer|mechanical|scout) exit 0 ;;
 esac
 
-exit 0
+printf 'BLOCKED by nudge-agent-tier: route by role — architect / implementer / mechanical / scout (read-only search). Got: %s\n' "${TYPE:-<none>}" >&2
+exit 2
