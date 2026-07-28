@@ -5,9 +5,30 @@ EXPLICIT_NAME="${1:-}"
 SESSION="${EXPLICIT_NAME:-dev}"
 DIR="${2:-$PWD}"
 
+# Builds the layout around $1 (the pane that becomes the watch pane) and
+# leaves the cursor in the top-left working pane.
+layout() {
+  local WATCH="$1"
+  local TL R BL
+  TL=$(tmux split-window -h -t "$WATCH" -l 90% -c "$DIR" -P -F '#{pane_id}')
+  R=$(tmux split-window -h -t "$TL" -c "$DIR" -P -F '#{pane_id}')
+  BL=$(tmux split-window -v -t "$TL" -c "$DIR" -P -F '#{pane_id}')
+
+  tmux send-keys -t "$WATCH" 'agent-watch' Enter
+  tmux send-keys -t "$R" 'hx .' Enter
+  : "$BL"
+
+  tmux select-pane -t "$TL"
+}
+
 if [ -n "${TMUX:-}" ]; then
-  echo "already inside tmux" >&2
-  exit 1
+  # Inside tmux: lay out the current window; don't create or attach a session.
+  if [ "$(tmux display-message -p '#{window_panes}')" -gt 1 ]; then
+    echo "window is already split" >&2
+    exit 1
+  fi
+  layout "$(tmux display-message -p '#{pane_id}')"
+  exit 0
 fi
 
 if [ -n "$EXPLICIT_NAME" ]; then
@@ -24,15 +45,5 @@ else
   done
 fi
 
-WATCH=$(tmux new-session -d -x "$(tput cols)" -y "$(tput lines)" -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')
-TL=$(   tmux split-window -h -t "$WATCH"   -l 90% -c "$DIR" -P -F '#{pane_id}')
-R=$(    tmux split-window -h -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
-BL=$(   tmux split-window -v -t "$TL"      -c "$DIR" -P -F '#{pane_id}')
-
-tmux send-keys -t "$WATCH" 'agent-watch' Enter
-tmux send-keys -t "$R" 'hx .' Enter
-: "$TL"
-: "$BL"
-
-tmux select-pane -t "$TL"
+layout "$(tmux new-session -d -x "$(tput cols)" -y "$(tput lines)" -s "$SESSION" -c "$DIR" -P -F '#{pane_id}')"
 exec tmux attach -t "$SESSION"
