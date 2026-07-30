@@ -57,3 +57,6 @@ alias xcopy='xsel --clipboard --input'
 alias tx="tmux -u"
 alias txsw="tmux-switch"
 alias txdf="tmux-default-layout"
+alias txks="tmux kill-session"
+alias txkw="tmux kill-window"
+alias txbs="tmux new-session -d -c"
