@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "usage: tmux-worktree-window <branch-name>" >&2
+}
+
+if [ -z "${TMUX:-}" ]; then
+  echo "tmux-worktree-window: must be run inside tmux" >&2
+  exit 1
+fi
+
+BRANCH="${1:-}"
+if [ -z "$BRANCH" ]; then
+  usage
+  exit 2
+fi
+
+REPO_ROOT=$(git rev-parse --show-toplevel)
+BASE_DIR="${TMUX_WORKTREE_DIR:-.worktrees}"
+WORKTREE_PATH="$REPO_ROOT/$BASE_DIR/$BRANCH"
+
+EXISTING=$(git -C "$REPO_ROOT" worktree list --porcelain \
+  | grep -Fx "worktree $WORKTREE_PATH" || true)
+
+if [ -z "$EXISTING" ]; then
+  if ! git -C "$REPO_ROOT" check-ignore -q "$BASE_DIR"; then
+    echo "$BASE_DIR/" >> "$REPO_ROOT/.gitignore"
+  fi
+  git -C "$REPO_ROOT" worktree add "$WORKTREE_PATH" -b "$BRANCH"
+fi
+
+tmux new-window -c "$WORKTREE_PATH" -n "$BRANCH"
