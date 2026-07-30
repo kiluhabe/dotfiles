@@ -16,7 +16,7 @@ if [ -z "$BRANCH" ]; then
   exit 2
 fi
 
-REPO_ROOT=$(git rev-parse --show-toplevel)
+REPO_ROOT=$(git worktree list --porcelain | sed -n 's/^worktree //p' | sed -n 1p)
 BASE_DIR="${TMUX_WORKTREE_DIR:-.worktrees}"
 WORKTREE_PATH="$REPO_ROOT/$BASE_DIR/$BRANCH"
 
@@ -25,7 +25,11 @@ EXISTING=$(git -C "$REPO_ROOT" worktree list --porcelain \
 
 if [ -z "$EXISTING" ]; then
   if ! git -C "$REPO_ROOT" check-ignore -q "$BASE_DIR"; then
-    echo "$BASE_DIR/" >> "$REPO_ROOT/.gitignore"
+    GITIGNORE="$REPO_ROOT/.gitignore"
+    if [ -s "$GITIGNORE" ] && [ -n "$(tail -c 1 "$GITIGNORE")" ]; then
+      printf '\n' >> "$GITIGNORE"
+    fi
+    echo "$BASE_DIR/" >> "$GITIGNORE"
   fi
   git -C "$REPO_ROOT" worktree add "$WORKTREE_PATH" -b "$BRANCH"
 fi
