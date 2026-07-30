@@ -15,7 +15,7 @@ layout() {
   BL=$(tmux split-window -v -t "$TL" -c "$DIR" -P -F '#{pane_id}')
 
   tmux send-keys -t "$WATCH" 'agent-watch' Enter
-  tmux send-keys -t "$R" 'hx .' Enter
+  tmux send-keys -t "$R" '$EDITOR .' Enter
   : "$BL"
 
   tmux select-pane -t "$TL"

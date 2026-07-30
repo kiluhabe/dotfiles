@@ -1,4 +1,4 @@
-export EDITOR="${EDITOR:-nano}"
+export EDITOR="${EDITOR:-nvim}"
 
 # path
 if [[ $(uname -a) =~ ^Darwin ]]; then

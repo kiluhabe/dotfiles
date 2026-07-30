@@ -18,7 +18,6 @@
   dfs = !git -c pager.diff='less -R' diff
 [core]
   excludesfile = $HOME/.gitignore_global
-  editor = nano
   ignorecase = false
 [credential "https://source.developers.google.com"]
   helper = gcloud.sh
