@@ -147,6 +147,61 @@ key = "Q"
 mods = "Command"
 
 [[keyboard.bindings]]
+action = "ReceiveChar"
+key = "F"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "N"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "W"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "F"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "P"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "P"
+mods = "Command|Shift"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "D"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "Up"
+mods = "Command|Alt"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "Down"
+mods = "Command|Alt"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "Left"
+mods = "Command"
+
+[[keyboard.bindings]]
+action = "ReceiveChar"
+key = "Right"
+mods = "Command"
+
+[[keyboard.bindings]]
 chars = "\u0000"
 key = "Key2"
 mods = "Control|Shift"
