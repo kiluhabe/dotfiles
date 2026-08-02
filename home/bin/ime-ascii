@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# Force the macOS input source back to ASCII/Roman if it's currently in a
+# non-ASCII (zenkaku / CJK) mode. No-op if already ASCII or if macism is
+# absent. Meant to be run before tmux switches to its prefix key table,
+# so pressing the tmux prefix key never gets silently eaten by an IME.
+# Requires `macism` (brew install macism). Same source classification as
+# ime-status.
+
+src=$(macism 2>/dev/null) || exit 0
+[ -z "$src" ] && exit 0
+
+case "$src" in
+  *Japanese.Roman|*RomajiTyping.Roman|com.apple.keylayout.*)
+    ;;
+  *Kotoeri*)
+    macism com.apple.inputmethod.Kotoeri.RomajiTyping.Roman
+    ;;
+  *Japanese*)
+    macism com.apple.inputmethod.Japanese.Roman
+    ;;
+esac
