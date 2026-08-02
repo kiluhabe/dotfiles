@@ -14,6 +14,11 @@ layout() {
   R=$(tmux split-window -h -t "$TL" -c "$DIR" -P -F '#{pane_id}')
   BL=$(tmux split-window -v -t "$TL" -c "$DIR" -P -F '#{pane_id}')
 
+  tmux set-option -p -t "$WATCH" @tmux-default-layout-role watch
+  tmux set-option -p -t "$TL" @tmux-default-layout-role agent
+  tmux set-option -p -t "$R" @tmux-default-layout-role editor
+  tmux set-option -p -t "$BL" @tmux-default-layout-role shell
+
   tmux send-keys -t "$WATCH" 'agent-watch' Enter
   tmux send-keys -t "$R" '$EDITOR .' Enter
   : "$BL"
