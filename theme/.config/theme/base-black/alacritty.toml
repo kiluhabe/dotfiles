@@ -1,26 +1,26 @@
 [colors.primary]
-background = "#1C1C1C"
-foreground = "#E8E5DE"
+background = "#1C1C1C" # bg
+foreground = "#E8E5DE" # fg
 
 [colors.cursor]
-cursor = "#FF5A26"
+cursor = "#FF5A26" # accent
 
 [colors.normal]
-black   = "#1C1C1C"
-red     = "#F04A38"
-green   = "#35B36B"
-yellow  = "#FFD23F"
-blue    = "#3D7DD8"
-magenta = "#B25FC0"
-cyan    = "#38A6B8"
-white   = "#4C4C48"
+black   = "#1C1C1C" # bg
+red     = "#F04A38" # error
+green   = "#35B36B" # success
+yellow  = "#FFD23F" # warning
+blue    = "#3D7DD8" # accent2
+magenta = "#F04A38" # error (nearest hue; palette has no magenta)
+cyan    = "#3D7DD8" # accent2 (nearest hue; palette has no cyan)
+white   = "#4C4C48" # border
 
 [colors.bright]
-black   = "#7A776F"
-red     = "#FF7A63"
-green   = "#5DD08C"
-yellow  = "#FFDD6B"
-blue    = "#6B9CE0"
-magenta = "#CC8AD6"
-cyan    = "#6BC4D3"
-white   = "#F5F3EE"
+black   = "#4C4C48" # border
+red     = "#F04A38" # error
+green   = "#35B36B" # success
+yellow  = "#FFD23F" # warning
+blue    = "#3D7DD8" # accent2
+magenta = "#F04A38" # error
+cyan    = "#3D7DD8" # accent2
+white   = "#E8E5DE" # fg

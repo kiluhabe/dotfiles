@@ -17,3 +17,9 @@ opt.clipboard = "unnamedplus"
 opt.mouse = "a"
 opt.splitright = true
 opt.splitbelow = true
+opt.autoread = true
+opt.fillchars:append({ eob = " " })
+
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+  command = "checktime",
+})

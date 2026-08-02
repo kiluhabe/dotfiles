@@ -1,0 +1,42 @@
+{
+  "source": "palette.html — base black variant, renamed to terminal-meaningful roles",
+  "colors": {
+    "bg": { "hex": "#1C1C1C", "role": "背景（筐体）" },
+    "surface": { "hex": "#2E2E2C", "role": "面（キー）" },
+    "border": { "hex": "#4C4C48", "role": "枠・境界線" },
+    "fg": { "hex": "#E8E5DE", "role": "テキスト" },
+    "accent": { "hex": "#FF5A26", "role": "主役アクセント・CTA（カーソル）" },
+    "accent2": { "hex": "#3D7DD8", "role": "第2アクセント" },
+    "success": { "hex": "#35B36B", "role": "成功・ON" },
+    "error": { "hex": "#F04A38", "role": "警告・REC" },
+    "warning": { "hex": "#FFD23F", "role": "注意・遊び" }
+  },
+  "ansi_mapping": {
+    "note": "palette.html only defines 9 colors. Slots without a direct match (magenta, cyan, and all bright_* variants) reuse the nearest color in this palette by hue.",
+    "background": "bg",
+    "foreground": "fg",
+    "cursor": "accent",
+    "0_black": "bg",
+    "1_red": "error",
+    "2_green": "success",
+    "3_yellow": "warning",
+    "4_blue": "accent2",
+    "5_magenta": "error",
+    "6_cyan": "accent2",
+    "7_white": "border",
+    "8_bright_black": "border",
+    "9_bright_red": "error",
+    "10_bright_green": "success",
+    "11_bright_yellow": "warning",
+    "12_bright_blue": "accent2",
+    "13_bright_magenta": "error",
+    "14_bright_cyan": "accent2",
+    "15_bright_white": "fg"
+  },
+  "consumers": {
+    "nvim.lua": "Lua table keyed by semantic name (free-form), dofile'd directly by nvim/.config/nvim/lua/theme/init.lua.",
+    "tmux.conf": "tmux user options (@bg, @surface, @border, @fg, @accent, @accent2, @success, @error, @warning — free-form, tmux does not require @color0..@color15), consumed via #{@name} by tmux/.tmux.conf.",
+    "alacritty.toml": "Static TOML with a fixed schema (colors.normal.black/red/green/... are alacritty-defined field names, not renameable); hex values hand-kept in sync with this reference, semantic name noted per line as a comment.",
+    "sequences": "Raw OSC escape bytes written straight to the terminal, fixed ANSI slot numbers (no comments possible); hex values hand-kept in sync with this reference."
+  }
+}
