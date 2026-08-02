@@ -146,57 +146,57 @@ key = "Q"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[102;9u"
+chars = "\u001bf"
 key = "F"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[110;9u"
+chars = "\u001bn"
 key = "N"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[119;9u"
+chars = "\u001bw"
 key = "W"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[102;10u"
+chars = "\u001bF"
 key = "F"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
-chars = "\u001b[112;9u"
+chars = "\u001bp"
 key = "P"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[112;10u"
+chars = "\u001bP"
 key = "P"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
-chars = "\u001b[100;9u"
+chars = "\u001bd"
 key = "D"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[1;11A"
+chars = "\u001b[1;3A"
 key = "Up"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-chars = "\u001b[1;11B"
+chars = "\u001b[1;3B"
 key = "Down"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-chars = "\u001b[1;9D"
+chars = "\u001b[1;3D"
 key = "Left"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[1;9C"
+chars = "\u001b[1;3C"
 key = "Right"
 mods = "Command"
 
