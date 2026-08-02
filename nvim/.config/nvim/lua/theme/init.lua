@@ -26,6 +26,7 @@ function M.apply()
   hl(0, "StatusLine", { fg = palette.foreground, bg = palette.bright_black })
   hl(0, "Pmenu", { fg = palette.foreground, bg = palette.bright_black })
   hl(0, "Search", { fg = palette.black, bg = palette.yellow })
+  vim.api.nvim_exec_autocmds("ColorScheme", { pattern = "theme-current" })
 end
 
 return M

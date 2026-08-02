@@ -1,2 +1,4 @@
 source "$HOME/.bashrc"
-cat "$HOME/.config/theme/current/sequences"
+if [ -t 1 ]; then
+  cat "$HOME/.config/theme/current/sequences"
+fi
