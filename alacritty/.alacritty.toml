@@ -1,5 +1,3 @@
-import = ["~/.config/theme/current/alacritty.toml"]
-
 [bell]
 animation = "Linear"
 command = "None"
@@ -244,3 +242,4 @@ y = 24
 
 [general]
 live_config_reload = true
+import = ["~/.config/theme/current/alacritty.toml"]
