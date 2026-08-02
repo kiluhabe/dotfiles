@@ -1,3 +1,4 @@
+import = ["~/.config/theme/current/alacritty.toml"]
 
 [bell]
 animation = "Linear"
