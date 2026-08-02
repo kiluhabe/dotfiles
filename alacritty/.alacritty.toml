@@ -146,57 +146,57 @@ key = "Q"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[102;9u"
 key = "F"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[110;9u"
 key = "N"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[119;9u"
 key = "W"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[102;10u"
 key = "F"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[112;9u"
 key = "P"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[112;10u"
 key = "P"
 mods = "Command|Shift"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[100;9u"
 key = "D"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[1;11A"
 key = "Up"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[1;11B"
 key = "Down"
 mods = "Command|Alt"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[1;9D"
 key = "Left"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "ReceiveChar"
+chars = "\u001b[1;9C"
 key = "Right"
 mods = "Command"
 
