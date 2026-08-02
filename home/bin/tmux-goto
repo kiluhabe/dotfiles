@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  echo "usage: tmux-goto <role>" >&2
+}
+
+ROLE="${1:-}"
+if [ -z "$ROLE" ]; then
+  usage
+  exit 2
+fi
+
+TARGET=$(tmux list-panes -f "#{==:#{@tmux-default-layout-role},$ROLE}" -F '#{pane_id}' | head -n1)
+
+if [ -z "$TARGET" ]; then
+  tmux display-message "no $ROLE pane in this window"
+  exit 0
+fi
+
+tmux select-pane -t "$TARGET"
