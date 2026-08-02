@@ -21,7 +21,7 @@ set("n", "<C-k>", "D", opts)
 set("n", "<C-d>", "x", opts)
 set("n", "<C-y>", "p", opts)
 
-set("n", "<D-f>", "/", opts)
+set("n", "<D-f>", "/", { noremap = true })
 set("n", "<D-n>", "<cmd>enew<cr>", opts)
 set("n", "<D-w>", "<cmd>bdelete<cr>", opts)
 set("n", "<D-Left>", "<cmd>bprevious<cr>", opts)
