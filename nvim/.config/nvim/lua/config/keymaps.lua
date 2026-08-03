@@ -27,15 +27,17 @@ set("n", "<M-w>", "<cmd>bdelete<cr>", opts)
 set("n", "<M-Left>", "<cmd>bprevious<cr>", opts)
 set("n", "<M-Right>", "<cmd>bnext<cr>", opts)
 
--- Cmd+C / Cmd+V: system clipboard copy/paste
--- Cmd+C uses the raw CSI sequence directly (not <M-c>): a bare ESC+"c"
--- can decompose into a standalone <Esc> plus a pending "c" (change)
--- operator that then eats the next keystroke, deleting text. CSI
--- sequences (starting "ESC[") are parsed atomically, so no decompose.
-set("v", "\27[99;9u", '"+y', opts)
-set("n", "<M-v>", '"+p', opts)
-set("v", "<M-v>", '"+p', opts)
-set("i", "<M-v>", "<C-r>+", opts)
+-- Cmd+C / Cmd+V: system clipboard copy/paste.
+-- Sent from Alacritty as F13/F14 (real terminfo-defined function keys,
+-- not invented codes) rather than Meta/CSI-u encoding: bare ESC+"c" can
+-- decompose into a standalone <Esc> plus a pending "c" (change) operator
+-- that eats the next keystroke, and ad-hoc CSI-u forms aren't reliably
+-- recognized here either. F13/F14 are registered in terminfo, so nvim
+-- parses them as one atomic key with no decompose/recognition risk.
+set("v", "<F13>", '"+y', opts)
+set("n", "<F14>", '"+p', opts)
+set("v", "<F14>", '"+p', opts)
+set("i", "<F14>", "<C-r>+", opts)
 
 -- Shift+arrows: VSCode-style extend-selection
 set("n", "<S-Right>", "v<Right>", opts)

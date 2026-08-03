@@ -116,12 +116,12 @@ key = "Minus"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "Paste"
+chars = "\u001b[1;2Q"
 key = "V"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001b[99;9u"
+chars = "\u001b[1;2P"
 key = "C"
 mods = "Command"
 
