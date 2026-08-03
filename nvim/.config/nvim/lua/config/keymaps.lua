@@ -35,6 +35,7 @@ set("n", "<M-Right>", "<cmd>bnext<cr>", opts)
 -- recognized here either. F13/F14 are registered in terminfo, so nvim
 -- parses them as one atomic key with no decompose/recognition risk.
 set("v", "<F13>", '"+y', opts)
+set("n", "<F13>", '"+yy', opts) -- VSCode-style: no selection = copy current line
 set("n", "<F14>", '"+p', opts)
 set("v", "<F14>", '"+p', opts)
 set("i", "<F14>", "<C-r>+", opts)
