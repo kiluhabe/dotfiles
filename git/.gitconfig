@@ -16,6 +16,7 @@
   sc = switch -c
   df = diff
   dfs = !git -c pager.diff='less -R' diff
+  dfp = !git diff `git-main-branch`...HEAD
 [core]
   excludesfile = $HOME/.gitignore_global
   ignorecase = false
