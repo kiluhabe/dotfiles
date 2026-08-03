@@ -28,7 +28,11 @@ set("n", "<M-Left>", "<cmd>bprevious<cr>", opts)
 set("n", "<M-Right>", "<cmd>bnext<cr>", opts)
 
 -- Cmd+C / Cmd+V: system clipboard copy/paste
-set("v", "<M-c>", '"+y', opts)
+-- Cmd+C uses the raw CSI sequence directly (not <M-c>): a bare ESC+"c"
+-- can decompose into a standalone <Esc> plus a pending "c" (change)
+-- operator that then eats the next keystroke, deleting text. CSI
+-- sequences (starting "ESC[") are parsed atomically, so no decompose.
+set("v", "\27[99;9u", '"+y', opts)
 set("n", "<M-v>", '"+p', opts)
 set("v", "<M-v>", '"+p', opts)
 set("i", "<M-v>", "<C-r>+", opts)

@@ -121,7 +121,7 @@ key = "V"
 mods = "Command"
 
 [[keyboard.bindings]]
-chars = "\u001bc"
+chars = "\u001b[99;9u"
 key = "C"
 mods = "Command"
 
