@@ -35,9 +35,8 @@
   reflog = delta
   show = delta
 [delta]
-  plus-style = "syntax #012800"
-  minus-style = "syntax #340001"
-  syntax-theme = Monokai Extended
+  plus-style = "#016937 normal"
+  minus-style = "#C0282C normal"
   navigate = true
   line-numbers = true
   side-by-side = true

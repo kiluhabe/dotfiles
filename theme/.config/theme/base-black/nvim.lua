@@ -1,11 +1,11 @@
 return {
-  bg = "#1C1C1C",
+  bg = "#162032",
   surface = "#2E2E2C",
-  border = "#4C4C48",
+  border = "#858E8E",
   fg = "#E8E5DE",
-  accent = "#FF5A26",
-  accent2 = "#3D7DD8",
-  success = "#35B36B",
-  error = "#F04A38",
-  warning = "#FFD23F",
+  accent = "#DD4B29",
+  accent2 = "#0070BA",
+  success = "#016937",
+  error = "#C0282C",
+  warning = "#FAB513",
 }

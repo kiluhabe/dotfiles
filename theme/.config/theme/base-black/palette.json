@@ -1,15 +1,15 @@
 {
-  "source": "palette.html — base black variant, renamed to terminal-meaningful roles",
+  "source": "Teenage Engineering official brand palette (field/operator sheet) — replaced the palette.html-derived placeholder hex with the official values where a role corresponds; field_brown has no corresponding role and was left unused.",
   "colors": {
-    "bg": { "hex": "#1C1C1C", "role": "背景（筐体）" },
+    "bg": { "hex": "#162032", "role": "背景（筐体） — field blue" },
     "surface": { "hex": "#2E2E2C", "role": "面（キー）" },
-    "border": { "hex": "#4C4C48", "role": "枠・境界線" },
+    "border": { "hex": "#858E8E", "role": "枠・境界線 — field grey" },
     "fg": { "hex": "#E8E5DE", "role": "テキスト" },
-    "accent": { "hex": "#FF5A26", "role": "主役アクセント・CTA（カーソル）" },
-    "accent2": { "hex": "#3D7DD8", "role": "第2アクセント" },
-    "success": { "hex": "#35B36B", "role": "成功・ON" },
-    "error": { "hex": "#F04A38", "role": "警告・REC" },
-    "warning": { "hex": "#FFD23F", "role": "注意・遊び" }
+    "accent": { "hex": "#DD4B29", "role": "主役アクセント・CTA（カーソル） — field orange" },
+    "accent2": { "hex": "#0070BA", "role": "第2アクセント — op blue" },
+    "success": { "hex": "#016937", "role": "成功・ON — op green" },
+    "error": { "hex": "#C0282C", "role": "警告・REC — op red" },
+    "warning": { "hex": "#FAB513", "role": "注意・遊び — op yellow" }
   },
   "ansi_mapping": {
     "note": "palette.html only defines 9 colors. Slots without a direct match (magenta, cyan, and all bright_* variants) reuse the nearest color in this palette by hue.",
@@ -37,6 +37,7 @@
     "nvim.lua": "Lua table keyed by semantic name (free-form), dofile'd directly by nvim/.config/nvim/lua/theme/init.lua.",
     "tmux.conf": "tmux user options (@bg, @surface, @border, @fg, @accent, @accent2, @success, @error, @warning — free-form, tmux does not require @color0..@color15), consumed via #{@name} by tmux/.tmux.conf.",
     "alacritty.toml": "Static TOML with a fixed schema (colors.normal.black/red/green/... are alacritty-defined field names, not renameable); hex values hand-kept in sync with this reference, semantic name noted per line as a comment.",
-    "sequences": "Raw OSC escape bytes written straight to the terminal, fixed ANSI slot numbers (no comments possible); hex values hand-kept in sync with this reference."
+    "sequences": "Raw OSC escape bytes written straight to the terminal, fixed ANSI slot numbers (no comments possible); hex values hand-kept in sync with this reference.",
+    "git/.gitconfig": "delta pager plus-style/minus-style hand-kept as literal hex (success/error); git log's %Cred/%Cgreen/%Cyellow/%C(blue) in the `ga` alias follow the palette transitively via the terminal's own ANSI slots (1/2/3/4), not this file directly."
   }
 }
