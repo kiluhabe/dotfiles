@@ -8,6 +8,9 @@ rows=()
 pane_ids=()
 focus_windows=()
 status_message=""
+own_window=""
+readonly HIGHLIGHT_ON=$'\033[1;36m'
+readonly HIGHLIGHT_OFF=$'\033[0m'
 
 die() {
   printf 'agent-watch: %s\n' "$1" >&2
@@ -61,6 +64,14 @@ current_path() {
   printf '%s\n' "${path##*/}"
 }
 
+get_own_window() {
+  if [ -z "${TMUX_PANE:-}" ]; then
+    printf '\n'
+    return
+  fi
+  tmux_cmd display-message -p -t "$TMUX_PANE" '#{session_name}:#{window_index}' 2>/dev/null || printf '\n'
+}
+
 load_rows() {
   rows=()
   pane_ids=()
@@ -95,6 +106,8 @@ load_rows() {
   else
     status_message=''
   fi
+
+  own_window=$(get_own_window)
 }
 
 draw_once() {
@@ -106,14 +119,20 @@ draw_once() {
     return
   fi
 
-  local i marker line
+  local i marker line on off
   for i in "${!rows[@]}"; do
     marker=' '
     if [ "$i" -eq "$selected" ]; then
       marker='>'
     fi
     line=$(truncate_to_width "$((width - 2))" "${rows[$i]}")
-    printf '%s %s\n' "$marker" "$line"
+    on=''
+    off=''
+    if [ -n "$own_window" ] && [ "${focus_windows[$i]}" = "$own_window" ] && [ -t 1 ]; then
+      on=$HIGHLIGHT_ON
+      off=$HIGHLIGHT_OFF
+    fi
+    printf '%s%s %s%s\n' "$on" "$marker" "$line" "$off"
   done
 
   if [ -n "$status_message" ]; then
