@@ -7,11 +7,16 @@ return {
   {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim" },
-    opts = {},
+    opts = {
+      ensure_installed = { "rust_analyzer", "ruby_lsp", "ts_ls", "cssls" },
+    },
   },
   {
     "neovim/nvim-lspconfig",
     dependencies = { "williamboman/mason-lspconfig.nvim" },
+    config = function()
+      vim.lsp.enable({ "rust_analyzer", "ruby_lsp", "ts_ls", "cssls" })
+    end,
   },
   {
     "hrsh7th/nvim-cmp",
