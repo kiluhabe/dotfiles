@@ -1,8 +1,9 @@
 {
   "source": "Teenage Engineering official brand palette (field/operator sheet) — replaced the palette.html-derived placeholder hex with the official values where a role corresponds; field_brown has no corresponding role and was left unused.",
   "colors": {
-    "bg": { "hex": "#162032", "role": "背景（筐体） — field blue" },
+    "bg": { "hex": "#1C1C1C", "role": "背景（筐体）" },
     "surface": { "hex": "#2E2E2C", "role": "面（キー）" },
+    "surface2": { "hex": "#162032", "role": "面（サブ、青みがかった背景）— 旧bg（field blue）" },
     "border": { "hex": "#858E8E", "role": "枠・境界線 — field grey" },
     "fg": { "hex": "#E8E5DE", "role": "テキスト" },
     "accent": { "hex": "#DD4B29", "role": "主役アクセント・CTA（カーソル） — field orange" },

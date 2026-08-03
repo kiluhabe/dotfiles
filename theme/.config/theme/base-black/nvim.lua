@@ -1,6 +1,7 @@
 return {
-  bg = "#162032",
+  bg = "#1C1C1C",
   surface = "#2E2E2C",
+  surface2 = "#162032",
   border = "#858E8E",
   fg = "#E8E5DE",
   accent = "#DD4B29",

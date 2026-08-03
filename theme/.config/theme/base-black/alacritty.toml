@@ -1,12 +1,12 @@
 [colors.primary]
-background = "#162032" # bg
+background = "#1C1C1C" # bg
 foreground = "#E8E5DE" # fg
 
 [colors.cursor]
 cursor = "#DD4B29" # accent
 
 [colors.normal]
-black   = "#162032" # bg
+black   = "#1C1C1C" # bg
 red     = "#C0282C" # error
 green   = "#016937" # success
 yellow  = "#FAB513" # warning
