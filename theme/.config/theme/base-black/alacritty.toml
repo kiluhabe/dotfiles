@@ -16,7 +16,7 @@ cyan    = "#0070BA" # accent2 (nearest hue; palette has no cyan)
 white   = "#858E8E" # border
 
 [colors.bright]
-black   = "#858E8E" # border
+black   = "#A9875A" # border2
 red     = "#C0282C" # error
 green   = "#016937" # success
 yellow  = "#FAB513" # warning

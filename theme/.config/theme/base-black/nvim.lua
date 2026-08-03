@@ -8,4 +8,5 @@ return {
   success = "#016937",
   error = "#C0282C",
   warning = "#FAB513",
+  border2 = "#A9875A",
 }

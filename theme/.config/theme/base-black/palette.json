@@ -9,10 +9,11 @@
     "accent2": { "hex": "#0070BA", "role": "第2アクセント — op blue" },
     "success": { "hex": "#016937", "role": "成功・ON — op green" },
     "error": { "hex": "#C0282C", "role": "警告・REC — op red" },
-    "warning": { "hex": "#FAB513", "role": "注意・遊び — op yellow" }
+    "warning": { "hex": "#FAB513", "role": "注意・遊び — op yellow" },
+    "border2": { "hex": "#A9875A", "role": "枠（サブ） — field brown" }
   },
   "ansi_mapping": {
-    "note": "palette.html only defines 9 colors. Slots without a direct match (magenta, cyan, and all bright_* variants) reuse the nearest color in this palette by hue.",
+    "note": "palette.html only defines 9 colors. Slots without a direct match (magenta, cyan, and remaining bright_* variants) reuse the nearest color in this palette by hue.",
     "background": "bg",
     "foreground": "fg",
     "cursor": "accent",
@@ -24,7 +25,7 @@
     "5_magenta": "error",
     "6_cyan": "accent2",
     "7_white": "border",
-    "8_bright_black": "border",
+    "8_bright_black": "border2",
     "9_bright_red": "error",
     "10_bright_green": "success",
     "11_bright_yellow": "warning",
