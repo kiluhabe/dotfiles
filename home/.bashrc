@@ -25,7 +25,11 @@ fi
 if [[ $(uname -a) =~ ^Darwin ]]; then
     export LANG="ja_JP.UTF-8"
 else
-    (tty|grep -Fq 'tty') && export LANG="C" || export LANG="ja_JP.UTF-8"
+    if tty | grep -Fq 'tty'; then
+        export LANG="C"
+    else
+        export LANG="ja_JP.UTF-8"
+    fi
 fi
 export LC_ALL="$LANG"
 

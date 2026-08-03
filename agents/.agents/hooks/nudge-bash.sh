@@ -8,6 +8,7 @@ CMD=$(printf '%s' "$INPUT" | jq -r '.tool_input.command // empty')
 [ -z "$CMD" ] && exit 0
 
 nudge() {
+  # shellcheck disable=SC2016 # single-quoted intentionally: this is a printf format string
   printf 'BLOCKED by nudge-bash: use %s instead of `%s`\nCommand: %s\n' "$2" "$1" "$CMD" >&2
   exit 2
 }
@@ -75,6 +76,7 @@ while IFS= read -r seg; do
   check_segment "$seg"
 done <<<"$TMP"
 
+# shellcheck disable=SC2016 # single-quoted intentionally: literal $( / ` patterns to match, not expand
 SUBS=$(printf '%s' "$CMD" | grep -oE '\$\([^()]*\)|`[^`]*`' | sed -E 's/^\$\(|\)$|^`|`$//g')
 if [ -n "$SUBS" ]; then
   SUBS=$(split_chains "$SUBS")

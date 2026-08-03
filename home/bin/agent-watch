@@ -87,6 +87,7 @@ load_rows() {
   fi
 
   local session window pane pane_id cwd command active marker state
+  # shellcheck disable=SC2034 # pane/active kept for readability (mirror the full tmux format string); not currently consumed
   while IFS=$'\t' read -r session window pane pane_id cwd command active marker state; do
     local agent
     agent=$(agent_kind "$marker" "$command")
