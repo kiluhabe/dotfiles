@@ -121,7 +121,7 @@ key = "V"
 mods = "Command"
 
 [[keyboard.bindings]]
-action = "Copy"
+chars = "\u001bc"
 key = "C"
 mods = "Command"
 
@@ -129,6 +129,11 @@ mods = "Command"
 action = "Paste"
 key = "V"
 mods = "Control"
+
+[[keyboard.bindings]]
+chars = "\u001bb"
+key = "B"
+mods = "Command"
 
 [[keyboard.bindings]]
 action = "Hide"

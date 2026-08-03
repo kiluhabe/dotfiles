@@ -26,3 +26,19 @@ set("n", "<M-n>", "<cmd>enew<cr>", opts)
 set("n", "<M-w>", "<cmd>bdelete<cr>", opts)
 set("n", "<M-Left>", "<cmd>bprevious<cr>", opts)
 set("n", "<M-Right>", "<cmd>bnext<cr>", opts)
+
+-- Cmd+C / Cmd+V: system clipboard copy/paste
+set("v", "<M-c>", '"+y', opts)
+set("n", "<M-v>", '"+p', opts)
+set("v", "<M-v>", '"+p', opts)
+set("i", "<M-v>", "<C-r>+", opts)
+
+-- Shift+arrows: VSCode-style extend-selection
+set("n", "<S-Right>", "v<Right>", opts)
+set("n", "<S-Left>", "v<Left>", opts)
+set("n", "<S-Down>", "v<Down>", opts)
+set("n", "<S-Up>", "v<Up>", opts)
+set("v", "<S-Right>", "<Right>", opts)
+set("v", "<S-Left>", "<Left>", opts)
+set("v", "<S-Down>", "<Down>", opts)
+set("v", "<S-Up>", "<Up>", opts)
