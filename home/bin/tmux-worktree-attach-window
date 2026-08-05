@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+if [ -z "${TMUX:-}" ]; then
+  echo "tmux-worktree-attach-window: must be run inside tmux" >&2
+  exit 1
+fi
+
+if ! command -v fzf >/dev/null 2>&1; then
+  echo "fzf not found" >&2
+  exit 1
+fi
+
+WORKTREES=$(git worktree list --porcelain)
+
+SELECTED=$(echo "$WORKTREES" | awk '
+  /^worktree / { path = substr($0, 10) }
+  /^branch /   { branch = substr($0, 8); sub(/^refs\/heads\//, "", branch) }
+  /^detached$/ { branch = "(detached)" }
+  /^$/         { if (path != "") print path "\t" branch; path = ""; branch = "" }
+  END          { if (path != "") print path "\t" branch }
+' | fzf --with-nth 2,1 --delimiter '\t' --preview 'git -C {1} log -n 5 --oneline' | cut -f1)
+
+if [ -z "$SELECTED" ]; then
+  exit 0
+fi
+
+WORKTREE_PATH="$SELECTED"
+NAME=$(basename "$WORKTREE_PATH")
+
+MATCH=$(tmux list-windows -a -F '#{session_name}:#{window_index} #{pane_current_path}' \
+  | awk -v p="$WORKTREE_PATH" '$2 == p { print $1; exit }')
+
+if [ -n "$MATCH" ]; then
+  SESSION="${MATCH%%:*}"
+  tmux select-window -t "$MATCH"
+  tmux switch-client -t "$SESSION"
+else
+  tmux new-window -c "$WORKTREE_PATH" -n "$NAME"
+fi
