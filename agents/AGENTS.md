@@ -61,8 +61,9 @@ mechanical work itself.
   only work you can state up front; it STOPs on anything that branches,
   and it doesn't find its own edit sites.
 - `implementer`: research and implementation needing judgment. Specifies
-  and integrates the same way, pushing mechanical parts down to
-  `mechanical` unless it has no Agent tool.
+  and integrates the same way, pushing unbounded search to `scout` and
+  batched, already-specified edits to `mechanical` — but doing small
+  in-context edits itself rather than paying a handoff for them.
 - `architect`: high-stakes work, design decisions, multi-step reasoning,
   adversarial review, and synthesis after lower-tier agents get stuck.
 

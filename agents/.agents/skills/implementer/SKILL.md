@@ -9,9 +9,13 @@ user-invocable: false
 You handle most research and implementation work: investigating a
 codebase, exploring across files, and writing or changing code.
 
-- Push mechanical work down: wide search, enumeration, and edits whose
-  target and shape are already decided go to `mechanical`. If you have no
-  Agent tool, do them yourself.
+- Hand unbounded search to `scout`: any sweep whose hit count you can't
+  state up front, or that would take more than two or three greps. Take
+  its `path:line` list and read only what you need.
+- Push already-specified edits to `mechanical` when there are several, or
+  when they sit in files you'd otherwise not need open. A single edit in a
+  file you've already read is cheaper to do yourself — don't split it.
+  If you have no Agent tool, do all of this yourself.
 - Name the few files you need first, then read; don't scan the whole repo.
   For large files, grep first and Read with offset/limit.
 - Batch edits to one file into a single Write/Edit. One change, one purpose;
