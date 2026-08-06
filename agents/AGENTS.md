@@ -13,10 +13,9 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 ## File search and context economy
 
 - Delegation is the default for search; it preserves your own context.
-  Run it yourself only when it's 1-2 tool calls with a known target. Wider
-  search with a known shape goes to `scout`; exploration whose shape
-  you can't state up front goes to `implementer`. Discard returned output
-  once you've used it.
+  Run it yourself only when it's 1-2 tool calls with a known target,
+  otherwise see Model Routing for scout vs implementer. Discard returned
+  output once you've used it.
 - For large files (~500 lines / 50 KB+), grep first, then Read with
   offset/limit. Don't read the whole file.
 - Don't duplicate searches between main session and subagent. After
@@ -29,9 +28,8 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - Batch changes to one file into a single Write or Edit call. Don't
   issue several small sequential Edits to the same file when one larger
   change would do.
-- Once an edit is fully specified (exact file, exact change), hand it to
-  `mechanical` to write. Do it inline only when the edit still needs
-  judgment about what to change.
+- Once an edit is fully specified, hand it to `mechanical` (see Model
+  Routing); do it inline only when the edit still needs judgment.
 - When a read-only agent proposes file content, don't write it blind --
   review the content first, then either write it yourself or pass the
   reviewed text to `mechanical`.
@@ -48,48 +46,39 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 ## Model Routing
 
 Route by role, not by which model happens to be running. The orchestrator
-specifies (turns intent into a task the delegate can't misread) and
-integrates (judges and merges what comes back). It doesn't execute
-mechanical work itself.
+specifies and integrates; it doesn't execute mechanical work itself.
+Each agent's own definition states its tools and return format; don't
+restate them here.
 
-- `scout`: the read-only search tier. Locating code, enumerating call
-  sites, mapping where a concern lives. Holds no edit or command tools, so
-  a wide sweep can't write. Returns `path:line` plus a note, never file
-  contents.
-- `mechanical`: the execution tier. Formatting, renames, and edits whose
-  target and shape are already decided. Most tool calls land here -- but
-  only work you can state up front; it STOPs on anything that branches,
-  and it doesn't find its own edit sites.
-- `implementer`: research and implementation needing judgment. Specifies
-  and integrates the same way, pushing unbounded search to `scout` and
-  batched, already-specified edits to `mechanical` — but doing small
-  in-context edits itself rather than paying a handoff for them.
-- `architect`: high-stakes work, design decisions, multi-step reasoning,
-  adversarial review, and synthesis after lower-tier agents get stuck.
+- `scout`: search whose shape you can state up front. Locating code,
+  enumerating call sites, mapping where a concern lives.
+- `mechanical`: edits whose target and shape are already decided. Most
+  tool calls land here. It does not find its own edit sites.
+- `implementer`: research and implementation needing judgment, and search
+  whose shape you can't state up front. Delegates the same way; keeps
+  small in-context edits rather than paying a handoff.
+- `architect`: design decisions, multi-step reasoning, adversarial
+  review, and synthesis after a lower tier gets stuck.
 
-An `implementer` change gets an `architect` review by default, commissioned
-by the caller that dispatched it, in a fresh context, with the original
-requirement and the diff -- not the implementer's own summary, which only
-invites agreement. One round; then the caller decides what to act on.
+Review contract for any `implementer` change: the caller that dispatched
+it commissions the review, in a fresh context, handing over the original
+requirement and the diff -- never the implementer's own summary. One
+round; then the caller decides what to act on. Single change -> reviewed
+by `architect`. Multi-step -> each step's diff by `implementer`, then one
+`architect` review of the full diff set at the end.
 
-User phrasing sets the pattern explicitly. When a request opens with one
-of these, follow it over the by-task default:
+User phrasing overrides the by-task default:
 
-- 「検討してください」 -> `architect`. A judgment call; reason it through
-  at the highest available interface.
-- 「調査お願いします」 -> `implementer` investigates, then `architect`
-  synthesizes the findings (総括).
-- 「実装してください」 -> `implementer` implements, then `architect`
-  reviews the change.
+- 「検討してください」 -> `architect`
+- 「調査お願いします」 -> `implementer` investigates, `architect` 総括
+- 「実装してください」 -> `implementer` implements, `architect` reviews
 
-Escalate on signal, not reflex: repeated failure, irreducible ambiguity, or
-a design call surfacing mid-task. Step up one interface at a time; if a
-second bump is needed, rethink the split instead.
-
-Escalation runs through the caller, not sideways. A stuck subagent returns
-early with what it reached, the blocker, and what's missing; the caller
-re-delegates. Subagents don't pick their own successor -- that judgment is
-exactly what they were stuck on.
+Escalate on signal, not reflex -- repeated failure, irreducible
+ambiguity, or a design call surfacing mid-task -- one interface at a
+time; if a second bump is needed, rethink the split. Escalation runs
+through the caller: a stuck subagent returns early with what it reached,
+the blocker, and what's missing, and the caller re-delegates. It doesn't
+pick its own successor.
 
 ## Commits and history
 
