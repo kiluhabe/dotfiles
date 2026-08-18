@@ -5,6 +5,10 @@
 # their model is unpinned — they inherit the session's, so a wide sweep lands on
 # the expensive tier. scout covers read-only search at a fixed model; producing a
 # plan is implementer + writing-plans, reviewed by architect.
+# Reviews specifically: a per-task review (spec + quality gate after one task)
+# routes to implementer — it's a scoped check, not a high-stakes call. Only the
+# final whole-branch/merge review routes to architect. Don't default every
+# review to architect just because a skill template says general-purpose.
 # Dual-mode: Claude Code PreToolUse on the Agent tool (.tool_input.subagent_type),
 # Codex SubagentStart (.agent_type). Same allowlist on both paths.
 set -uo pipefail
@@ -24,5 +28,5 @@ case "$TYPE" in
   architect|implementer|mechanical|scout) exit 0 ;;
 esac
 
-printf 'BLOCKED by nudge-agent-tier: route by role — architect / implementer / mechanical / scout (read-only search). Got: %s\n' "${TYPE:-<none>}" >&2
+printf 'BLOCKED by nudge-agent-tier: route by role — architect / implementer / mechanical / scout (read-only search). Got: %s\nFor reviews: per-task review -> implementer, final whole-branch review -> architect.\n' "${TYPE:-<none>}" >&2
 exit 2
