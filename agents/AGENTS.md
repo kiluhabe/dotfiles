@@ -9,6 +9,11 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
   symptom, target, and constraints before investigating.
 - Don't speculatively Glob/Grep/Read the whole repo. Name the few files
   you need first, then read.
+- When the request is a question or an investigation ("調査して",
+  "why does X happen", "what's causing Y"), answer or report findings
+  only. Don't edit files or open a PR in the same turn. State the
+  proposed fix and wait for a go-ahead before touching code, even if
+  the fix looks obvious or small.
 
 ## File search and context economy
 
