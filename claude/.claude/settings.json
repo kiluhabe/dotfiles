@@ -96,6 +96,15 @@
             "command": "~/.agents/hooks/agent-watch-state.sh answering"
           }
         ]
+      },
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/open-in-editor.sh"
+          }
+        ]
       }
     ],
     "Stop": [
