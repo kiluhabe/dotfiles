@@ -32,6 +32,7 @@ if [ -z "$EXISTING" ]; then
     echo "$BASE_DIR/" >> "$GITIGNORE"
   fi
   git -C "$REPO_ROOT" worktree add "$WORKTREE_PATH" -b "$BRANCH"
+  git -C "$WORKTREE_PATH" sparse-checkout init --cone
 fi
 
 tmux new-window -c "$WORKTREE_PATH" -n "$BRANCH"
