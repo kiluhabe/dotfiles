@@ -28,11 +28,14 @@ case "$FILE" in
 esac
 
 # The pane tagged by tmux-default-layout as the editor pane, in this window only.
-PANE=$(tmux list-panes -F '#{pane_id} #{@tmux-default-layout-role}' \
+# Anchor to $TMUX_PANE (the pane this process actually runs in), not the
+# client's current window -- the user may be looking at a different window.
+SELF_PANE="${TMUX_PANE:?tmux-editor-open: TMUX_PANE is not set}"
+PANE=$(tmux list-panes -t "$SELF_PANE" -F '#{pane_id} #{@tmux-default-layout-role}' \
   | awk -v r=editor '$2 == r { print $1; exit }')
 
 if [ -z "$PANE" ]; then
-  PANE=$(tmux split-window -h -c "$PWD" -P -F '#{pane_id}')
+  PANE=$(tmux split-window -h -t "$SELF_PANE" -c "$PWD" -P -F '#{pane_id}')
   tmux set-option -p -t "$PANE" @tmux-default-layout-role editor
   tmux send-keys -t "$PANE" -l "$EDITOR_BIN '$ABS_FILE'"
   tmux send-keys -t "$PANE" Enter
