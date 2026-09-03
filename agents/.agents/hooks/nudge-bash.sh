@@ -66,8 +66,8 @@ check_cd_grep() {
   local cmd="$1"
   # shellcheck disable=SC2016
   printf '%s' "$cmd" | grep -qE '(^|[;&|]) *cd\b' || return 0
-  printf '%s' "$cmd" | grep -qE 'grep\b[^;&|]*-[a-zA-Z]*r' || return 0
-  nudge "cd DIR && grep -r ..." "grep -r PATTERN DIR (pass the directory as grep's argument instead of cd-ing into it first)"
+  printf '%s' "$cmd" | grep -qE '\b(grep|rg)\b' || return 0
+  nudge "cd DIR && grep/rg ..." "grep/rg PATTERN DIR (pass the directory as an argument instead of cd-ing into it first)"
 }
 
 check_cd_grep "$CMD"
