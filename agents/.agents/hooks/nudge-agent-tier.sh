@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 # Steers subagent routing to the role-based roster.
-# The roster is closed: architect / implementer / mechanical / scout.
+# The routable roster is closed: architect / implementer / mechanical / scout.
+# thinker is also allowed, but it's a direct-dial consultation the user
+# names explicitly above architect — not a role the assistant picks on
+# its own, and deliberately left out of the printed guidance below.
 # Built-in agents (general-purpose, claude, Explore, Plan) are blocked because
 # their model is unpinned — they inherit the session's, so a wide sweep lands on
 # the expensive tier. scout covers read-only search at a fixed model; producing a
@@ -25,7 +28,7 @@ else
 fi
 
 case "$TYPE" in
-  architect|implementer|mechanical|scout) exit 0 ;;
+  architect|implementer|mechanical|scout|thinker) exit 0 ;;
 esac
 
 printf 'BLOCKED by nudge-agent-tier: route by role — architect / implementer / mechanical / scout (read-only search). Got: %s\nFor reviews: per-task review -> implementer, final whole-branch review -> architect.\n' "${TYPE:-<none>}" >&2

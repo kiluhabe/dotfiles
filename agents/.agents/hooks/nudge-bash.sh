@@ -62,6 +62,16 @@ check_segment() {
   esac
 }
 
+check_cd_grep() {
+  local cmd="$1"
+  # shellcheck disable=SC2016
+  printf '%s' "$cmd" | grep -qE '(^|[;&|]) *cd\b' || return 0
+  printf '%s' "$cmd" | grep -qE 'grep\b[^;&|]*-[a-zA-Z]*r' || return 0
+  nudge "cd DIR && grep -r ..." "grep -r PATTERN DIR (pass the directory as grep's argument instead of cd-ing into it first)"
+}
+
+check_cd_grep "$CMD"
+
 split_chains() {
   local s="$1"
   s="${s//&&/$'\n'}"
