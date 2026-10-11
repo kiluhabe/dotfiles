@@ -102,7 +102,9 @@ if [ -n "$DIFF_PANE" ]; then
   tmux send-keys -t "$DIFF_PANE" 'hunk diff --watch' Enter
 fi
 
-is_bare_shell() { case "$1" in bash | zsh | sh | fish) return 0 ;; *) return 1 ;; esac; }
+# Paths are typed with POSIX single-quote escaping; fish treats backslashes in
+# single quotes differently, so only these shells get typed into.
+is_bare_shell() { case "$1" in bash | zsh | sh) return 0 ;; *) return 1 ;; esac; }
 
 if [ "$EDITOR_CMD" = nvim ]; then
   # Never respawn a running nvim: unsaved buffers would be lost. %bdelete skips
