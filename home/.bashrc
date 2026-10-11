@@ -66,3 +66,8 @@ alias txkw="tmux kill-window"
 alias txbs="tmux new-session -d -c"
 alias txww="tmux-worktree-window"
 alias txaw="tmux-worktree-attach-window"
+
+# hunk
+if [ -d "$HOME/.hunk/bin" ]; then
+  export PATH="$HOME/.hunk/bin:$PATH"
+fi

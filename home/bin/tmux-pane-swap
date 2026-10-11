@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Two roles share one slot: one is on screen, the other waits in the parking
+# window. Swapping moves panes rather than restarting them, so neither side
+# loses its state.
+
+usage() {
+  echo "usage: tmux-pane-swap <role> <role> [pane]" >&2
+}
+
+if [ -z "${TMUX:-}" ]; then
+  echo "tmux-pane-swap: must be run inside tmux" >&2
+  exit 1
+fi
+
+ROLE_A="${1:-}"
+ROLE_B="${2:-}"
+# run-shell exports TMUX but not TMUX_PANE, so key bindings pass the pane in as
+# an argument; an interactive shell has TMUX_PANE and can leave it off.
+PANE="${3:-${TMUX_PANE:-}}"
+if [ -z "$ROLE_A" ] || [ -z "$ROLE_B" ] || [ -z "$PANE" ]; then
+  usage
+  exit 2
+fi
+
+WINDOW=$(tmux display-message -p -t "$PANE" '#{window_id}')
+SESSION=$(tmux display-message -p -t "$PANE" '#{session_id}')
+ACTIVE=$(tmux display-message -p -t "$WINDOW" '#{pane_id}')
+
+# Either pane may be parked in another window, so search the whole session and
+# keep only the pair whose home is this window. Panes from older layouts carry
+# no home option, so separate the fields explicitly rather than on whitespace.
+pane_for_role() {
+  tmux list-panes -s -t "$SESSION" \
+    -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{window_id}' \
+    | awk -F'|' -v role="$1" -v home="$WINDOW" '$2 == role && $3 == home { print $1, $4; exit }'
+}
+
+A_INFO=$(pane_for_role "$ROLE_A")
+B_INFO=$(pane_for_role "$ROLE_B")
+
+if [ -z "$A_INFO" ] || [ -z "$B_INFO" ]; then
+  tmux display-message "tmux-pane-swap: this window has no $ROLE_A/$ROLE_B pair"
+  exit 0
+fi
+
+read -r PANE_A WIN_A <<<"$A_INFO"
+read -r PANE_B WIN_B <<<"$B_INFO"
+
+if [ "$WIN_A" = "$WINDOW" ] && [ "$WIN_B" != "$WINDOW" ]; then
+  HIDE="$PANE_A"
+  SHOW="$PANE_B"
+elif [ "$WIN_B" = "$WINDOW" ] && [ "$WIN_A" != "$WINDOW" ]; then
+  HIDE="$PANE_B"
+  SHOW="$PANE_A"
+else
+  tmux display-message "tmux-pane-swap: expected one of $ROLE_A/$ROLE_B on screen"
+  exit 0
+fi
+
+# Join first, park second: the slot stays occupied throughout, so the survivor
+# simply expands back into it instead of the layout reflowing around a gap.
+tmux join-pane -d -v -s "$SHOW" -t "$HIDE"
+tmux-pane-park "$HIDE"
+
+# Swapping from elsewhere in the window must not drag the cursor into the slot;
+# only the pane that just got parked has to hand its focus over.
+if [ "$ACTIVE" = "$HIDE" ]; then
+  tmux select-pane -t "$SHOW"
+else
+  tmux select-pane -t "$ACTIVE"
+fi

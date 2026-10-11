@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Closing a window leaves its parked pane with no partner to swap back with,
+# stranding it in the parking window where nothing shows it. Give each orphan a
+# window of its own rather than killing it: it may hold unsaved work.
+
+tmux list-panes -a \
+  -F '#{window_name}|#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}' \
+  | awk -F'|' '$1 == "_park" && $4 != "" { print $2, $3, $4 }' \
+  | while read -r PANE ROLE HOME; do
+    if ! tmux list-windows -a -F '#{window_id}' | grep -qx "$HOME"; then
+      tmux break-pane -d -n "$ROLE" -s "$PANE"
+    fi
+  done

@@ -1,0 +1,81 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Reloads the diff pane's live Hunk session in place. Hunk keeps the session
+# alive across reloads, so changing what it shows costs nothing but the reload.
+
+usage() {
+  echo "usage: tmux-hunk-view <worktree|merge-base|head> [pane]" >&2
+}
+
+if [ -z "${TMUX:-}" ]; then
+  echo "tmux-hunk-view: must be run inside tmux" >&2
+  exit 1
+fi
+
+VIEW="${1:-}"
+# run-shell exports TMUX but not TMUX_PANE, so key bindings pass the pane in as
+# an argument; an interactive shell has TMUX_PANE and can leave it off.
+PANE="${2:-${TMUX_PANE:-}}"
+if [ -z "$VIEW" ] || [ -z "$PANE" ]; then
+  usage
+  exit 2
+fi
+
+WINDOW=$(tmux display-message -p -t "$PANE" '#{window_id}')
+SESSION=$(tmux display-message -p -t "$PANE" '#{session_id}')
+
+DIFF=$(tmux list-panes -s -t "$SESSION" \
+  -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{window_id}|#{pane_current_path}' \
+  | awk -F'|' -v home="$WINDOW" '$2 == "diff" && $3 == home { print $4 "|" $5; exit }')
+
+if [ -z "$DIFF" ]; then
+  tmux display-message "tmux-hunk-view: this window has no diff pane"
+  exit 0
+fi
+
+IFS='|' read -r DIFF_WINDOW DIFF_PATH <<<"$DIFF"
+
+REPO=$(git -C "$DIFF_PATH" rev-parse --show-toplevel 2>/dev/null || true)
+if [ -z "$REPO" ]; then
+  tmux display-message "tmux-hunk-view: $DIFF_PATH is not in a git repository"
+  exit 0
+fi
+
+case "$VIEW" in
+  worktree)
+    set -- diff
+    ;;
+  merge-base)
+    BASE=""
+    for CANDIDATE in origin/HEAD origin/main origin/master main master; do
+      if git -C "$REPO" rev-parse --verify --quiet "$CANDIDATE" >/dev/null; then
+        BASE="$CANDIDATE"
+        break
+      fi
+    done
+    if [ -z "$BASE" ]; then
+      tmux display-message "tmux-hunk-view: no base branch found in $REPO"
+      exit 0
+    fi
+    set -- diff "$BASE...HEAD"
+    ;;
+  head)
+    set -- show HEAD
+    ;;
+  *)
+    usage
+    exit 2
+    ;;
+esac
+
+# Reloading a parked pane would leave the user staring at the editor, so bring
+# the diff pane on screen first.
+if [ "$DIFF_WINDOW" != "$WINDOW" ]; then
+  tmux-pane-swap editor diff "$PANE"
+fi
+
+if ! OUT=$(hunk session reload --repo "$REPO" -- "$@" 2>&1); then
+  tmux display-message "tmux-hunk-view: ${OUT##*$'\n'}"
+  exit 0
+fi

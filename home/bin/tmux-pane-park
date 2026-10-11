@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# tmux has no way to hide a pane in place, so panes that share a slot with
+# another pane wait in a parking window instead. Parked panes keep running.
+
+usage() {
+  echo "usage: tmux-pane-park <pane>" >&2
+}
+
+PANE="${1:-}"
+if [ -z "$PANE" ]; then
+  usage
+  exit 2
+fi
+
+PARK_NAME=_park
+SESSION=$(tmux display-message -p -t "$PANE" '#{session_id}')
+
+TARGET=$(tmux list-windows -t "$SESSION" -F '#{window_id} #{window_name}' \
+  | awk -v n="$PARK_NAME" '$2 == n { print $1; exit }')
+
+if [ -n "$TARGET" ]; then
+  tmux join-pane -d -s "$PANE" -t "$TARGET"
+else
+  tmux break-pane -d -n "$PARK_NAME" -s "$PANE"
+fi

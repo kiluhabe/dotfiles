@@ -9,31 +9,47 @@ DIR="${2:-$PWD}"
 # leaves the cursor in the top-left working pane.
 layout() {
   local WATCH="$1"
-  local TL R BL
+  local TL R BL D WINDOW
+  WINDOW=$(tmux display-message -p -t "$WATCH" '#{window_id}')
   TL=$(tmux split-window -h -t "$WATCH" -l 90% -c "$DIR" -P -F '#{pane_id}')
   R=$(tmux split-window -h -t "$TL" -c "$DIR" -P -F '#{pane_id}')
   BL=$(tmux split-window -v -t "$TL" -c "$DIR" -P -F '#{pane_id}')
+  D=$(tmux split-window -v -t "$R" -c "$DIR" -P -F '#{pane_id}')
 
   tmux set-option -p -t "$WATCH" @tmux-default-layout-role watch
   tmux set-option -p -t "$TL" @tmux-default-layout-role agent
   tmux set-option -p -t "$R" @tmux-default-layout-role editor
   tmux set-option -p -t "$BL" @tmux-default-layout-role shell
+  tmux set-option -p -t "$D" @tmux-default-layout-role diff
+
+  # The editor and diff panes share one slot, taking turns in the parking
+  # window; tmux-pane-swap needs to know which window they belong to.
+  tmux set-option -p -t "$R" @tmux-default-layout-home "$WINDOW"
+  tmux set-option -p -t "$D" @tmux-default-layout-home "$WINDOW"
 
   tmux send-keys -t "$WATCH" 'agent-watch' Enter
-  # shellcheck disable=SC2016 # single-quoted intentionally: $EDITOR expands inside the tmux pane's shell, not here
-  tmux send-keys -t "$R" '$EDITOR .' Enter
+  if command -v nvim >/dev/null 2>&1; then
+    tmux send-keys -t "$R" 'nvim .' Enter
+  else
+    # shellcheck disable=SC2016 # single-quoted intentionally: $EDITOR expands inside the tmux pane's shell, not here
+    tmux send-keys -t "$R" '$EDITOR .' Enter
+  fi
+  tmux send-keys -t "$D" 'hunk diff --watch' Enter
   : "$BL"
 
+  tmux-pane-park "$D"
   tmux select-pane -t "$TL"
 }
 
 if [ -n "${TMUX:-}" ]; then
-  # Inside tmux: lay out the current window; don't create or attach a session.
-  if [ "$(tmux display-message -p '#{window_panes}')" -gt 1 ]; then
+  # Inside tmux: lay out this pane's own window -- anchor to $TMUX_PANE rather
+  # than the client's current window, which may be a different one entirely.
+  SELF_PANE="${TMUX_PANE:?tmux-default-layout: TMUX_PANE is not set}"
+  if [ "$(tmux display-message -p -t "$SELF_PANE" '#{window_panes}')" -gt 1 ]; then
     echo "window is already split" >&2
     exit 1
   fi
-  layout "$(tmux display-message -p '#{pane_id}')"
+  layout "$SELF_PANE"
   exit 0
 fi
 
