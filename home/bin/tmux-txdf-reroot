@@ -78,6 +78,13 @@ if [ ! -d "$DIR" ]; then
   exit 0
 fi
 
+# The path is typed into nvim and the shell as keystrokes: a newline or other
+# control character would end the line early and run the rest as commands.
+if [[ $DIR == *[[:cntrl:]]* ]]; then
+  tmux display-message "tmux-txdf-reroot: refusing a path with control characters"
+  exit 0
+fi
+
 if [ -z "$(tmux show-options -wqv -t "$WINDOW" @txdf-origin)" ] && [ -n "${DIFF_PATH:-$EDITOR_PATH}" ]; then
   tmux set-option -w -t "$WINDOW" @txdf-origin "${DIFF_PATH:-$EDITOR_PATH}"
 fi
