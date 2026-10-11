@@ -1,0 +1,86 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Opens a file in the editor pane of the tmux-default-layout window this process
+# runs in, so an agent asked to "open that file" can put it in front of the user.
+# Focus stays where it was; the editor is only brought on screen.
+
+usage() {
+  echo "usage: tmux-editor-open <file>[:line] [line]" >&2
+}
+
+die() {
+  echo "tmux-editor-open: $*" >&2
+  exit 1
+}
+
+[ -n "${TMUX:-}" ] || die "must be run inside tmux"
+SELF_PANE="${TMUX_PANE:-}"
+[ -n "$SELF_PANE" ] || die "TMUX_PANE is not set"
+
+FILE="${1:-}"
+LINE="${2:-}"
+if [ -z "$FILE" ]; then
+  usage
+  exit 2
+fi
+
+# Accept grep-style file:line, but only when the whole argument isn't itself a
+# file whose name happens to end in :<digits>.
+if [ -z "$LINE" ] && [ ! -e "$FILE" ] && [[ $FILE =~ ^(.+):([0-9]+)$ ]]; then
+  FILE="${BASH_REMATCH[1]}"
+  LINE="${BASH_REMATCH[2]}"
+fi
+if [ -n "$LINE" ] && ! [[ $LINE =~ ^[0-9]+$ ]]; then
+  die "line must be a number: $LINE"
+fi
+
+case "$FILE" in
+  /*) ABS_FILE="$FILE" ;;
+  *) ABS_FILE="$PWD/$FILE" ;;
+esac
+[ -f "$ABS_FILE" ] || die "no such file: $ABS_FILE"
+# The path is typed into the editor as keystrokes: a newline or other control
+# character would end the line early and run the rest as commands.
+[[ $ABS_FILE == *[[:cntrl:]]* ]] && die "refusing a path with control characters"
+
+WINDOW=$(tmux display-message -p -t "$SELF_PANE" '#{window_id}')
+SESSION=$(tmux display-message -p -t "$SELF_PANE" '#{session_id}')
+
+# The editor may be parked in another window, so search the whole session and
+# match it by home.
+EDITOR_INFO=$(tmux list-panes -s -t "$SESSION" \
+  -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{window_id}|#{pane_current_command}|#{pane_pid}' \
+  | awk -F'|' -v win="$WINDOW" '$2 == "editor" && $3 == win { print; exit }')
+[ -n "$EDITOR_INFO" ] || die "this window has no editor pane (not a txdf window?)"
+IFS='|' read -r EDITOR_PANE _ _ EDITOR_WINDOW EDITOR_CMD EDITOR_PID <<<"$EDITOR_INFO"
+
+# Paths are typed with POSIX single-quote escaping; fish treats backslashes in
+# single quotes differently, so only these shells get typed into.
+is_bare_shell() { case "$1" in bash | zsh | sh) return 0 ;; *) return 1 ;; esac; }
+
+if [ "$EDITOR_CMD" = nvim ]; then
+  VIM_FILE="${ABS_FILE//\'/\'\'}"
+  # C-\ C-n leaves any mode, terminal included. nvim's default 'hidden' keeps a
+  # modified buffer around instead of refusing to switch away from it.
+  tmux send-keys -t "$EDITOR_PANE" "C-\\" C-n
+  tmux send-keys -t "$EDITOR_PANE" -l ":execute 'edit ${LINE:++$LINE }' . fnameescape('$VIM_FILE')"
+  tmux send-keys -t "$EDITOR_PANE" Enter
+elif is_bare_shell "$EDITOR_CMD" && [ -z "$(pgrep -P "$EDITOR_PID" || true)" ]; then
+  SH_FILE="'${ABS_FILE//\'/\'\\\'\'}'"
+  # Drop any half-typed line so it is not run along with the editor.
+  tmux send-keys -t "$EDITOR_PANE" C-e C-u
+  if command -v nvim >/dev/null 2>&1; then
+    tmux send-keys -t "$EDITOR_PANE" -l " nvim ${LINE:++$LINE }$SH_FILE"
+  else
+    tmux send-keys -t "$EDITOR_PANE" -l " \$EDITOR ${LINE:++$LINE }$SH_FILE"
+  fi
+  tmux send-keys -t "$EDITOR_PANE" Enter
+else
+  # A suspended or busy editor may hold unsaved work; leave it alone.
+  die "editor pane is busy ($EDITOR_CMD); not opening"
+fi
+
+if [ "$EDITOR_WINDOW" != "$WINDOW" ]; then
+  tmux-pane-swap editor diff "$SELF_PANE"
+fi

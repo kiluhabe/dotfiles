@@ -38,6 +38,10 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - When a read-only agent proposes file content, don't write it blind --
   review the content first, then either write it yourself or pass the
   reviewed text to `mechanical`.
+- When asked to open or show a file ("open that file", "そのファイルを
+  開いて"), run `tmux-editor-open <path>[:line]`. It opens the file in
+  the editor pane of your tmux window. If it fails, report the error;
+  don't fall back to printing the file.
 
 ## Task decomposition and parallelism
 
