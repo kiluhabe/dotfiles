@@ -16,6 +16,20 @@ return {
     dependencies = { "williamboman/mason-lspconfig.nvim" },
     config = function()
       vim.lsp.enable({ "rust_analyzer", "ruby_lsp", "ts_ls", "cssls" })
+
+      -- Spell out the diagnostics on the cursor line only; every other line
+      -- keeps just its sign, so a noisy file stays readable.
+      vim.diagnostic.config({ virtual_lines = { current_line = true } })
+
+      vim.api.nvim_create_autocmd("LspAttach", {
+        callback = function(args)
+          -- Buffer-local, so gd keeps Vim's own meaning where no server runs.
+          vim.keymap.set("n", "gd", vim.lsp.buf.definition, {
+            buffer = args.buf,
+            desc = "Go to definition",
+          })
+        end,
+      })
     end,
   },
   {
