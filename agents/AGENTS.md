@@ -115,6 +115,9 @@ pick its own successor.
 - Comment only when WHY is non-obvious. WHAT is in the code. Don't leave
   time-rotting notes like "for issue #N" or "for caller X".
 - Don't create README / docs unless asked.
+- Unless told otherwise, save implementation plans and specs to a
+  temporary location (session scratchpad or tmp), not the repo, and
+  never commit them.
 
 ## On user tone
 
