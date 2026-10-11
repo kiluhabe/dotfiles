@@ -97,6 +97,8 @@ pick its own successor.
 - New branches: prefix with `kiluhabe/` (e.g. `kiluhabe/fix-foo`).
 - Pull requests: open as drafts (`gh pr create --draft`). The user
   flips them to ready-for-review.
+- After creating a git worktree, run subsequent commands with that
+  worktree as the working directory.
 
 ## Destructive and irreversible operations
 
