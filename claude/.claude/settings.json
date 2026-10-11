@@ -81,6 +81,15 @@
     ],
     "PostToolUse": [
       {
+        "matcher": "EnterWorktree|ExitWorktree",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.agents/hooks/txdf-follow-worktree.sh"
+          }
+        ]
+      },
+      {
         "matcher": ".*",
         "hooks": [
           {

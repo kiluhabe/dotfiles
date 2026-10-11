@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Moves a tmux-default-layout window's working panes (editor, diff, shell) onto
+# another directory, typically a git worktree. The watch and agent panes are
+# left alone: the agent is what asked for the move, or is mid-task.
+
+usage() {
+  echo "usage: tmux-txdf-reroot [--origin|--pick] <window_id> [dir]" >&2
+}
+
+if [ -z "${TMUX:-}" ]; then
+  echo "tmux-txdf-reroot: must be run inside tmux" >&2
+  exit 1
+fi
+
+MODE=dir
+case "${1:-}" in
+  --origin) MODE=origin; shift ;;
+  --pick) MODE=pick; shift ;;
+esac
+
+WINDOW="${1:-}"
+if [ -z "$WINDOW" ]; then
+  usage
+  exit 2
+fi
+
+SESSION=$(tmux display-message -p -t "$WINDOW" '#{session_id}')
+
+# Editor and diff may be parked in another window, so search the whole session
+# and match them by home. Empty options would shift whitespace-split fields,
+# hence the explicit separator.
+panes=$(tmux list-panes -s -t "$SESSION" \
+  -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{window_id}|#{pane_current_command}|#{pane_current_path}|#{pane_pid}|#{pane_dead}')
+
+pane_field() { # role window field-index
+  awk -F'|' -v role="$1" -v win="$2" -v f="$3" '$2 == role && $3 == win { print $f; exit }' <<<"$panes"
+}
+
+EDITOR_PANE=$(pane_field editor "$WINDOW" 1)
+if [ -z "$EDITOR_PANE" ]; then
+  tmux display-message "tmux-txdf-reroot: this window has no editor pane"
+  exit 0
+fi
+DIFF_PANE=$(pane_field diff "$WINDOW" 1)
+DIFF_PATH=$(pane_field diff "$WINDOW" 6)
+EDITOR_CMD=$(pane_field editor "$WINDOW" 5)
+EDITOR_PATH=$(pane_field editor "$WINDOW" 6)
+EDITOR_PID=$(pane_field editor "$WINDOW" 7)
+EDITOR_DEAD=$(pane_field editor "$WINDOW" 8)
+SHELL_PANE=$(awk -F'|' -v win="$WINDOW" '$2 == "shell" && $4 == win { print $1 "|" $5; exit }' <<<"$panes")
+
+case "$MODE" in
+  origin)
+    DIR=$(tmux show-options -wqv -t "$WINDOW" @txdf-origin)
+    if [ -z "$DIR" ]; then
+      tmux display-message "tmux-txdf-reroot: no origin recorded for this window"
+      exit 0
+    fi
+    ;;
+  pick)
+    # Listing worktrees needs a repo; the pane the key was pressed in may not be in one.
+    DIR=$(cd "${EDITOR_PATH:-$DIFF_PATH}" 2>/dev/null && tmux-worktree-pick) || DIR=""
+    [ -n "$DIR" ] || exit 0
+    ;;
+  dir)
+    DIR="${2:-}"
+    if [ -z "$DIR" ]; then
+      usage
+      exit 2
+    fi
+    ;;
+esac
+
+if [ ! -d "$DIR" ]; then
+  tmux display-message "tmux-txdf-reroot: not a directory: ${DIR//#/##}"
+  exit 0
+fi
+
+if [ -z "$(tmux show-options -wqv -t "$WINDOW" @txdf-origin)" ] && [ -n "${DIFF_PATH:-$EDITOR_PATH}" ]; then
+  tmux set-option -w -t "$WINDOW" @txdf-origin "${DIFF_PATH:-$EDITOR_PATH}"
+fi
+
+# Single-quote for the shell / the Ex string literal respectively.
+SH_DIR="'${DIR//\'/\'\\\'\'}'"
+VIM_DIR="${DIR//\'/\'\'}"
+# tmux expands #{...} and #(...) in -c and in messages; double the # to keep paths literal.
+FMT_DIR="${DIR//#/##}"
+
+if [ -n "$DIFF_PANE" ]; then
+  # Respawn rather than `hunk session reload`: reload refuses sources outside
+  # the repo the session started in. The view mode resets to the working tree diff. Pane options survive a respawn.
+  tmux respawn-pane -k -t "$DIFF_PANE" -c "$FMT_DIR"
+  tmux send-keys -t "$DIFF_PANE" 'hunk diff --watch' Enter
+fi
+
+is_bare_shell() { case "$1" in bash | zsh | sh | fish) return 0 ;; *) return 1 ;; esac; }
+
+if [ "$EDITOR_CMD" = nvim ]; then
+  # Never respawn a running nvim: unsaved buffers would be lost. %bdelete skips
+  # modified buffers, which stay open. C-\ C-n leaves any mode, terminal included.
+  tmux send-keys -t "$EDITOR_PANE" "C-\\" C-n
+  tmux send-keys -t "$EDITOR_PANE" -l ":execute 'silent cd ' . fnameescape('$VIM_DIR') | silent! %bdelete | silent! edit ."
+  tmux send-keys -t "$EDITOR_PANE" Enter
+elif [ "$EDITOR_DEAD" = 1 ] || { is_bare_shell "$EDITOR_CMD" && [ -z "$(pgrep -P "$EDITOR_PID" || true)" ]; }; then
+  tmux respawn-pane -k -t "$EDITOR_PANE" -c "$FMT_DIR"
+  if command -v nvim >/dev/null 2>&1; then
+    tmux send-keys -t "$EDITOR_PANE" 'nvim .' Enter
+  else
+    # shellcheck disable=SC2016 # expands inside the tmux pane's shell, not here
+    tmux send-keys -t "$EDITOR_PANE" '$EDITOR .' Enter
+  fi
+else
+  # A suspended or busy editor may hold unsaved work.
+  tmux display-message "tmux-txdf-reroot: editor busy, skipped"
+fi
+
+if [ -n "$SHELL_PANE" ]; then
+  if is_bare_shell "${SHELL_PANE#*|}"; then
+    # Drop any half-typed line so it is not run along with the cd.
+    tmux send-keys -t "${SHELL_PANE%%|*}" C-e C-u
+    tmux send-keys -t "${SHELL_PANE%%|*}" -l " cd $SH_DIR"
+    tmux send-keys -t "${SHELL_PANE%%|*}" Enter
+  fi
+fi
