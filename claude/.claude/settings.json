@@ -20,6 +20,43 @@
     ],
     "defaultMode": "auto"
   },
+  "sandbox": {
+    "enabled": true,
+    "excludedCommands": [
+      "git fetch *",
+      "git pull *",
+      "git push *",
+      "gh *",
+      "gcloud *",
+      "podman *"
+    ],
+    "filesystem": {
+      "allowWrite": [
+        "~/.cache",
+        "~/Library/Caches",
+        "~/.local/share/mise",
+        "~/.npm",
+        "~/.cargo",
+        "~/go"
+      ]
+    },
+    "network": {
+      "allowUnixSockets": ["/private/tmp/tmux-501"],
+      "allowedDomains": [
+        "github.com",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "rubygems.org",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "crates.io",
+        "*.crates.io"
+      ]
+    }
+  },
   "model": "opus",
   "language": "japanese",
   "env": {
@@ -102,11 +139,16 @@
           },
           {
             "type": "command",
-            "command": "~/.agents/hooks/context-economy.sh"
-          },
+            "command": "~/.agents/hooks/agent-watch-state.sh answering"
+          }
+        ]
+      },
+      {
+        "matcher": "Read|Edit|Write|Agent",
+        "hooks": [
           {
             "type": "command",
-            "command": "~/.agents/hooks/agent-watch-state.sh answering"
+            "command": "~/.agents/hooks/context-economy.sh"
           }
         ]
       }
