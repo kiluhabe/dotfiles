@@ -21,6 +21,7 @@
     "defaultMode": "auto"
   },
   "model": "opus",
+  "language": "japanese",
   "hooks": {
     "UserPromptSubmit": [
       {
