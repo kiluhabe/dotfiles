@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PreToolUse hook for Bash tools.
-# Steers exploration commands to structured agent file tools instead of raw shell output.
+# Steers `cat` to the Read tool, which pages large files instead of dumping them.
 set -uo pipefail
 
 INPUT=$(cat)
@@ -44,33 +44,14 @@ check_segment() {
   fi
 
   case "$first" in
-    cat|bat|less|more|head)
+    cat)
       if printf '%s' "$seg" | grep -qE '<<-?[[:space:]]*'\''?[A-Za-z_]'; then
         return 0
       fi
       nudge "$first" "Read tool (use offset/limit for large files)"
       ;;
-    tail)
-      if printf '%s' "$seg" | grep -qE '[[:space:]]-[a-zA-Z]*[fF]'; then
-        return 0
-      fi
-      nudge "tail" "Read tool (use offset to read end of file)"
-      ;;
-    ls|find)
-      nudge "$first" "Glob tool (e.g. pattern \"**/*.ts\")"
-      ;;
   esac
 }
-
-check_cd_grep() {
-  local cmd="$1"
-  # shellcheck disable=SC2016
-  printf '%s' "$cmd" | grep -qE '(^|[;&|]) *cd\b' || return 0
-  printf '%s' "$cmd" | grep -qE '\b(grep|rg)\b' || return 0
-  nudge "cd DIR && grep/rg ..." "grep/rg PATTERN DIR (pass the directory as an argument instead of cd-ing into it first)"
-}
-
-check_cd_grep "$CMD"
 
 split_chains() {
   local s="$1"

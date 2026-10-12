@@ -10,7 +10,6 @@ cat > "$input_file" || exit 0
 [ -s "$input_file" ] || exit 0
 
 session_id=$(jq -r '.session_id // "unknown"' "$input_file" 2>/dev/null) || exit 0
-cwd=$(jq -r '.cwd // empty' "$input_file" 2>/dev/null) || exit 0
 tool_name=$(jq -r '.tool_name // empty' "$input_file" 2>/dev/null) || exit 0
 
 safe_session=$(printf '%s' "$session_id" | tr -c 'A-Za-z0-9._-' '_')
@@ -49,12 +48,6 @@ path_key() {
   jq -r '.tool_input.file_path // .tool_input.path // empty' "$input_file" 2>/dev/null
 }
 
-normalize_pattern() {
-  printf '%s' "$1" |
-    tr '[:upper:]' '[:lower:]' |
-    sed -E 's/\\s\+/ /g; s/\\s\*/ /g; s/\.\*/ /g; s/\.\+/ /g; s/[[:space:][:punct:]]+//g'
-}
-
 response_text() {
   jq -r '
     def textify:
@@ -87,21 +80,7 @@ case "$tool_name" in
     fi
     ;;
 
-  Grep|Search)
-    path=$(jq -r '.tool_input.path // .tool_input.file_path // .tool_input.glob // .cwd // empty' "$input_file" 2>/dev/null)
-    [ -n "$path" ] || path="$cwd"
-    pattern=$(jq -r '.tool_input.pattern // .tool_input.query // .tool_input.regex // empty' "$input_file" 2>/dev/null)
-    [ -n "$pattern" ] || exit 0
-    norm=$(normalize_pattern "$pattern")
-    [ -n "$norm" ] || exit 0
-    key=$(hash_key "$path|$norm")
-    count=$(inc_count "$STATE_DIR/search-$key.count")
-    if [ "$count" -ge 2 ]; then
-      emit_warning "Context economy warning: similar grep repeated for $path ($pattern). Delegate exploration or narrow the next query instead of repeating the same search."
-    fi
-    ;;
-
-  Edit|MultiEdit|Write)
+  Edit|Write)
     path=$(path_key)
     [ -n "$path" ] || exit 0
     key=$(hash_key "$path")
@@ -111,7 +90,7 @@ case "$tool_name" in
     fi
     ;;
 
-  Task|Agent)
+  Agent)
     prompt=$(jq -r '.tool_input.prompt // .tool_input.description // .tool_input.message // empty' "$input_file" 2>/dev/null)
     cap=$(printf '%s' "$prompt" | tr '[:upper:]' '[:lower:]' | sed -nE 's/.*(^|[^0-9])([0-9]+)[[:space:]]+words?.*/\2/p' | head -n 1)
     [ -n "$cap" ] || exit 0
