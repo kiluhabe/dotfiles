@@ -5,21 +5,21 @@ if [[ $(uname -a) =~ ^Darwin ]]; then
     export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:$PATH
     export TERM=xterm-256color
     export BASH_SILENCE_DEPRECATION_WARNING=1
-    export PATH="/opt/homebrew/opt/avr-gcc@8/bin:$PATH"
-    export PATH="/opt/homebrew/opt/arm-none-eabi-binutils/bin:$PATH"
     eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# bash-completion
+if [ -n "${HOMEBREW_PREFIX:-}" ] && [ -r "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh" ]; then
+    . "$HOMEBREW_PREFIX/etc/profile.d/bash_completion.sh"
+elif [ -r /usr/share/bash-completion/bash_completion ]; then
+    . /usr/share/bash-completion/bash_completion
+fi
 
 #prompt
 unset PROMPT_COMMAND
 PROMPT_COMMAND='printf "\033]0;%s\007\n" "${PWD/#$HOME/~}"'
 PS1="\$(prompt) "
-
-# direnv
-if command -v direnv &>/dev/null; then
-   eval "$(direnv hook bash)"
-fi
 
 # set LOCAL
 if [[ $(uname -a) =~ ^Darwin ]]; then
@@ -38,6 +38,11 @@ export LC_ALL="$LANG"
 # declared-but-uninstalled tools are intentional (see mise/config.toml).
 if command -v mise &>/dev/null; then
     eval "$(mise activate bash --quiet)"
+fi
+
+# direnv (installed by mise, so after activation)
+if command -v direnv &>/dev/null; then
+   eval "$(direnv hook bash)"
 fi
 
 # gcloud
@@ -67,7 +72,7 @@ alias txbs="tmux new-session -d -c"
 alias txww="tmux-worktree-window"
 alias txaw="tmux-worktree-attach-window"
 
-# hunk
-if [ -d "$HOME/.hunk/bin" ]; then
-  export PATH="$HOME/.hunk/bin:$PATH"
+# podman stands in for docker
+if command -v podman &>/dev/null; then
+  alias docker=podman
 fi

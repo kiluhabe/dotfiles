@@ -1,4 +1,4 @@
-# mise — language runtimes & language servers
+# mise — language runtimes, language servers & CLI tools
 #
 # Local: `mise install` (everything)
 # Pod:   `mise install ruby node npm:typescript-language-server gem:ruby-lsp`
@@ -26,6 +26,26 @@ cabal     = "3.16"
 "go:golang.org/x/tools/gopls"            = "latest"
 "aqua:hashicorp/terraform-ls"            = "latest"
 "github:haskell/haskell-language-server" = "latest"
+
+# CLI tools (prebuilt binaries; GUI apps and system tools stay in Brewfile)
+fzf                       = "latest"
+jq                        = "latest"
+delta                     = "latest"
+"aqua:neovim/neovim"      = "latest"   # the short name resolves to a vfox plugin
+stern                     = "latest"
+direnv                    = "latest"
+ripgrep                   = "latest"
+shellcheck                = "latest"
+gitleaks                  = "latest"
+uv                        = "latest"
+aws-cli                   = "latest"
+kubectl                   = "latest"
+hunk                      = "latest"
+"github:googleworkspace/cli"  = "latest"   # gws
+"pipx:podman-compose"     = "latest"
+eza                       = "latest"   # `eza --tree` replaces tree
+codex                     = "latest"
+claude                    = "latest"   # self-update disabled in claude settings.json; update with `mise up`
 
 [settings]
 # Use prebuilt distributions instead of source builds (avoids apt build deps;
