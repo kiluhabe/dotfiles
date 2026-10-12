@@ -26,22 +26,16 @@
       "git fetch *",
       "git pull *",
       "git push *",
-      "gh *",
       "gcloud *",
-      "podman *"
+      "tmux-editor-open *"
     ],
     "filesystem": {
       "allowWrite": [
         "~/.cache",
-        "~/Library/Caches",
-        "~/.local/share/mise",
-        "~/.npm",
-        "~/.cargo",
-        "~/go"
+        "~/Library/Caches"
       ]
     },
     "network": {
-      "allowUnixSockets": ["/private/tmp/tmux-501"],
       "allowedDomains": [
         "github.com",
         "*.github.com",
