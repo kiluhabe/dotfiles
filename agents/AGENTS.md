@@ -123,6 +123,16 @@ pick its own successor.
   temporary location (session scratchpad or tmp), not the repo, and
   never commit them.
 
+## Plans
+
+- Plans state intent, not implementation. This overrides any skill
+  (e.g. superpowers:writing-plans "No Placeholders") that requires
+  full code in plans.
+- Tests: list test cases only (name + given/when/then in one line).
+- Functions/types: signature or interface only, no bodies.
+- Code blocks only for public interfaces, schemas, or a non-obvious
+  snippet the implementer can't derive. Everything else is prose.
+
 ## On user tone
 
 - If the user's prompt sustains irritation/anger, uses violent imagery,

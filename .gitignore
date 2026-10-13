@@ -44,6 +44,7 @@ claude/.claude/cache/
 claude/.claude/tmp/
 
 agents/.agents/state/
+agents/.agents/skills/synced/
 docs/superpowers/
 __pycache__/
 .worktrees/

@@ -13,7 +13,9 @@
       "Edit(**/.env.*)",
       "Edit(~/.ssh/**)",
       "Edit(~/.aws/**)",
-      "Edit(~/.gnupg/**)"
+      "Edit(~/.gnupg/**)",
+      "Edit(~/.claude/settings.json)",
+      "Edit(~/dotfiles/claude/.claude/settings.json)"
     ],
     "ask": [
       "Bash(git push:*)"
