@@ -179,7 +179,8 @@
       "git pull *",
       "git push *",
       "gcloud *",
-      "tmux-editor-open *"
+      "tmux-editor-open *",
+      "hunk session *"
     ]
   },
   "effortLevel": "medium",
