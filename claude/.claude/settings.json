@@ -1,4 +1,7 @@
 {
+  "env": {
+    "DISABLE_AUTOUPDATER": "1"
+  },
   "permissions": {
     "deny": [
       "Bash(sudo:*)",
@@ -22,42 +25,7 @@
     ],
     "defaultMode": "auto"
   },
-  "sandbox": {
-    "enabled": true,
-    "excludedCommands": [
-      "git fetch *",
-      "git pull *",
-      "git push *",
-      "gcloud *",
-      "tmux-editor-open *"
-    ],
-    "filesystem": {
-      "allowWrite": [
-        "~/.cache",
-        "~/Library/Caches"
-      ]
-    },
-    "network": {
-      "allowedDomains": [
-        "github.com",
-        "*.github.com",
-        "*.githubusercontent.com",
-        "registry.npmjs.org",
-        "pypi.org",
-        "files.pythonhosted.org",
-        "rubygems.org",
-        "proxy.golang.org",
-        "sum.golang.org",
-        "crates.io",
-        "*.crates.io"
-      ]
-    }
-  },
   "model": "opus",
-  "language": "japanese",
-  "env": {
-    "DISABLE_AUTOUPDATER": "1"
-  },
   "hooks": {
     "UserPromptSubmit": [
       {
@@ -183,6 +151,39 @@
     "browser-use@claude-plugins-official": true,
     "chrome-devtools-mcp@claude-plugins-official": true,
     "bigquery-data-analytics@claude-plugins-official": true
+  },
+  "language": "japanese",
+  "sandbox": {
+    "enabled": true,
+    "network": {
+      "allowedDomains": [
+        "github.com",
+        "*.github.com",
+        "*.githubusercontent.com",
+        "registry.npmjs.org",
+        "pypi.org",
+        "files.pythonhosted.org",
+        "rubygems.org",
+        "proxy.golang.org",
+        "sum.golang.org",
+        "crates.io",
+        "*.crates.io"
+      ]
+    },
+    "filesystem": {
+      "allowWrite": [
+        "~/.cache",
+        "~/Library/Caches"
+      ]
+    },
+    "excludedCommands": [
+      "git fetch *",
+      "git pull *",
+      "git push *",
+      "gcloud *",
+      "tmux-editor-open *",
+      "hunk session *"
+    ]
   },
   "effortLevel": "medium",
   "autoCompactEnabled": true,
