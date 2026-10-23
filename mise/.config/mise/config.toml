@@ -41,6 +41,7 @@ uv                        = "latest"
 aws-cli                   = "latest"
 kubectl                   = "latest"
 hunk                      = "latest"
+glow                      = "latest"   # markdown viewer for the editor slot
 "github:googleworkspace/cli"  = "latest"   # gws
 "pipx:podman-compose"     = "latest"
 eza                       = "latest"   # `eza --tree` replaces tree

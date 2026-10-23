@@ -82,5 +82,5 @@ else
 fi
 
 if [ "$EDITOR_WINDOW" != "$WINDOW" ]; then
-  tmux-pane-swap editor diff "$SELF_PANE"
+  tmux-pane-show editor "$SELF_PANE"
 fi

@@ -1,0 +1,69 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# The editor, diff and viewer panes share one slot: one is on screen, the rest
+# wait in the parking window. Showing one moves panes rather than restarting
+# them, so none of them loses its state.
+
+usage() {
+  echo "usage: tmux-pane-show <editor|diff|viewer> [pane]" >&2
+}
+
+if [ -z "${TMUX:-}" ]; then
+  echo "tmux-pane-show: must be run inside tmux" >&2
+  exit 1
+fi
+
+ROLE="${1:-}"
+# run-shell exports TMUX but not TMUX_PANE, so key bindings pass the pane in as
+# an argument; an interactive shell has TMUX_PANE and can leave it off.
+PANE="${2:-${TMUX_PANE:-}}"
+case "$ROLE" in
+  editor | diff | viewer) ;;
+  *)
+    usage
+    exit 2
+    ;;
+esac
+if [ -z "$PANE" ]; then
+  usage
+  exit 2
+fi
+
+WINDOW=$(tmux display-message -p -t "$PANE" '#{window_id}')
+SESSION=$(tmux display-message -p -t "$PANE" '#{session_id}')
+ACTIVE=$(tmux display-message -p -t "$WINDOW" '#{pane_id}')
+
+# Slot panes may be parked in another window, so search the whole session and
+# keep only those whose home is this window. Panes from older layouts carry no
+# home option, so separate the fields explicitly rather than on whitespace.
+SLOT=$(tmux list-panes -s -t "$SESSION" \
+  -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{window_id}' \
+  | awk -F'|' -v home="$WINDOW" '$3 == home && ($2 == "editor" || $2 == "diff" || $2 == "viewer")')
+
+SHOW=$(awk -F'|' -v role="$ROLE" '$2 == role { print $1 "|" $4; exit }' <<<"$SLOT")
+HIDE=$(awk -F'|' -v win="$WINDOW" '$4 == win { print $1; exit }' <<<"$SLOT")
+
+if [ -z "$SHOW" ]; then
+  tmux display-message "tmux-pane-show: this window has no $ROLE pane"
+  exit 0
+fi
+[ "${SHOW#*|}" = "$WINDOW" ] && exit 0
+SHOW="${SHOW%%|*}"
+if [ -z "$HIDE" ]; then
+  tmux display-message "tmux-pane-show: no editor/diff/viewer pane on screen"
+  exit 0
+fi
+
+# Join first, park second: the slot stays occupied throughout, so the survivor
+# simply expands back into it instead of the layout reflowing around a gap.
+tmux join-pane -d -v -s "$SHOW" -t "$HIDE"
+tmux-pane-park "$HIDE"
+
+# Switching from elsewhere in the window must not drag the cursor into the
+# slot; only the pane that just got parked has to hand its focus over.
+if [ "$ACTIVE" = "$HIDE" ]; then
+  tmux select-pane -t "$SHOW"
+else
+  tmux select-pane -t "$ACTIVE"
+fi

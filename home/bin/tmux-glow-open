@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Shows a markdown file with glow in the viewer pane, the third role of the
+# editor slot, so an agent can put a plan in front of the user read-only.
+# Without a file it just brings the viewer on screen. Windows laid out before
+# the viewer existed get one on first use.
+
+usage() {
+  echo "usage: tmux-glow-open [-t pane] [file]" >&2
+}
+
+die() {
+  echo "tmux-glow-open: $*" >&2
+  exit 1
+}
+
+[ -n "${TMUX:-}" ] || die "must be run inside tmux"
+
+# run-shell exports TMUX but not TMUX_PANE, so key bindings pass the pane in.
+PANE="${TMUX_PANE:-}"
+if [ "${1:-}" = -t ]; then
+  PANE="${2:-}"
+  shift 2 || true
+fi
+[ -n "$PANE" ] || {
+  usage
+  exit 2
+}
+FILE="${1:-}"
+
+if [ -n "$FILE" ]; then
+  case "$FILE" in
+    /*) ABS_FILE="$FILE" ;;
+    *) ABS_FILE="$PWD/$FILE" ;;
+  esac
+  [ -f "$ABS_FILE" ] || die "no such file: $ABS_FILE"
+fi
+
+GLOW=$(command -v glow) || die "glow is not installed (mise install glow)"
+
+WINDOW=$(tmux display-message -p -t "$PANE" '#{window_id}')
+SESSION=$(tmux display-message -p -t "$PANE" '#{session_id}')
+
+panes=$(tmux list-panes -s -t "$SESSION" \
+  -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{pane_current_path}')
+pane_field() { # role field-index
+  awk -F'|' -v role="$1" -v win="$WINDOW" -v f="$2" '$2 == role && $3 == win { print $f; exit }' <<<"$panes"
+}
+
+VIEWER=$(pane_field viewer 1)
+EDITOR_PATH=$(pane_field editor 4)
+[ -n "$EDITOR_PATH" ] || die "this window has no editor pane (not a txdf window?)"
+
+# Quitting glow drops to a shell instead of closing the pane, which would
+# otherwise leave a gap in the slot. The file goes in as an argument, never as
+# keystrokes, so no quoting is involved.
+# shellcheck disable=SC2016 # expands in the spawned bash, not here
+GLOW_CMD=(bash -c '"$0" ${1:+-t "$1"}; exec bash --login' "$GLOW" "${ABS_FILE:-}")
+
+if [ -z "$VIEWER" ]; then
+  # Born parked: split off the editor's window only long enough to tag it.
+  VIEWER=$(tmux new-window -d -P -F '#{pane_id}' -c "$EDITOR_PATH" -- "${GLOW_CMD[@]}")
+  tmux set-option -p -t "$VIEWER" @tmux-default-layout-role viewer
+  tmux set-option -p -t "$VIEWER" @tmux-default-layout-home "$WINDOW"
+  tmux-pane-park "$VIEWER"
+elif [ -n "$FILE" ]; then
+  # glow is read-only, so restarting it loses nothing. Pane options survive.
+  tmux respawn-pane -k -t "$VIEWER" -c "$EDITOR_PATH" -- "${GLOW_CMD[@]}"
+fi
+
+tmux-pane-show viewer "$PANE"

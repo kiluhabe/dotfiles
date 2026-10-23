@@ -42,6 +42,10 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
   開いて"), run `tmux-editor-open <path>[:line]`. It opens the file in
   the editor pane of your tmux window. If it fails, report the error;
   don't fall back to printing the file.
+- After writing or updating a plan or spec file (including the plan-mode
+  plan file), run `tmux-glow-open <path>` instead of `tmux-editor-open`.
+  It renders the markdown read-only with glow in the same pane slot.
+  If it fails, report the error.
 
 ## Task decomposition and parallelism
 

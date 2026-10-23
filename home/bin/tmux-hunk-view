@@ -72,7 +72,7 @@ esac
 # Reloading a parked pane would leave the user staring at the editor, so bring
 # the diff pane on screen first.
 if [ "$DIFF_WINDOW" != "$WINDOW" ]; then
-  tmux-pane-swap editor diff "$PANE"
+  tmux-pane-show diff "$PANE"
 fi
 
 if ! OUT=$(hunk session reload --repo "$REPO" -- "$@" 2>&1); then
