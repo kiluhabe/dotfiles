@@ -150,7 +150,8 @@
     "vercel@claude-plugins-official": true,
     "browser-use@claude-plugins-official": true,
     "chrome-devtools-mcp@claude-plugins-official": true,
-    "bigquery-data-analytics@claude-plugins-official": true
+    "bigquery-data-analytics@claude-plugins-official": true,
+    "claude-security@claude-plugins-official": true
   },
   "language": "japanese",
   "sandbox": {
@@ -182,10 +183,12 @@
       "git push *",
       "gcloud *",
       "tmux-editor-open *",
-      "hunk session *"
+      "hunk session *",
+      "tmux-glow-open *"
     ]
   },
   "effortLevel": "medium",
+  "skipWorkflowUsageWarning": true,
   "autoCompactEnabled": true,
   "agentPushNotifEnabled": true,
   "skipAutoPermissionPrompt": true
