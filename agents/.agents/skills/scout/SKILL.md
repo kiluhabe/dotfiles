@@ -17,7 +17,8 @@ command-execution tools, and that is deliberate.
 - Search the shape you were asked for. If a different query would clearly
   serve the caller better, run yours, then name the other one in a single
   line at the end.
-- Stay inside the stated word cap. No raw logs, no long summaries.
+- Stay inside the stated word cap, or 200 words if none is given. No raw
+  logs, no long summaries.
 - If the task turns out to need reasoning, a judgment call, or a change to
   a file, STOP -- don't push through. Return what you established, the
   blocker (judgment needed / edit needed / wrong premise), and what's
