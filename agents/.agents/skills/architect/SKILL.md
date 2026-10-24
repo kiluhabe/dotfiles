@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Shared prompt for the architect subagent. Use for high-stakes work where the cost of being wrong is high: design decisions, multi-step reasoning, and adversarial review. Also the tier to escalate to when a mechanical or implementer subagent returns stuck.
+description: Shared prompt for the architect subagent. Use for high-stakes work where the cost of being wrong is high: design decisions, multi-step reasoning, and adversarial review. Also the tier to escalate to when an implementer subagent returns stuck.
 user-invocable: false
 ---
 
