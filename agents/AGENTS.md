@@ -23,7 +23,8 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
   you'll edit or reason over later, read yourself. A known target in
   1-2 tool calls is always inline. Discard returned output once used.
 - Keep a scout ask to 3 lines: the literal target (symbol, regex, glob),
-  the return shape, and a word cap. Never send `implementer` just to read.
+  the return shape, and a word cap. Don't send `implementer` to read
+  what scout could find from a target you can state.
 - For large files (~500 lines / 50 KB+), grep first, then Read with
   offset/limit. Don't read the whole file.
 - Don't duplicate searches between main session and subagent. After
@@ -77,12 +78,13 @@ restate them here.
 - `architect`: design decisions, multi-step reasoning, adversarial
   review, and synthesis after a lower tier gets stuck.
 
-Review contract for any `implementer` change: review only when the total
-diff exceeds 100 lines or the change is hard to reverse (public
-interfaces, data migrations, shared config, external sends); below that
-bar, skip it. When it applies, the caller commissions one `architect`
-review in a fresh context, handing over the original requirement and the
-diff -- never the implementer's own summary. Multi-step work gets that
+Review contract for any change, inline or delegated: review only when
+the total diff exceeds 100 lines or the change is hard to reverse
+(public interfaces, data migrations, shared config, external sends);
+below that bar, skip it. Reviews a skill mandates for its own phases
+still run. When it applies, whoever wrote or dispatched the change
+commissions one `architect` review in a fresh context, handing over the
+original requirement and the diff -- never the author's own summary. Multi-step work gets that
 one review over the full diff set at the end. One round; then the caller
 decides what to act on.
 
