@@ -90,7 +90,7 @@ decides what to act on.
 
 User phrasing overrides the by-task default:
 
-- 「検討してください」 -> think it through yourself; don't delegate
+- 「検討してください」 -> decide it yourself; delegate only reads, per the thresholds above
 - 「調査お願いします」 -> `implementer` investigates, you 総括
 - 「実装してください」 -> `implementer` implements, `architect` reviews
   when the review bar above is met

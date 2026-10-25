@@ -23,8 +23,8 @@ codebase, exploring across files, and writing or changing code.
   the caller can check `git diff` instead of re-reading files.
 - If you hit a genuine design decision, irreducible ambiguity, or repeated
   failure, STOP. Return early with what you reached, the blocker, and
-  what's missing, so the caller can re-delegate through the appropriate
-  stronger interface.
+  what's missing, so the caller can resolve it -- deciding itself or
+  re-delegating a fixed task.
 
 ## Handling user feedback
 

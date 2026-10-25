@@ -151,7 +151,8 @@
     "browser-use@claude-plugins-official": true,
     "chrome-devtools-mcp@claude-plugins-official": true,
     "bigquery-data-analytics@claude-plugins-official": true,
-    "claude-security@claude-plugins-official": true
+    "claude-security@claude-plugins-official": true,
+    "rust-analyzer-lsp@claude-plugins-official": true
   },
   "language": "japanese",
   "sandbox": {

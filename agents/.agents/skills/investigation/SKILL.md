@@ -11,7 +11,7 @@ Broad, deep, or ambiguous investigations fail when handled as one Read/Grep pass
 
 **You (the main conversation) are the orchestrator.** You dispatch via the Agent tool by hand, phase by phase. Do not build this as a Workflow-tool script — Workflow requires its own per-invocation opt-in (`ultracode` or an explicit ask), and the core judgment here (does this output match the task definition?) is inspected turn-by-turn, which fights a pre-fixed script's control flow.
 
-**You never investigate a task yourself.** When a task escalates to you, you fix its definition or give up on it — never a Read/Grep of your own. Your context is the expensive one, and it has to stay clear for synthesis.
+**You never investigate a task yourself.** When a task escalates to you, you fix its definition or give up on it — never a Read/Grep of your own. Your context is the expensive one, and it has to stay clear for synthesis. Reconnaissance you need to plan (Phase 2) goes to `scout`; in this skill that overrides AGENTS.md's inline allowance for 1-2 call reads.
 
 ## When to Use
 
