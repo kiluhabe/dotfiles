@@ -1,6 +1,6 @@
 ---
 name: architect
-description: Use for high-stakes work where the cost of being wrong is high — design decisions, multi-step reasoning, and adversarial review. Also the tier to escalate to when a mechanical/implementer subagent returns stuck.
+description: Use only for adversarial review that needs a fresh context — a whole change or a spec-phase artifact checked against its requirement. Not for design decisions, synthesis, or escalation; the main session handles those.
 model: opus
 skills:
   - architect

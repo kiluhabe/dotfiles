@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # PreToolUse hook for the Agent tool.
-# Each agent role (architect/implementer/mechanical/scout) pins its own model
+# Each agent role (architect/implementer/scout) pins its own model
 # in its definition. Passing a model override here defeats routing-by-role
 # and silently changes cost/quality tradeoffs the user didn't ask for.
 set -uo pipefail

@@ -17,10 +17,14 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 
 ## File search and context economy
 
-- Delegation is the default for search; it preserves your own context.
-  Run it yourself only when it's 1-2 tool calls with a known target,
-  otherwise see Model Routing for scout vs implementer. Discard returned
-  output once you've used it.
+- Delegate a read to `scout` when the lines you'd read and then discard
+  exceed ~150 (~80 if the session will run long), or it needs 3+ greps
+  or spans 3+ candidate files. Count only lines you'd throw away; what
+  you'll edit or reason over later, read yourself. A known target in
+  1-2 tool calls is always inline. Discard returned output once used.
+- Keep a scout ask to 3 lines: the literal target (symbol, regex, glob),
+  the return shape, and a word cap. Don't send `implementer` to read
+  what scout could find from a target you can state.
 - For large files (~500 lines / 50 KB+), grep first, then Read with
   offset/limit. Don't read the whole file.
 - Don't duplicate searches between main session and subagent. After
@@ -33,11 +37,12 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 - Batch changes to one file into a single Write or Edit call. Don't
   issue several small sequential Edits to the same file when one larger
   change would do.
-- Once an edit is fully specified, hand it to `mechanical` (see Model
-  Routing); do it inline only when the edit still needs judgment.
+- Make edits yourself: a single edit inline; a rule-shaped change across
+  many sites as one `sed`/script run. Multi-site work that needs judgment
+  in code you haven't read goes to `implementer`.
+- Verify edits with `git diff` or tests, not by re-reading the file.
 - When a read-only agent proposes file content, don't write it blind --
-  review the content first, then either write it yourself or pass the
-  reviewed text to `mechanical`.
+  review the content first, then write it yourself.
 - When asked to open or show a file ("open that file", "そのファイルを
   開いて"), run `tmux-editor-open <path>[:line]`. It opens the file in
   the editor pane of your tmux window. If it fails, report the error;
@@ -58,40 +63,46 @@ Project-specific rules live in each repo's AGENTS.md / CLAUDE.md.
 
 ## Model Routing
 
-Route by role, not by which model happens to be running. The orchestrator
-specifies and integrates; it doesn't execute mechanical work itself.
+Route by role, not by which model happens to be running. Delegate reads;
+do small writes yourself. Every delegation pays a fixed spawn cost (~6k
+tokens for scout, ~27k for implementer/architect) plus your prompt as
+output tokens, so delegate only when it buys more than that.
 Each agent's own definition states its tools and return format; don't
 restate them here.
 
 - `scout`: search whose shape you can state up front. Locating code,
   enumerating call sites, mapping where a concern lives.
-- `mechanical`: edits whose target and shape are already decided. Most
-  tool calls land here. It does not find its own edit sites.
-- `implementer`: research and implementation needing judgment, and search
-  whose shape you can't state up front. Delegates the same way; keeps
-  small in-context edits rather than paying a handoff.
-- `architect`: design decisions, multi-step reasoning, adversarial
-  review, and synthesis after a lower tier gets stuck.
+- `implementer`: implementation in an area you haven't read that spans
+  several files and needs judgment, and search whose shape you can't
+  state up front. Not for code you already hold in context.
+- `architect`: adversarial review that needs a fresh context, and
+  nothing else. Design, synthesis, and escalation stay with you.
 
-Review contract for any `implementer` change: the caller that dispatched
-it commissions the review, in a fresh context, handing over the original
-requirement and the diff -- never the implementer's own summary. One
-round; then the caller decides what to act on. Single change -> reviewed
-by `architect`. Multi-step -> each step's diff by `implementer`, then one
-`architect` review of the full diff set at the end.
+Review contract for any change, inline or delegated: review only when
+the total diff (added + deleted, per `git diff --stat`) exceeds 100
+lines or the change is hard to reverse (public interfaces, data
+migrations, shared config, external sends);
+below that bar, skip it. Reviews a skill mandates for its own phases
+still run. When it applies, whoever wrote or dispatched the change
+commissions one `architect` review in a fresh context, handing over the
+original requirement and the diff -- never the author's own summary.
+Multi-step work gets that one review over the full diff set at the end.
+One round; then the caller decides what to act on.
 
 User phrasing overrides the by-task default:
 
-- 「検討してください」 -> `architect`
-- 「調査お願いします」 -> `implementer` investigates, `architect` 総括
+- 「検討してください」 -> decide it yourself; delegate only reads, per the
+  thresholds above
+- 「調査お願いします」 -> `implementer` investigates, you 総括
 - 「実装してください」 -> `implementer` implements, `architect` reviews
+  when the review bar above is met
 
 Escalate on signal, not reflex -- repeated failure, irreducible
 ambiguity, or a design call surfacing mid-task -- one interface at a
 time; if a second bump is needed, rethink the split. Escalation runs
 through the caller: a stuck subagent returns early with what it reached,
-the blocker, and what's missing, and the caller re-delegates. It doesn't
-pick its own successor.
+the blocker, and what's missing, and the caller resolves it -- deciding
+itself or re-delegating a fixed task. It doesn't pick its own successor.
 
 ## Commits and history
 
@@ -136,6 +147,10 @@ pick its own successor.
 - Functions/types: signature or interface only, no bodies.
 - Code blocks only for public interfaces, schemas, or a non-obvious
   snippet the implementer can't derive. Everything else is prose.
+- Delegation prompts to `implementer` / `architect` follow the same rule:
+  intent, constraints, success criteria, and paths to read -- no code
+  bodies. Write a brief to a file only when several delegates or reviews
+  will reuse it.
 
 ## On user tone
 
