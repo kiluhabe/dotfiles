@@ -1,4 +1,5 @@
 export EDITOR="${EDITOR:-nvim}"
+export GLOW_CONFIG_HOME="$HOME/.config/glow"
 
 # path
 if [[ $(uname -a) =~ ^Darwin ]]; then
