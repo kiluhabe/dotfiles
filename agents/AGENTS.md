@@ -79,18 +79,20 @@ restate them here.
   nothing else. Design, synthesis, and escalation stay with you.
 
 Review contract for any change, inline or delegated: review only when
-the total diff (added + deleted, per `git diff --stat`) exceeds 100 lines or the change is hard to reverse
-(public interfaces, data migrations, shared config, external sends);
+the total diff (added + deleted, per `git diff --stat`) exceeds 100
+lines or the change is hard to reverse (public interfaces, data
+migrations, shared config, external sends);
 below that bar, skip it. Reviews a skill mandates for its own phases
 still run. When it applies, whoever wrote or dispatched the change
 commissions one `architect` review in a fresh context, handing over the
-original requirement and the diff -- never the author's own summary. Multi-step work gets that
-one review over the full diff set at the end. One round; then the caller
-decides what to act on.
+original requirement and the diff -- never the author's own summary.
+Multi-step work gets that one review over the full diff set at the end.
+One round; then the caller decides what to act on.
 
 User phrasing overrides the by-task default:
 
-- 「検討してください」 -> decide it yourself; delegate only reads, per the thresholds above
+- 「検討してください」 -> decide it yourself; delegate only reads, per the
+  thresholds above
 - 「調査お願いします」 -> `implementer` investigates, you 総括
 - 「実装してください」 -> `implementer` implements, `architect` reviews
   when the review bar above is met

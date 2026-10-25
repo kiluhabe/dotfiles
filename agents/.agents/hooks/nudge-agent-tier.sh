@@ -9,8 +9,9 @@
 # the expensive tier. scout covers read-only search at a fixed model; producing a
 # plan is implementer + writing-plans, reviewed by architect.
 # Reviews specifically: there is no per-task review. One architect review of
-# the whole diff, and only when it exceeds 100 lines or is hard to reverse —
-# below that bar, skip the review rather than downgrading it to implementer.
+# the whole diff, and only when it exceeds 100 lines (added + deleted) or
+# is hard to reverse — below that bar, skip the review rather than
+# downgrading it to implementer.
 # Dual-mode: Claude Code PreToolUse on the Agent tool (.tool_input.subagent_type),
 # Codex SubagentStart (.agent_type). Same allowlist on both paths.
 set -uo pipefail
@@ -30,5 +31,5 @@ case "$TYPE" in
   architect|implementer|scout|thinker) exit 0 ;;
 esac
 
-printf 'BLOCKED by nudge-agent-tier: route by role — architect / implementer / scout (read-only search). Got: %s\nFor reviews: architect, only when the diff exceeds 100 lines or is hard to reverse; no per-task review.\n' "${TYPE:-<none>}" >&2
+printf 'BLOCKED by nudge-agent-tier: route by role — implementer / scout (read-only search) / architect (fresh-context review only). Got: %s\nFor reviews: architect, only when the diff exceeds 100 lines (added + deleted) or is hard to reverse; no per-task review.\n' "${TYPE:-<none>}" >&2
 exit 2

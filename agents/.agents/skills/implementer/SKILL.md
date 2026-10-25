@@ -1,6 +1,6 @@
 ---
 name: implementer
-description: Shared prompt for the implementer subagent. Use for standard research and implementation: investigating code, cross-file exploration, writing or modifying features, and multi-step tasks that need judgment but are not high-stakes design calls.
+description: Shared prompt for the implementer subagent. Use for standard research and implementation: investigating code, cross-file exploration, writing or modifying features, and multi-step tasks that need judgment but are not high-stakes design calls (those stay with the main session).
 user-invocable: false
 ---
 
