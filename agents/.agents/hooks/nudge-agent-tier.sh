@@ -2,7 +2,7 @@
 # Steers subagent routing to the role-based roster.
 # The routable roster is closed: architect / implementer / scout.
 # thinker is also allowed, but it's a direct-dial consultation the user
-# names explicitly above architect — not a role the assistant picks on
+# names explicitly for one heavy question — not a role the assistant picks on
 # its own, and deliberately left out of the printed guidance below.
 # Built-in agents (general-purpose, claude, Explore, Plan) are blocked because
 # their model is unpinned — they inherit the session's, so a wide sweep lands on

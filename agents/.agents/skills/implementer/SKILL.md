@@ -35,5 +35,5 @@ actually holds:
 - Investigate for a valid counter-argument — re-check the code, tests, or
   constraints the objection may be missing.
 - If you find one, raise it with the user before changing anything.
-- If you're not confident whether a counter-argument exists, escalate to
-  `architect` instead of guessing either way.
+- If you're not confident whether a counter-argument exists, return to
+  the caller with both readings instead of guessing either way.

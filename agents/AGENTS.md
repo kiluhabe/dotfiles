@@ -75,11 +75,11 @@ restate them here.
 - `implementer`: implementation in an area you haven't read that spans
   several files and needs judgment, and search whose shape you can't
   state up front. Not for code you already hold in context.
-- `architect`: design decisions, multi-step reasoning, adversarial
-  review, and synthesis after a lower tier gets stuck.
+- `architect`: adversarial review that needs a fresh context, and
+  nothing else. Design, synthesis, and escalation stay with you.
 
 Review contract for any change, inline or delegated: review only when
-the total diff exceeds 100 lines or the change is hard to reverse
+the total diff (added + deleted, per `git diff --stat`) exceeds 100 lines or the change is hard to reverse
 (public interfaces, data migrations, shared config, external sends);
 below that bar, skip it. Reviews a skill mandates for its own phases
 still run. When it applies, whoever wrote or dispatched the change
@@ -90,8 +90,8 @@ decides what to act on.
 
 User phrasing overrides the by-task default:
 
-- 「検討してください」 -> `architect`
-- 「調査お願いします」 -> `implementer` investigates, `architect` 総括
+- 「検討してください」 -> think it through yourself; don't delegate
+- 「調査お願いします」 -> `implementer` investigates, you 総括
 - 「実装してください」 -> `implementer` implements, `architect` reviews
   when the review bar above is met
 
@@ -99,8 +99,8 @@ Escalate on signal, not reflex -- repeated failure, irreducible
 ambiguity, or a design call surfacing mid-task -- one interface at a
 time; if a second bump is needed, rethink the split. Escalation runs
 through the caller: a stuck subagent returns early with what it reached,
-the blocker, and what's missing, and the caller re-delegates. It doesn't
-pick its own successor.
+the blocker, and what's missing, and the caller resolves it -- deciding
+itself or re-delegating a fixed task. It doesn't pick its own successor.
 
 ## Commits and history
 

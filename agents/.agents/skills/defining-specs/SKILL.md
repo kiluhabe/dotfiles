@@ -38,9 +38,9 @@ Do these before dispatching anything:
 | # | Phase | Produces | Route to | Adversarial reviewer |
 |---|---|---|---|---|
 | 1 | Research | research brief | `implementer` (wide search → `scout`) | `architect` |
-| 2 | Brainstorming *(conditional)* | resolved forks | `architect` + `brainstorming` skill | human is the reviewer |
+| 2 | Brainstorming *(conditional)* | resolved forks | you + `brainstorming` skill | human is the reviewer |
 | 3 | Define Spec | spec document | `implementer` | `architect` |
-| 4 | Brainstorming *(conditional)* | resolved forks | `architect` + `brainstorming` skill | human is the reviewer |
+| 4 | Brainstorming *(conditional)* | resolved forks | you + `brainstorming` skill | human is the reviewer |
 | 5 | Define Task | task list | `implementer` + `writing-plans` | `architect` |
 
 Phases 2 and 4 are **conditional on an observable predicate**: run them if and only if the preceding phase's artifact has a non-empty **Open Forks** section. Empty → skip to the next phase.
