@@ -1,7 +1,4 @@
 {
-  "env": {
-    "DISABLE_AUTOUPDATER": "1"
-  },
   "permissions": {
     "deny": [
       "Bash(sudo:*)",
@@ -54,10 +51,6 @@
           {
             "type": "command",
             "command": "~/.agents/hooks/guard-bash.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.agents/hooks/nudge-bash.sh"
           }
         ]
       },
@@ -67,19 +60,6 @@
           {
             "type": "command",
             "command": "~/.agents/hooks/nudge-agent-tier.sh"
-          },
-          {
-            "type": "command",
-            "command": "~/.agents/hooks/nudge-agent-model.sh"
-          }
-        ]
-      },
-      {
-        "matcher": "TaskCreate",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.agents/hooks/nudge-task-owner-create.sh"
           }
         ]
       }
@@ -106,15 +86,6 @@
             "command": "~/.agents/hooks/agent-watch-state.sh answering"
           }
         ]
-      },
-      {
-        "matcher": "Read|Edit|Write|Agent",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.agents/hooks/context-economy.sh"
-          }
-        ]
       }
     ],
     "Stop": [
@@ -124,11 +95,7 @@
           {
             "type": "command",
             "command": "~/.agents/hooks/agent-watch-state.sh idle"
-          },
-          {
-            "type": "command",
-            "command": "~/.agents/hooks/enforce-task-owner.sh"
-          }
+          }            
         ]
       }
     ]
@@ -192,5 +159,9 @@
   "skipWorkflowUsageWarning": true,
   "autoCompactEnabled": true,
   "agentPushNotifEnabled": true,
-  "skipAutoPermissionPrompt": true
+  "skipAutoPermissionPrompt": true,
+  "env": {
+    "DISABLE_AUTOUPDATER": "1",
+    "CLAUDE_CODE_PLUGIN_DIRS": "~/.claude/mods/"
+  }
 }

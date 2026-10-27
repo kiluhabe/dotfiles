@@ -48,3 +48,6 @@ agents/.agents/skills/synced/
 docs/superpowers/
 __pycache__/
 .worktrees/
+
+# Claude Code mods: engine-generated type declarations
+claude/.claude/mods/*/.claude-plugin/types/

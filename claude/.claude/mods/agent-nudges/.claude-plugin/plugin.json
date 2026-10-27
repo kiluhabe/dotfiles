@@ -1,0 +1,6 @@
+{
+  "name": "agent-nudges",
+  "version": "0.1.0",
+  "description": "Context-economy warnings, Bash/Agent nudges, and task-owner enforcement for Claude Code",
+  "types": "./types/index.d.ts"
+}
