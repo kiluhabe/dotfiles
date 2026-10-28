@@ -57,16 +57,19 @@ EDITOR_PATH=$(pane_field editor 4)
 # keystrokes, so no quoting is involved.
 # shellcheck disable=SC2016 # expands in the spawned bash, not here
 GLOW_CMD=(bash -c '"$0" ${1:+-t "$1"}; exec bash --login' "$GLOW" "${ABS_FILE:-}")
+# Panes start from the tmux server environment and `bash -c` skips .bashrc, so
+# the glow config location has to be handed over explicitly.
+GLOW_ENV="GLOW_CONFIG_HOME=${GLOW_CONFIG_HOME:-$HOME/.config/glow}"
 
 if [ -z "$VIEWER" ]; then
   # Born parked: split off the editor's window only long enough to tag it.
-  VIEWER=$(tmux new-window -d -P -F '#{pane_id}' -c "$EDITOR_PATH" -- "${GLOW_CMD[@]}")
+  VIEWER=$(tmux new-window -d -P -F '#{pane_id}' -c "$EDITOR_PATH" -e "$GLOW_ENV" -- "${GLOW_CMD[@]}")
   tmux set-option -p -t "$VIEWER" @tmux-default-layout-role viewer
   tmux set-option -p -t "$VIEWER" @tmux-default-layout-home "$WINDOW"
   tmux-pane-park "$VIEWER"
 elif [ -n "$FILE" ]; then
   # glow is read-only, so restarting it loses nothing. Pane options survive.
-  tmux respawn-pane -k -t "$VIEWER" -c "$EDITOR_PATH" -- "${GLOW_CMD[@]}"
+  tmux respawn-pane -k -t "$VIEWER" -c "$EDITOR_PATH" -e "$GLOW_ENV" -- "${GLOW_CMD[@]}"
 fi
 
 tmux-pane-show viewer "$PANE"
