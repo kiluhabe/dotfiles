@@ -12,6 +12,7 @@
     "reasons": [
       "replies:1"
     ],
-    "since_sha": "H2"
+    "since_sha": "H2",
+    "dependency": false
   }
 ]

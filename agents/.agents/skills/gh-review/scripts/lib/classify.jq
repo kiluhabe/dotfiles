@@ -18,7 +18,6 @@ def dependency_update:
 .login as $me
 | [.prs | unique_by(.id)[]
    | select((.isDraft // false) | not)
-   | select(dependency_update | not)
    | select((.author | login_of) != $me)
    | . as $pr
    | [nodes(.reviews)[] | select(.state != "PENDING")] as $valid
@@ -30,7 +29,8 @@ def dependency_update:
        url,
        author: (.author | login_of),
        base: .baseRefName,
-       head_sha: .headRefOid
+       head_sha: .headRefOid,
+       dependency: dependency_update
      }
    + if $mine == null then
        {

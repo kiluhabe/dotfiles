@@ -25,10 +25,12 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 2. If `~/.cache/gh-review/style.md` is missing, or the user asked to refresh
    it, build it (see "Style guide").
 3. `bash <skill>/scripts/gh-review-list $RUN`. It skips PRs with no update
-   for over a month and dependency updates. Exit 2 means gh isn't
+   for over a month, and flags dependency updates. Exit 2 means gh isn't
    authenticated; tell the user to run `! gh auth login`.
 4. `bash <skill>/scripts/gh-review-pick $RUN <pane>`. Exit 1 means nothing
-   was picked; stop. Otherwise `$RUN/selected.json` holds the queue.
+   was picked; stop. Otherwise `$RUN/selected.json` holds the queue. In the
+   picker, ctrl-o shows the PR under the cursor in the glow pane and ctrl-x
+   shows or hides dependency updates (hidden at first); tell the user so.
 
 ## Per PR (in selected.json order)
 

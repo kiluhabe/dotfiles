@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Collects open PRs updated within the last month where the viewer is a
 # requested reviewer (directly or via a team) or has reviewed before,
-# leaving out dependency updates,
+# flagging dependency updates,
 # classifies them as new/reacted, and writes
 # <run-dir>/list.json plus one markdown description per PR under desc/.
 
@@ -101,4 +101,4 @@ jq -c --slurpfile list "$RUN/list.json" '
   jq -j .text <<<"$entry" >"$RUN/desc/$(jq -r .file <<<"$entry")"
 done
 rm -f "$RUN/raw.json"
-jq -r '"\(length) PRs: \(map(select(.category == "reacted")) | length) reacted, \(map(select(.category == "new")) | length) new"' "$RUN/list.json"
+jq -r '"\(length) PRs: \(map(select(.category == "reacted")) | length) reacted, \(map(select(.category == "new" and (.dependency | not))) | length) new, \(map(select(.dependency and .category == "new")) | length) dependency updates (hidden in the picker)"' "$RUN/list.json"

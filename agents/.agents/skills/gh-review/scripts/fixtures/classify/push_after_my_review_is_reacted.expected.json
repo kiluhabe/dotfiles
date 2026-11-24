@@ -12,6 +12,7 @@
     "reasons": [
       "pushed"
     ],
-    "since_sha": "H1"
+    "since_sha": "H1",
+    "dependency": false
   }
 ]

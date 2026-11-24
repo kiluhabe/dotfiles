@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Lets the user check off PRs from <run-dir>/list.json in a tmux popup. Moving
-# the cursor shows that PR's description in the glow viewer pane. The chosen
-# entries go to <run-dir>/selected.json in list order. Exits 1 when nothing
-# was chosen.
+# Lets the user check off PRs from <run-dir>/list.json in a tmux popup.
+# ctrl-o shows the PR under the cursor in the glow viewer pane; ctrl-x shows
+# or hides dependency updates (hidden at first). The chosen entries go to
+# <run-dir>/selected.json in list order. Exits 1 when nothing was chosen.
 
 usage() {
   echo "usage: gh-review-pick <run-dir> <caller-pane-id>" >&2
@@ -15,21 +15,35 @@ die() {
   exit 2
 }
 
+# Prints one fzf line per PR, leaving out dependency updates unless
+# <run-dir>/show-deps exists.
+if [ "${1:-}" = --lines ]; then
+  show=false
+  [ -e "$2/show-deps" ] && show=true
+  jq -r --argjson show "$show" '.[] | select($show or (.dependency | not)) | [
+      "\(.repo | sub("/"; "__"))__\(.number)",
+      (if .category == "reacted" then "[reacted]" elif .dependency then "[deps]   " elif .untouched then "[new*]   " else "[new]    " end),
+      "\(.repo)#\(.number)",
+      .title,
+      (if (.reasons | length) > 0 then "(\(.reasons | join(", ")))" else "" end)
+    ] | @tsv' "$2/list.json"
+  exit 0
+fi
+
 # The popup re-enters this script to run fzf, since display-popup takes a
 # single shell-command string.
 if [ "${1:-}" = --inside ]; then
   RUN="$2"
   PANE="$3"
-  jq -r '.[] | [
-      "\(.repo | sub("/"; "__"))__\(.number)",
-      (if .category == "reacted" then "[reacted]" elif .untouched then "[new*]   " else "[new]    " end),
-      "\(.repo)#\(.number)",
-      .title,
-      (if (.reasons | length) > 0 then "(\(.reasons | join(", ")))" else "" end)
-    ] | @tsv' "$RUN/list.json" |
+  self=$(printf '%q' "$0")
+  run=$(printf '%q' "$RUN")
+  rm -f "$RUN/show-deps"
+  "$0" --lines "$RUN" |
     fzf --multi --layout=reverse --delimiter='\t' --with-nth=2.. --no-sort \
-      --header='Tab: check / Enter: confirm / Esc: cancel   [new*] = no human review yet' \
-      --bind "focus:execute-silent(tmux-glow-open -t $PANE $RUN/desc/{1}.md)" |
+      --track --id-nth=1 \
+      --header='Tab: check / Enter: confirm / Esc: cancel / ctrl-o: show description / ctrl-x: toggle [deps]   [new*] = no human review yet' \
+      --bind "ctrl-o:execute-silent(tmux-glow-open -t $PANE $run/desc/{1}.md)" \
+      --bind "ctrl-x:execute-silent([ -e $run/show-deps ] && rm $run/show-deps || touch $run/show-deps)+reload-sync($self --lines $run)" |
     cut -f1 >"$RUN/picked.txt" || true
   exit 0
 fi

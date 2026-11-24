@@ -12,6 +12,7 @@
     "reasons": [
       "truncated"
     ],
-    "since_sha": "H2"
+    "since_sha": "H2",
+    "dependency": false
   }
 ]

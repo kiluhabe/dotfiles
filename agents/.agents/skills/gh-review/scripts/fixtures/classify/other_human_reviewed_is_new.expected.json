@@ -10,6 +10,7 @@
     "category": "new",
     "untouched": false,
     "reasons": [],
-    "since_sha": null
+    "since_sha": null,
+    "dependency": false
   }
 ]
