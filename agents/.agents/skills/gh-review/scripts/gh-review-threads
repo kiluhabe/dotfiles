@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Prints the conversation a reacted PR needs reviewed, as JSON:
+#   {"threads": [{path, line, side, resolved, comments: [{id, author, body, created_at}]}],
+#    "issue_comments": [{id, author, body, created_at}]}
+# threads are those the viewer took part in; issue_comments are PR-level
+# comments by others since the viewer's last review. Comment ids are the REST
+# ids that replies and reactions take.
+
+REPO="${1:-}"
+NUMBER="${2:-}"
+if [ -z "$REPO" ] || [ -z "$NUMBER" ]; then
+  echo "usage: gh-review-threads <owner/repo> <number>" >&2
+  exit 2
+fi
+LOGIN=$(gh api user --jq .login)
+
+# shellcheck disable=SC2016 # GraphQL variables, not shell
+QUERY='query($owner: String!, $name: String!, $number: Int!, $login: String!) {
+  repository(owner: $owner, name: $name) {
+    pullRequest(number: $number) {
+      reviews(author: $login, last: 1) { nodes { submittedAt } }
+      reviewThreads(first: 50) {
+        nodes {
+          isResolved path line originalLine diffSide
+          comments(first: 50) { nodes { databaseId author { login } body createdAt } }
+        }
+      }
+      comments(last: 50) { nodes { databaseId author { login } body createdAt } }
+    }
+  }
+}'
+
+gh api graphql -f query="$QUERY" -f owner="${REPO%/*}" -f name="${REPO#*/}" -F number="$NUMBER" \
+  -f login="$LOGIN" --jq '.data.repository.pullRequest' |
+  jq --arg me "$LOGIN" '
+    def c: {id: .databaseId, author: (.author.login // "ghost"), body, created_at: .createdAt};
+    (.reviews.nodes[0].submittedAt // "") as $t
+    | {
+        threads: [.reviewThreads.nodes[]
+                  | select(any(.comments.nodes[]; .author.login == $me))
+                  | {path, line: (.line // .originalLine), side: .diffSide, resolved: .isResolved,
+                     comments: [.comments.nodes[] | c]}],
+        issue_comments: [.comments.nodes[] | select(.createdAt > $t and .author.login != $me) | c]
+      }'

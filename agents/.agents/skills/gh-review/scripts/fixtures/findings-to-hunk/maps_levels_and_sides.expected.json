@@ -1,0 +1,18 @@
+{
+  "comments": [
+    {
+      "filePath": "a.go",
+      "newLine": 3,
+      "summary": "[MUST] nil deref",
+      "rationale": "x may be nil\n\nevidence: a.go:10",
+      "author": "claude:implementer"
+    },
+    {
+      "filePath": "b.go",
+      "oldLine": 7,
+      "summary": "[Q] why removed?",
+      "rationale": "intent?",
+      "author": "claude:implementer"
+    }
+  ]
+}

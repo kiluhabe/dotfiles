@@ -1,0 +1,25 @@
+{
+  "agent": "implementer",
+  "findings": [
+    {
+      "level": "MUST",
+      "path": "a.go",
+      "line": 3,
+      "side": "RIGHT",
+      "title": "nil deref",
+      "body": "x may be nil",
+      "evidence": [
+        "a.go:10"
+      ]
+    },
+    {
+      "level": "Q",
+      "path": "b.go",
+      "line": 7,
+      "side": "LEFT",
+      "title": "why removed?",
+      "body": "intent?",
+      "evidence": []
+    }
+  ]
+}
