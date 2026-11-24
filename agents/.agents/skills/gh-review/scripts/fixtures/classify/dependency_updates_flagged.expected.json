@@ -81,6 +81,6 @@
     "reasons": [],
     "since_sha": null,
     "dependency": true,
-    "title": "Update react monorepo to v19"
+    "title": "Update foo group to v2"
   }
 ]

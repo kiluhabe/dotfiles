@@ -89,9 +89,9 @@
     {
       "id": "P6",
       "number": 6,
-      "title": "Update react monorepo to v19",
+      "title": "Update foo group to v2",
       "body": "",
-      "headRefName": "renovate-self-hosted/app/react-monorepo",
+      "headRefName": "renovate-custom/app/foo-group",
       "url": "u6",
       "headRefOid": "H",
       "baseRefName": "main",
