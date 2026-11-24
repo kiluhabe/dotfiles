@@ -1,0 +1,10 @@
+{
+  "review": {
+    "commit_id": "H",
+    "event": "COMMENT",
+    "body": "**`a.txt:30`**\n\nx\n\n<sub>このレビューは Claude が @foo と合意して送信しました</sub>",
+    "comments": []
+  },
+  "replies": [],
+  "reactions": []
+}

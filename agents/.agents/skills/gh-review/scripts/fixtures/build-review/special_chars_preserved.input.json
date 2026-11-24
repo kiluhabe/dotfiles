@@ -1,0 +1,34 @@
+{
+  "plan": {
+    "repo": "o/r",
+    "number": 1,
+    "commit_id": "H",
+    "login": "foo",
+    "event": "COMMENT",
+    "body": "line1\nuse `x` and \"q\" $HOME",
+    "comments": [],
+    "replies": [],
+    "reactions": []
+  },
+  "ranges": {
+    "a.txt": {
+      "RIGHT": [
+        [
+          10,
+          20
+        ]
+      ],
+      "LEFT": [
+        [
+          5,
+          8
+        ]
+      ]
+    }
+  },
+  "sent": {
+    "reactions": [],
+    "replies": [],
+    "review": null
+  }
+}

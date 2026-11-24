@@ -1,0 +1,92 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Posts an agreed plan.json: reactions, then thread replies, then one review
+# carrying the event, body and inline comments. Each success is recorded in
+# sent.json next to the plan, so rerunning after a failure resumes instead of
+# posting twice. --dry-run prints the payload and sends nothing.
+# Exit: 0 sent / 3 head moved since review / 5 a request failed.
+
+usage() {
+  echo "usage: gh-review-submit [--dry-run] <plan.json>" >&2
+}
+
+DRY=false
+if [ "${1:-}" = --dry-run ]; then
+  DRY=true
+  shift
+fi
+PLAN="${1:-}"
+[ -f "$PLAN" ] || {
+  usage
+  exit 2
+}
+LIB="$(cd "$(dirname "$0")" && pwd)/lib"
+SENT="$(dirname "$PLAN")/sent.json"
+[ -f "$SENT" ] || echo '{"reactions": [], "replies": [], "review": null}' >"$SENT"
+
+REPO=$(jq -r .repo "$PLAN")
+NUMBER=$(jq -r .number "$PLAN")
+
+HEAD=$(gh api "repos/$REPO/pulls/$NUMBER" --jq .head.sha)
+if [ "$HEAD" != "$(jq -r .commit_id "$PLAN")" ]; then
+  echo "gh-review-submit: $REPO#$NUMBER moved to $HEAD after the review; nothing sent" >&2
+  exit 3
+fi
+
+# Commentable line ranges per file and side, from the PR's hunk headers.
+RANGES=$(gh pr diff "$NUMBER" -R "$REPO" | awk '
+  /^--- / { old = substr($0, 5); sub(/^a\//, "", old) }
+  /^\+\+\+ / { path = substr($0, 5); sub(/^b\//, "", path); if (path == "/dev/null") path = old }
+  /^@@ / {
+    split($2, l, ","); split($3, r, ",")
+    ls = substr(l[1], 2); ln = (l[2] == "" ? 1 : l[2])
+    rs = substr(r[1], 2); rn = (r[2] == "" ? 1 : r[2])
+    if (ln > 0) printf "%s\tLEFT\t%d\t%d\n", path, ls, ls + ln - 1
+    if (rn > 0) printf "%s\tRIGHT\t%d\t%d\n", path, rs, rs + rn - 1
+  }' | jq -R 'split("\t")' | jq -s '
+  reduce .[] as [$path, $side, $s, $e] ({}; .[$path][$side] += [[($s | tonumber), ($e | tonumber)]])')
+
+PAYLOAD=$(jq -n --slurpfile plan "$PLAN" --slurpfile sent "$SENT" --argjson ranges "$RANGES" \
+  '{plan: $plan[0], sent: $sent[0], ranges: $ranges}' | jq -f "$LIB/build-review.jq")
+
+if [ "$DRY" = true ]; then
+  jq . <<<"$PAYLOAD"
+  exit 0
+fi
+
+record() { # jq-update
+  jq "$1" "$SENT" >"$SENT.tmp" && mv "$SENT.tmp" "$SENT"
+}
+
+fail() {
+  echo "gh-review-submit: $1 failed; sent so far is in $SENT, rerun to resume" >&2
+  exit 5
+}
+
+while IFS= read -r r; do
+  [ -n "$r" ] || continue
+  id=$(jq -r .comment_id <<<"$r")
+  case "$(jq -r .kind <<<"$r")" in
+    review_comment) endpoint="repos/$REPO/pulls/comments/$id/reactions" ;;
+    *) endpoint="repos/$REPO/issues/comments/$id/reactions" ;;
+  esac
+  gh api -X POST "$endpoint" -f content="$(jq -r .content <<<"$r")" >/dev/null || fail "reaction on $id"
+  record ".reactions += [$id]"
+done <<<"$(jq -c '.reactions[]' <<<"$PAYLOAD")"
+
+while IFS= read -r r; do
+  [ -n "$r" ] || continue
+  id=$(jq -r .comment_id <<<"$r")
+  jq '{body}' <<<"$r" | gh api -X POST "repos/$REPO/pulls/$NUMBER/comments/$id/replies" --input - >/dev/null ||
+    fail "reply to $id"
+  record ".replies += [$id]"
+done <<<"$(jq -c '.replies[]' <<<"$PAYLOAD")"
+
+if [ "$(jq '.review != null' <<<"$PAYLOAD")" = true ]; then
+  review_id=$(jq '.review' <<<"$PAYLOAD" |
+    gh api -X POST "repos/$REPO/pulls/$NUMBER/reviews" --input - --jq .id) || fail "review"
+  record ".review = $review_id"
+fi
+
+jq -r '"sent: \(.reactions | length) reactions, \(.replies | length) replies, review \(.review // "none")"' "$SENT"

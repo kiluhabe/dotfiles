@@ -1,0 +1,58 @@
+{
+  "plan": {
+    "repo": "o/r",
+    "number": 1,
+    "commit_id": "H",
+    "login": "foo",
+    "event": "COMMENT",
+    "body": "",
+    "comments": [],
+    "replies": [
+      {
+        "comment_id": 5,
+        "body": "a"
+      },
+      {
+        "comment_id": 6,
+        "body": "b"
+      }
+    ],
+    "reactions": [
+      {
+        "comment_id": 7,
+        "kind": "review_comment",
+        "content": "+1"
+      },
+      {
+        "comment_id": 8,
+        "kind": "issue_comment",
+        "content": "heart"
+      }
+    ]
+  },
+  "ranges": {
+    "a.txt": {
+      "RIGHT": [
+        [
+          10,
+          20
+        ]
+      ],
+      "LEFT": [
+        [
+          5,
+          8
+        ]
+      ]
+    }
+  },
+  "sent": {
+    "reactions": [
+      7
+    ],
+    "replies": [
+      5
+    ],
+    "review": 99
+  }
+}
