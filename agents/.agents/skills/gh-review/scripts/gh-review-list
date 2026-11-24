@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Collects open PRs where the viewer is a requested reviewer (directly or via a
+# team) or has reviewed before, classifies them as new/reacted, and writes
+# <run-dir>/list.json plus one markdown description per PR under desc/.
+
+usage() {
+  echo "usage: gh-review-list <run-dir>" >&2
+}
+
+RUN="${1:-}"
+[ -n "$RUN" ] || {
+  usage
+  exit 2
+}
+LIB="$(cd "$(dirname "$0")" && pwd)/lib"
+mkdir -p "$RUN/desc"
+
+LOGIN=$(gh api user --jq .login 2>/dev/null) || {
+  echo "gh-review-list: gh is not authenticated (run: gh auth login)" >&2
+  exit 2
+}
+
+# Page sizes keep one search under GitHub's node limit; anything cut off is
+# reported through pageInfo and surfaces as the "truncated" reason.
+# shellcheck disable=SC2016 # GraphQL variables, not shell
+QUERY='query($q: String!, $after: String) {
+  search(query: $q, type: ISSUE, first: 50, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      ... on PullRequest {
+        id number title url isDraft body headRefOid baseRefName
+        repository { nameWithOwner }
+        author { login __typename }
+        reviewRequests(first: 50) {
+          nodes { requestedReviewer { __typename ... on User { login } ... on Team { slug } } }
+        }
+        reviews(last: 100) {
+          pageInfo { hasPreviousPage }
+          nodes { author { login __typename } state submittedAt commit { oid } }
+        }
+        reviewThreads(first: 50) {
+          pageInfo { hasNextPage }
+          nodes {
+            comments(first: 30) {
+              pageInfo { hasNextPage }
+              nodes { author { login __typename } createdAt }
+            }
+          }
+        }
+        comments(last: 100) {
+          pageInfo { hasPreviousPage }
+          nodes { author { login __typename } createdAt }
+        }
+      }
+    }
+  }
+}'
+
+MAX_PAGES=4
+
+search() { # name qualifier
+  local after="" page=0
+  while :; do
+    page=$((page + 1))
+    gh api graphql -f query="$QUERY" ${after:+-f after="$after"} \
+      -f q="is:pr is:open draft:false -author:$LOGIN sort:updated-desc $2" \
+      --jq .data.search >"$RUN/search-$1-$page.json"
+    [ "$(jq .pageInfo.hasNextPage "$RUN/search-$1-$page.json")" = true ] || return 0
+    if [ "$page" -ge "$MAX_PAGES" ]; then
+      echo "gh-review-list: $1 has more than $((page * 50)) matches; only the most recently updated are listed" >&2
+      return 0
+    fi
+    after=$(jq -r .pageInfo.endCursor "$RUN/search-$1-$page.json")
+  done
+}
+
+search requested "review-requested:$LOGIN"
+search reviewed "reviewed-by:$LOGIN"
+
+jq -s --arg login "$LOGIN" '{login: $login, prs: (map(.nodes) | add)}' "$RUN"/search-*.json >"$RUN/raw.json"
+rm -f "$RUN"/search-*.json
+jq -f "$LIB/classify.jq" "$RUN/raw.json" >"$RUN/list.json"
+
+# One {file, text} object per listed PR; each line is written out separately
+# so bodies never pass through shell word splitting.
+jq -c --slurpfile list "$RUN/list.json" '
+  ($list[0] | map(.url)) as $urls
+  | .prs | unique_by(.id)[] | select(.url as $u | $urls | index($u))
+  | {
+      file: "\(.repository.nameWithOwner | sub("/"; "__"))__\(.number).md",
+      text: "# \(.title)\n\n\(.repository.nameWithOwner)#\(.number) by @\(.author.login // "ghost")  \n\(.url)\n\n---\n\n\(.body // "")\n"
+    }
+' "$RUN/raw.json" | while IFS= read -r entry; do
+  jq -j .text <<<"$entry" >"$RUN/desc/$(jq -r .file <<<"$entry")"
+done
+rm -f "$RUN/raw.json"
+jq -r '"\(length) PRs: \(map(select(.category == "reacted")) | length) reacted, \(map(select(.category == "new")) | length) new"' "$RUN/list.json"
