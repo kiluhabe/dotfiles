@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Lets the user check off PRs from <run-dir>/list.json in a tmux popup. Moving
+# the cursor shows that PR's description in the glow viewer pane. The chosen
+# entries go to <run-dir>/selected.json in list order. Exits 1 when nothing
+# was chosen.
+
+usage() {
+  echo "usage: gh-review-pick <run-dir> <caller-pane-id>" >&2
+}
+
+die() {
+  echo "gh-review-pick: $*" >&2
+  exit 2
+}
+
+# The popup re-enters this script to run fzf, since display-popup takes a
+# single shell-command string.
+if [ "${1:-}" = --inside ]; then
+  RUN="$2"
+  PANE="$3"
+  jq -r '.[] | [
+      "\(.repo | sub("/"; "__"))__\(.number)",
+      (if .category == "reacted" then "[reacted]" elif .untouched then "[new*]   " else "[new]    " end),
+      "\(.repo)#\(.number)",
+      .title,
+      (if (.reasons | length) > 0 then "(\(.reasons | join(", ")))" else "" end)
+    ] | @tsv' "$RUN/list.json" |
+    fzf --multi --layout=reverse --delimiter='\t' --with-nth=2.. --no-sort \
+      --header='Tab: check / Enter: confirm / Esc: cancel   [new*] = no human review yet' \
+      --bind "focus:execute-silent(tmux-glow-open -t $PANE $RUN/desc/{1}.md)" |
+    cut -f1 >"$RUN/picked.txt" || true
+  exit 0
+fi
+
+RUN="${1:-}"
+PANE="${2:-}"
+if [ -z "$RUN" ] || [ -z "$PANE" ]; then
+  usage
+  exit 2
+fi
+[ -n "${TMUX:-}" ] || die "must be run inside tmux"
+[ -s "$RUN/list.json" ] || die "no list.json in $RUN (run gh-review-list first)"
+RUN=$(cd "$RUN" && pwd)
+
+: >"$RUN/picked.txt"
+tmux display-popup -E -w 90% -h 60% -T ' gh-review: pick PRs ' \
+  "$(printf '%q ' "$0" --inside "$RUN" "$PANE")"
+
+jq --rawfile picked "$RUN/picked.txt" '
+  ($picked | split("\n") | map(select(. != ""))) as $keys
+  | map(select(("\(.repo | sub("/"; "__"))__\(.number)") as $k | $keys | index($k)))
+' "$RUN/list.json" >"$RUN/selected.json"
+
+count=$(jq length "$RUN/selected.json")
+[ "$count" -gt 0 ] || exit 1
+echo "$count PRs selected"
