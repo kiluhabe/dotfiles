@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Collects open PRs where the viewer is a requested reviewer (directly or via a
-# team) or has reviewed before, classifies them as new/reacted, and writes
+# Collects open PRs updated within the last month where the viewer is a
+# requested reviewer (directly or via a team) or has reviewed before,
+# classifies them as new/reacted, and writes
 # <run-dir>/list.json plus one markdown description per PR under desc/.
 
 usage() {
@@ -59,13 +60,16 @@ QUERY='query($q: String!, $after: String) {
 }'
 
 MAX_PAGES=4
+# PRs untouched for over a month are stale; a reply or push bumps updatedAt,
+# so reacted PRs are never lost to this cutoff.
+SINCE=$(date -v-1m +%F 2>/dev/null || date -d '1 month ago' +%F)
 
 search() { # name qualifier
   local after="" page=0
   while :; do
     page=$((page + 1))
     gh api graphql -f query="$QUERY" ${after:+-f after="$after"} \
-      -f q="is:pr is:open draft:false -author:$LOGIN sort:updated-desc $2" \
+      -f q="is:pr is:open draft:false -author:$LOGIN updated:>=$SINCE sort:updated-desc $2" \
       --jq .data.search >"$RUN/search-$1-$page.json"
     [ "$(jq .pageInfo.hasNextPage "$RUN/search-$1-$page.json")" = true ] || return 0
     if [ "$page" -ge "$MAX_PAGES" ]; then

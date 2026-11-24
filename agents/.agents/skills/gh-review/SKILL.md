@@ -24,7 +24,8 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 1. `RUN=~/.cache/gh-review/runs/$(date +%Y%m%d-%H%M%S) && mkdir -p $RUN`.
 2. If `~/.cache/gh-review/style.md` is missing, or the user asked to refresh
    it, build it (see "Style guide").
-3. `bash <skill>/scripts/gh-review-list $RUN`. Exit 2 means gh isn't
+3. `bash <skill>/scripts/gh-review-list $RUN`. It skips PRs with no update
+   for over a month. Exit 2 means gh isn't
    authenticated; tell the user to run `! gh auth login`.
 4. `bash <skill>/scripts/gh-review-pick $RUN <pane>`. Exit 1 means nothing
    was picked; stop. Otherwise `$RUN/selected.json` holds the queue.
