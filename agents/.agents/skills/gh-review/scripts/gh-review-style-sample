@@ -11,6 +11,7 @@ OUT="${1:-}"
   exit 2
 }
 
+mkdir -p "$(dirname "$OUT")"
 LOGIN=$(gh api user --jq .login)
 
 # contributionsCollection hides private-org reviews, so PRs are found through

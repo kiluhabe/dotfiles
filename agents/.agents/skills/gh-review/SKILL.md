@@ -21,7 +21,7 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 
 ## Setup (once per run)
 
-1. `RUN=~/.cache/gh-review/runs/$(date +%Y%m%d-%H%M%S)`.
+1. `RUN=~/.cache/gh-review/runs/$(date +%Y%m%d-%H%M%S) && mkdir -p $RUN`.
 2. If `~/.cache/gh-review/style.md` is missing, or the user asked to refresh
    it, build it (see "Style guide").
 3. `bash <skill>/scripts/gh-review-list $RUN`. Exit 2 means gh isn't
@@ -43,10 +43,10 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
    `bash <skill>/scripts/gh-review-hunk open $RUN <pane> <worktree> <range>`,
    adding `-- <paths...>` from the checkout output for reacted PRs. Exit 6 =
    no diff pane, exit 7 = Hunk didn't start; report and stop.
-3. **Reacted context.** `bash <skill>/scripts/gh-review-threads <repo> <n>`.
-   Put each earlier thread into Hunk with
-   `hunk session comment add --repo <worktree> --file <path> --new-line <line> --author <login> --summary <first line>`
-   (`--old-line` for `side: LEFT`), replies with `--reply-to`.
+3. **Reacted context.** `bash <skill>/scripts/gh-review-threads <repo> <n> > $RUN/<key>/threads.json`,
+   then `jq -f <skill>/scripts/lib/threads-to-hunk.jq $RUN/<key>/threads.json | hunk session comment apply --repo <worktree> --stdin`.
+   GitHub comment text goes to Hunk only through that pipe, never as a
+   command-line argument (it may contain backticks or `$(…)`).
 4. **Pick the reviewer** and tell the user in one line why:
    - `architect` for design or structural changes, public interfaces,
      schemas or migrations, auth and security, concurrency, large changes
@@ -68,7 +68,7 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
    {"repo": "owner/repo", "number": 1, "commit_id": "<head_sha from checkout>", "login": "<gh login>",
     "event": "APPROVE|COMMENT|REQUEST_CHANGES", "body": "string",
     "comments": [{"path": "", "line": 0, "side": "RIGHT|LEFT", "body": ""}],
-    "replies": [{"comment_id": 0, "body": ""}],
+    "replies": [{"comment_id": 0, "kind": "review_comment|issue_comment", "body": ""}],
     "reactions": [{"comment_id": 0, "kind": "review_comment|issue_comment", "content": "+1|heart"}]}
    ```
 
@@ -80,9 +80,18 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
      "LGTM！" is filled in.
    - Leave out the "sent by Claude" note. The script adds it to the review
      body and each reply, with the login.
+   - A reply to a review thread uses the thread's `root_id` with
+     `kind: review_comment`, because GitHub only takes replies on the root. A
+     reply to a PR-level comment uses `kind: issue_comment`; it is posted as a
+     new PR comment, so quote or @-mention what it answers. Reactions target
+     the exact comment being acknowledged (its `id`).
+   - With only reactions or replies, set `event: COMMENT` and leave `body`
+     and `comments` empty. No review is posted then.
 9. **Confirm.** Show `bash <skill>/scripts/gh-review-submit --dry-run $RUN/<key>/plan.json`
-   output in chat and get an explicit OK on it.
+   output in chat and get an explicit OK on it. If `plan.json` changes after
+   that for any reason, run the dry-run again and ask again.
 10. **Send.** `bash <skill>/scripts/gh-review-submit $RUN/<key>/plan.json`.
+    - Exit 2: the plan is malformed; nothing was sent. Fix it, then go back to step 9.
     - Exit 3: the PR moved since the review; nothing was sent. Ask whether
       to review the new commits (back to step 1 with `--since <old head>`).
     - Exit 5: a request failed; report it. Rerunning resumes without

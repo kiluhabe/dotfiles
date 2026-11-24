@@ -1,0 +1,11 @@
+{
+  "review": null,
+  "replies": [
+    {
+      "comment_id": 9,
+      "kind": "issue_comment",
+      "body": "thanks\n\n<sub>この返信は Claude が @foo と合意して送信しました</sub>"
+    }
+  ],
+  "reactions": []
+}

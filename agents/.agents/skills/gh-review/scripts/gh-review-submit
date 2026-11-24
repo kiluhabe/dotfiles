@@ -5,7 +5,8 @@ set -euo pipefail
 # carrying the event, body and inline comments. Each success is recorded in
 # sent.json next to the plan, so rerunning after a failure resumes instead of
 # posting twice. --dry-run prints the payload and sends nothing.
-# Exit: 0 sent / 3 head moved since review / 5 a request failed.
+# Exit: 0 sent / 2 bad plan, nothing sent / 3 head moved since review /
+# 5 a request failed.
 
 usage() {
   echo "usage: gh-review-submit [--dry-run] <plan.json>" >&2
@@ -48,7 +49,10 @@ RANGES=$(gh pr diff "$NUMBER" -R "$REPO" | awk '
   reduce .[] as [$path, $side, $s, $e] ({}; .[$path][$side] += [[($s | tonumber), ($e | tonumber)]])')
 
 PAYLOAD=$(jq -n --slurpfile plan "$PLAN" --slurpfile sent "$SENT" --argjson ranges "$RANGES" \
-  '{plan: $plan[0], sent: $sent[0], ranges: $ranges}' | jq -f "$LIB/build-review.jq")
+  '{plan: $plan[0], sent: $sent[0], ranges: $ranges}' | jq -f "$LIB/build-review.jq") || {
+  echo "gh-review-submit: could not build the payload from $PLAN; nothing sent" >&2
+  exit 2
+}
 
 if [ "$DRY" = true ]; then
   jq . <<<"$PAYLOAD"
@@ -75,11 +79,16 @@ while IFS= read -r r; do
   record ".reactions += [$id]"
 done <<<"$(jq -c '.reactions[]' <<<"$PAYLOAD")"
 
+# Review threads take replies only on their root comment; PR-level comments
+# have no threads, so a reply to one is a new PR comment.
 while IFS= read -r r; do
   [ -n "$r" ] || continue
   id=$(jq -r .comment_id <<<"$r")
-  jq '{body}' <<<"$r" | gh api -X POST "repos/$REPO/pulls/$NUMBER/comments/$id/replies" --input - >/dev/null ||
-    fail "reply to $id"
+  case "$(jq -r .kind <<<"$r")" in
+    review_comment) endpoint="repos/$REPO/pulls/$NUMBER/comments/$id/replies" ;;
+    *) endpoint="repos/$REPO/issues/$NUMBER/comments" ;;
+  esac
+  jq '{body}' <<<"$r" | gh api -X POST "$endpoint" --input - >/dev/null || fail "reply to $id"
   record ".replies += [$id]"
 done <<<"$(jq -c '.replies[]' <<<"$PAYLOAD")"
 

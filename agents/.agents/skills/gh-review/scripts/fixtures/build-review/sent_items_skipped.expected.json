@@ -3,7 +3,8 @@
   "replies": [
     {
       "comment_id": 6,
-      "body": "b\n\n<sub>この返信は Claude が @foo と合意して送信しました</sub>"
+      "body": "b\n\n<sub>この返信は Claude が @foo と合意して送信しました</sub>",
+      "kind": "review_comment"
     }
   ],
   "reactions": [

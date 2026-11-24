@@ -41,6 +41,6 @@ gh api graphql -f query="$QUERY" -f owner="${REPO%/*}" -f name="${REPO#*/}" -F n
         threads: [.reviewThreads.nodes[]
                   | select(any(.comments.nodes[]; .author.login == $me))
                   | {path, line: (.line // .originalLine), side: .diffSide, resolved: .isResolved,
-                     comments: [.comments.nodes[] | c]}],
+                     root_id: .comments.nodes[0].databaseId, comments: [.comments.nodes[] | c]}],
         issue_comments: [.comments.nodes[] | select(.createdAt > $t and .author.login != $me) | c]
       }'

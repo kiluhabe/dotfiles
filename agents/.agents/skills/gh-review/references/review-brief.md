@@ -31,7 +31,7 @@ What to read, beyond the diff:
      "side": "RIGHT|LEFT", "title": "one line", "body": "the point and why", "evidence": ["file:line or URL"]}
   ],
   "thread_responses": [
-    {"comment_id": 0, "kind": "review_comment|issue_comment",
+    {"comment_id": 0, "kind": "review_comment|issue_comment", "root_id": 0,
      "reaction": "+1|heart|null", "reply_draft": "string or null"}
   ],
   "unread_links": []
@@ -40,6 +40,6 @@ What to read, beyond the diff:
 
 - `line` is a line inside the diff on that `side` (RIGHT = new file, LEFT = removed lines). A point about code outside the diff goes on the nearest changed line, with the real location in `evidence`.
 - `suggested_event` is `APPROVE` only when there is no MUST.
-- `thread_responses`, reacted PRs only: `+1` for a reply that agrees or acknowledges, `heart` for one that reports a fix or thanks; `reply_draft` only when something still needs saying.
+- `thread_responses`, reacted PRs only: one per comment by others that you judged. `comment_id` is that comment's `id`, `root_id` is its thread's `root_id` (null for PR-level comments). `+1` for a reply that agrees or acknowledges, `heart` for one that reports a fix or thanks; `reply_draft` only when something still needs saying.
 
 Reply with the path you wrote and one line of counts per level. No other report.

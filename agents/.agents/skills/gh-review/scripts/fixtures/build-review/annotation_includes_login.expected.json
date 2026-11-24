@@ -8,7 +8,8 @@
   "replies": [
     {
       "comment_id": 5,
-      "body": "ok\n\n<sub>この返信は Claude が @foo と合意して送信しました</sub>"
+      "body": "ok\n\n<sub>この返信は Claude が @foo と合意して送信しました</sub>",
+      "kind": "review_comment"
     }
   ],
   "reactions": []

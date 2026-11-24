@@ -1,0 +1,41 @@
+{
+  "threads": [
+    {
+      "path": "a.go",
+      "line": 4,
+      "side": "RIGHT",
+      "resolved": false,
+      "root_id": 1,
+      "comments": [
+        {
+          "id": 1,
+          "author": "me",
+          "body": "why `x`?\nsecond line",
+          "created_at": "t1"
+        },
+        {
+          "id": 2,
+          "author": "alice",
+          "body": "because $(reasons)",
+          "created_at": "t2"
+        }
+      ]
+    },
+    {
+      "path": "b.go",
+      "line": 2,
+      "side": "LEFT",
+      "resolved": true,
+      "root_id": 3,
+      "comments": [
+        {
+          "id": 3,
+          "author": "me",
+          "body": "drop this",
+          "created_at": "t3"
+        }
+      ]
+    }
+  ],
+  "issue_comments": []
+}

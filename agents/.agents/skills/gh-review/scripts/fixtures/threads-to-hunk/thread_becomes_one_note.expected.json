@@ -1,0 +1,18 @@
+{
+  "comments": [
+    {
+      "filePath": "a.go",
+      "newLine": 4,
+      "author": "github:me",
+      "summary": "@me: why `x`? (+1 replies)",
+      "rationale": "@me (root_id 1): why `x`?\nsecond line\n\n@alice (id 2): because $(reasons)"
+    },
+    {
+      "filePath": "b.go",
+      "oldLine": 2,
+      "author": "github:me",
+      "summary": "[resolved] @me: drop this",
+      "rationale": "@me (root_id 3): drop this"
+    }
+  ]
+}

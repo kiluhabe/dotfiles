@@ -1,0 +1,40 @@
+{
+  "plan": {
+    "repo": "o/r",
+    "number": 1,
+    "commit_id": "H",
+    "login": "foo",
+    "event": "COMMENT",
+    "body": "",
+    "comments": [],
+    "replies": [],
+    "reactions": [
+      {
+        "comment_id": 7,
+        "kind": "review_comment",
+        "content": "+1"
+      }
+    ]
+  },
+  "ranges": {
+    "a.txt": {
+      "RIGHT": [
+        [
+          10,
+          20
+        ]
+      ],
+      "LEFT": [
+        [
+          5,
+          8
+        ]
+      ]
+    }
+  },
+  "sent": {
+    "reactions": [],
+    "replies": [],
+    "review": null
+  }
+}

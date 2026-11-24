@@ -48,7 +48,7 @@ find_clone() {
     case "$url" in
       */"$WANT" | *:"$WANT") echo "$dir" && break ;;
     esac
-  done
+  done || true # the break can SIGPIPE find, which pipefail would turn into an exit
 }
 
 CLONE=$(find_clone)

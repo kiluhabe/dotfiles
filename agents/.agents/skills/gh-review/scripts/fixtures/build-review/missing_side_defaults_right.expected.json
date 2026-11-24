@@ -1,0 +1,17 @@
+{
+  "review": {
+    "commit_id": "H",
+    "event": "COMMENT",
+    "body": "<sub>このレビューは Claude が @foo と合意して送信しました</sub>",
+    "comments": [
+      {
+        "path": "a.txt",
+        "line": 15,
+        "side": "RIGHT",
+        "body": "c"
+      }
+    ]
+  },
+  "replies": [],
+  "reactions": []
+}
