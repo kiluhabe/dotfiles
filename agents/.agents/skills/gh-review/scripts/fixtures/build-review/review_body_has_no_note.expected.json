@@ -1,0 +1,16 @@
+{
+  "reactions": [],
+  "replies": [
+    {
+      "body": "ok\n\n<sub>この返信は Claude が @foo と合意して送信しました</sub>",
+      "comment_id": 5,
+      "kind": "review_comment"
+    }
+  ],
+  "review": {
+    "body": "hi",
+    "comments": [],
+    "commit_id": "H",
+    "event": "COMMENT"
+  }
+}

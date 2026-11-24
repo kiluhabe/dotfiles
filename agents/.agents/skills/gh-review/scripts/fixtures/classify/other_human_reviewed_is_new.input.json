@@ -29,6 +29,17 @@
             }
           }
         ]
+      },
+      "createdAt": "2026-01-01T09:00:00Z",
+      "labels": {
+        "nodes": [
+          {
+            "name": "bug"
+          },
+          {
+            "name": "frontend"
+          }
+        ]
       }
     }
   ]

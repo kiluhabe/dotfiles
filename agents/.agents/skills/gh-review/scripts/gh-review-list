@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Collects open PRs updated within the last month where the viewer is a
-# requested reviewer (directly or via a team) or has reviewed before,
-# flagging dependency updates,
-# classifies them as new/reacted, and writes
+# Collects open PRs where the viewer is a requested reviewer (directly or
+# via a team) and that were opened within the last month, plus PRs the
+# viewer has reviewed that were updated within the last month. Dependency
+# updates are flagged.
+# It classifies them as new/reacted and writes
 # <run-dir>/list.json plus one markdown description per PR under desc/.
 
 usage() {
@@ -32,9 +33,10 @@ QUERY='query($q: String!, $after: String) {
     pageInfo { hasNextPage endCursor }
     nodes {
       ... on PullRequest {
-        id number title url isDraft body headRefOid headRefName baseRefName
+        id number title url isDraft createdAt body headRefOid headRefName baseRefName
         repository { nameWithOwner }
         author { login __typename }
+        labels(first: 3) { nodes { name } }
         reviewRequests(first: 50) {
           nodes { requestedReviewer { __typename ... on User { login } ... on Team { slug } } }
         }
@@ -61,8 +63,9 @@ QUERY='query($q: String!, $after: String) {
 }'
 
 MAX_PAGES=4
-# PRs untouched for over a month are stale; a reply or push bumps updatedAt,
-# so reacted PRs are never lost to this cutoff.
+# Review requests older than a month are dropped by creation date. PRs the
+# viewer already reviewed are cut by updatedAt instead: a reply or push bumps
+# it, so a reacted PR is never lost however old it is.
 SINCE=$(date -v-1m +%F 2>/dev/null || date -d '1 month ago' +%F)
 
 search() { # name qualifier
@@ -70,7 +73,7 @@ search() { # name qualifier
   while :; do
     page=$((page + 1))
     gh api graphql -f query="$QUERY" ${after:+-f after="$after"} \
-      -f q="is:pr is:open draft:false -author:$LOGIN updated:>=$SINCE sort:updated-desc $2" \
+      -f q="is:pr is:open draft:false -author:$LOGIN sort:updated-desc $2" \
       --jq .data.search >"$RUN/search-$1-$page.json"
     [ "$(jq .pageInfo.hasNextPage "$RUN/search-$1-$page.json")" = true ] || return 0
     if [ "$page" -ge "$MAX_PAGES" ]; then
@@ -81,8 +84,8 @@ search() { # name qualifier
   done
 }
 
-search requested "review-requested:$LOGIN"
-search reviewed "reviewed-by:$LOGIN"
+search requested "review-requested:$LOGIN created:>=$SINCE"
+search reviewed "reviewed-by:$LOGIN updated:>=$SINCE"
 
 jq -s --arg login "$LOGIN" '{login: $login, prs: (map(.nodes) | add)}' "$RUN"/search-*.json >"$RUN/raw.json"
 rm -f "$RUN"/search-*.json

@@ -1,0 +1,84 @@
+{
+  "login": "me",
+  "prs": [
+    {
+      "id": "P1",
+      "number": 1,
+      "title": "t1",
+      "url": "u1",
+      "createdAt": "2026-01-01T00:00:00Z",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P2",
+      "number": 2,
+      "title": "t2",
+      "url": "u2",
+      "createdAt": "2026-03-01T00:00:00Z",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P3",
+      "number": 3,
+      "title": "t3",
+      "url": "u3",
+      "createdAt": "2025-12-01T00:00:00Z",
+      "headRefOid": "H2",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      },
+      "reviews": {
+        "nodes": [
+          {
+            "author": {
+              "login": "me",
+              "__typename": "User"
+            },
+            "state": "COMMENTED",
+            "submittedAt": "2026-01-02T00:00:00Z",
+            "commit": {
+              "oid": "H1"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "id": "P4",
+      "number": 4,
+      "title": "t4",
+      "url": "u4",
+      "createdAt": "2026-02-01T00:00:00Z",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      }
+    }
+  ]
+}

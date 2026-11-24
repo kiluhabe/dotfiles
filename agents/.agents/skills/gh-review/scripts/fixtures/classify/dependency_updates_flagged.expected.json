@@ -1,8 +1,8 @@
 [
   {
     "repo": "o/r",
-    "number": 1,
-    "url": "u1",
+    "number": 6,
+    "url": "u6",
     "author": "deps-user",
     "base": "main",
     "head_sha": "H",
@@ -11,49 +11,9 @@
     "reasons": [],
     "since_sha": null,
     "dependency": true,
-    "title": "Update dependency foo to v2"
-  },
-  {
-    "repo": "o/r",
-    "number": 2,
-    "url": "u2",
-    "author": "deps-user",
-    "base": "main",
-    "head_sha": "H",
-    "category": "new",
-    "untouched": true,
-    "reasons": [],
-    "since_sha": null,
-    "dependency": true,
-    "title": "Bump bar from 1.0.0 to 1.1.0"
-  },
-  {
-    "repo": "o/r",
-    "number": 3,
-    "url": "u3",
-    "author": "deps-user",
-    "base": "main",
-    "head_sha": "H",
-    "category": "new",
-    "untouched": true,
-    "reasons": [],
-    "since_sha": null,
-    "dependency": true,
-    "title": "chore(deps): update baz"
-  },
-  {
-    "repo": "o/r",
-    "number": 4,
-    "url": "u4",
-    "author": "deps-user",
-    "base": "main",
-    "head_sha": "H",
-    "category": "new",
-    "untouched": true,
-    "reasons": [],
-    "since_sha": null,
-    "dependency": true,
-    "title": "Lock file maintenance"
+    "title": "Update foo group to v2",
+    "created_at": null,
+    "labels": []
   },
   {
     "repo": "o/r",
@@ -67,12 +27,14 @@
     "reasons": [],
     "since_sha": null,
     "dependency": false,
-    "title": "Update the signup flow"
+    "title": "Update the signup flow",
+    "created_at": null,
+    "labels": []
   },
   {
     "repo": "o/r",
-    "number": 6,
-    "url": "u6",
+    "number": 4,
+    "url": "u4",
     "author": "deps-user",
     "base": "main",
     "head_sha": "H",
@@ -81,6 +43,56 @@
     "reasons": [],
     "since_sha": null,
     "dependency": true,
-    "title": "Update foo group to v2"
+    "title": "Lock file maintenance",
+    "created_at": null,
+    "labels": []
+  },
+  {
+    "repo": "o/r",
+    "number": 3,
+    "url": "u3",
+    "author": "deps-user",
+    "base": "main",
+    "head_sha": "H",
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null,
+    "dependency": true,
+    "title": "chore(deps): update baz",
+    "created_at": null,
+    "labels": []
+  },
+  {
+    "repo": "o/r",
+    "number": 2,
+    "url": "u2",
+    "author": "deps-user",
+    "base": "main",
+    "head_sha": "H",
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null,
+    "dependency": true,
+    "title": "Bump bar from 1.0.0 to 1.1.0",
+    "created_at": null,
+    "labels": []
+  },
+  {
+    "repo": "o/r",
+    "number": 1,
+    "url": "u1",
+    "author": "deps-user",
+    "base": "main",
+    "head_sha": "H",
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null,
+    "dependency": true,
+    "title": "Update dependency foo to v2",
+    "created_at": null,
+    "labels": []
   }
 ]

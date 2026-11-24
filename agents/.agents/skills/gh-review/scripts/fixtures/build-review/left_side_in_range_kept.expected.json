@@ -1,17 +1,17 @@
 {
+  "reactions": [],
+  "replies": [],
   "review": {
-    "commit_id": "H",
-    "event": "COMMENT",
-    "body": "**`a.txt:6`**\n\nr\n\n<sub>このレビューは Claude が @foo と合意して送信しました</sub>",
+    "body": "**`a.txt:6`**\n\nr\n\n<sub>このコメントは Claude が @foo と合意して送信しました</sub>",
     "comments": [
       {
-        "path": "a.txt",
+        "body": "l\n\n<sub>このコメントは Claude が @foo と合意して送信しました</sub>",
         "line": 6,
-        "side": "LEFT",
-        "body": "l"
+        "path": "a.txt",
+        "side": "LEFT"
       }
-    ]
-  },
-  "replies": [],
-  "reactions": []
+    ],
+    "commit_id": "H",
+    "event": "COMMENT"
+  }
 }

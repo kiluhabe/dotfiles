@@ -24,8 +24,9 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 1. `RUN=~/.cache/gh-review/runs/$(date +%Y%m%d-%H%M%S) && mkdir -p $RUN`.
 2. If `~/.cache/gh-review/style.md` is missing, or the user asked to refresh
    it, build it (see "Style guide").
-3. `bash <skill>/scripts/gh-review-list $RUN`. It skips PRs with no update
-   for over a month, and flags dependency updates. Exit 2 means gh isn't
+3. `bash <skill>/scripts/gh-review-list $RUN`. It lists review requests opened
+   within the last month and reviewed PRs updated within it, newest first,
+   and flags dependency updates. Exit 2 means gh isn't
    authenticated; tell the user to run `! gh auth login`.
 4. `bash <skill>/scripts/gh-review-pick $RUN <pane>`. Exit 1 means nothing
    was picked; stop. Otherwise `$RUN/selected.json` holds the queue. In the
@@ -87,8 +88,9 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
      With a MUST it is `COMMENT`; use `REQUEST_CHANGES` only if the user says
      so. For an approve with nothing else to say, leave `body` empty:
      "LGTM！" is filled in.
-   - Leave out the "sent by Claude" note. The script adds it to the review
-     body and each reply, with the login.
+   - Leave out the "sent by Claude" note. The script adds it, with the
+     login, to each comment and reply; the review body (e.g. "LGTM！") gets
+     none.
    - A reply to a review thread uses the thread's `root_id` with
      `kind: review_comment`, because GitHub only takes replies on the root. A
      reply to a PR-level comment uses `kind: issue_comment`; it is posted as a

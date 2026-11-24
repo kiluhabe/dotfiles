@@ -13,6 +13,8 @@
       "truncated"
     ],
     "since_sha": "H2",
-    "dependency": false
+    "dependency": false,
+    "created_at": null,
+    "labels": []
   }
 ]

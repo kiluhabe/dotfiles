@@ -30,6 +30,8 @@ def dependency_update:
        author: (.author | login_of),
        base: .baseRefName,
        head_sha: .headRefOid,
+       created_at: .createdAt,
+       labels: [nodes(.labels)[].name],
        dependency: dependency_update
      }
    + if $mine == null then
@@ -66,4 +68,6 @@ def dependency_update:
        | select(.reasons | length > 0)
      end
   ]
-| sort_by(.category != "reacted", .repo, .number)
+| def newest_first: sort_by(.created_at // "", .number) | reverse;
+  (map(select(.category == "reacted")) | newest_first)
+  + (map(select(.category != "reacted")) | newest_first)

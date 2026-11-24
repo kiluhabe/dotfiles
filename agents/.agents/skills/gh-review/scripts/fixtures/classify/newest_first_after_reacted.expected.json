@@ -1,0 +1,68 @@
+[
+  {
+    "repo": "o/r",
+    "number": 3,
+    "title": "t3",
+    "url": "u3",
+    "author": "alice",
+    "base": "main",
+    "head_sha": "H2",
+    "created_at": "2025-12-01T00:00:00Z",
+    "dependency": false,
+    "category": "reacted",
+    "untouched": false,
+    "since_sha": "H1",
+    "reasons": [
+      "pushed"
+    ],
+    "labels": []
+  },
+  {
+    "repo": "o/r",
+    "number": 2,
+    "title": "t2",
+    "url": "u2",
+    "author": "alice",
+    "base": "main",
+    "head_sha": "H",
+    "created_at": "2026-03-01T00:00:00Z",
+    "dependency": false,
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null,
+    "labels": []
+  },
+  {
+    "repo": "o/r",
+    "number": 4,
+    "title": "t4",
+    "url": "u4",
+    "author": "alice",
+    "base": "main",
+    "head_sha": "H",
+    "created_at": "2026-02-01T00:00:00Z",
+    "dependency": false,
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null,
+    "labels": []
+  },
+  {
+    "repo": "o/r",
+    "number": 1,
+    "title": "t1",
+    "url": "u1",
+    "author": "alice",
+    "base": "main",
+    "head_sha": "H",
+    "created_at": "2026-01-01T00:00:00Z",
+    "dependency": false,
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null,
+    "labels": []
+  }
+]

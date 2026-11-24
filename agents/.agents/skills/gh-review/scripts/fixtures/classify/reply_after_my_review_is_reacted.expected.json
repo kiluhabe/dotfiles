@@ -13,6 +13,8 @@
       "replies:1"
     ],
     "since_sha": "H2",
-    "dependency": false
+    "dependency": false,
+    "created_at": null,
+    "labels": []
   }
 ]

@@ -11,6 +11,11 @@
     "untouched": false,
     "reasons": [],
     "since_sha": null,
-    "dependency": false
+    "dependency": false,
+    "created_at": "2026-01-01T09:00:00Z",
+    "labels": [
+      "bug",
+      "frontend"
+    ]
   }
 ]

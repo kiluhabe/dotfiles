@@ -11,6 +11,8 @@
     "untouched": true,
     "reasons": [],
     "since_sha": null,
-    "dependency": false
+    "dependency": false,
+    "created_at": null,
+    "labels": []
   }
 ]

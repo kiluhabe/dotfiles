@@ -24,7 +24,10 @@ if [ "${1:-}" = --lines ]; then
       "\(.repo | sub("/"; "__"))__\(.number)",
       (if .category == "reacted" then "[reacted]" elif .dependency then "[deps]   " elif .untouched then "[new*]   " else "[new]    " end),
       "\(.repo)#\(.number)",
+      (.created_at // "" | .[0:10]),
+      "@\(.author // "ghost")",
       .title,
+      (.labels // [] | map("{\(.)}") | join(" ")),
       (if (.reasons | length) > 0 then "(\(.reasons | join(", ")))" else "" end)
     ] | @tsv' "$2/list.json"
   exit 0
