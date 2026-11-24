@@ -1,0 +1,15 @@
+[
+  {
+    "repo": "o/r",
+    "number": 1,
+    "title": "t",
+    "url": "u1",
+    "author": "alice",
+    "base": "main",
+    "head_sha": "H2",
+    "category": "new",
+    "untouched": true,
+    "reasons": [],
+    "since_sha": null
+  }
+]

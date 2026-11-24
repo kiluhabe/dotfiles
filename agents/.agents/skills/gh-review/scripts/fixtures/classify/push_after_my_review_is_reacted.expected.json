@@ -1,0 +1,17 @@
+[
+  {
+    "repo": "o/r",
+    "number": 1,
+    "title": "t",
+    "url": "u1",
+    "author": "alice",
+    "base": "main",
+    "head_sha": "H2",
+    "category": "reacted",
+    "untouched": false,
+    "reasons": [
+      "pushed"
+    ],
+    "since_sha": "H1"
+  }
+]

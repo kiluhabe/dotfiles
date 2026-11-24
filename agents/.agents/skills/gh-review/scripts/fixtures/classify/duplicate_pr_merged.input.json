@@ -1,0 +1,35 @@
+{
+  "login": "me",
+  "prs": [
+    {
+      "id": "P1",
+      "number": 1,
+      "title": "t",
+      "url": "u1",
+      "headRefOid": "H2",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P1",
+      "number": 1,
+      "title": "t",
+      "url": "u1",
+      "headRefOid": "H2",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      }
+    }
+  ]
+}

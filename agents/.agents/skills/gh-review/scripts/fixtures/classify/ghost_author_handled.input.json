@@ -1,0 +1,56 @@
+{
+  "login": "me",
+  "prs": [
+    {
+      "id": "P1",
+      "number": 1,
+      "title": "t",
+      "url": "u1",
+      "headRefOid": "H2",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      },
+      "reviews": {
+        "nodes": [
+          {
+            "author": {
+              "login": "me",
+              "__typename": "User"
+            },
+            "state": "COMMENTED",
+            "submittedAt": "2026-01-02T00:00:00Z",
+            "commit": {
+              "oid": "H2"
+            }
+          }
+        ]
+      },
+      "reviewThreads": {
+        "nodes": [
+          {
+            "comments": {
+              "nodes": [
+                {
+                  "author": {
+                    "login": "me",
+                    "__typename": "User"
+                  },
+                  "createdAt": "2026-01-02T00:00:00Z"
+                },
+                {
+                  "author": null,
+                  "createdAt": "2026-01-03T00:00:00Z"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
