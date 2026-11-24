@@ -1,0 +1,29 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Removes every review worktree gh-review-checkout made, along with the PR ref
+# it was checked out from. Worktrees with changes are left alone and reported,
+# since the reviewer never edits them and anything there is unexpected.
+# Exits 1 if any were left.
+
+WORKTREES="$HOME/.cache/gh-review/worktrees"
+[ -d "$WORKTREES" ] || exit 0
+
+left=0
+for wt in "$WORKTREES"/*/; do
+  [ -d "$wt" ] || continue
+  wt="${wt%/}"
+  common=$(git -C "$wt" rev-parse --path-format=absolute --git-common-dir 2>/dev/null) || {
+    echo "gh-review-cleanup: not a git worktree, left in place: $wt" >&2
+    left=1
+    continue
+  }
+  if git -C "$common" worktree remove "$wt" 2>/dev/null; then
+    git -C "$common" update-ref -d "refs/gh-review/pr-${wt##*__}" 2>/dev/null || true
+    echo "removed $wt"
+  else
+    echo "gh-review-cleanup: has changes, left in place: $wt" >&2
+    left=1
+  fi
+done
+exit "$left"

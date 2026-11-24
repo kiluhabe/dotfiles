@@ -110,10 +110,10 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 
 ## Finish
 
-`bash <skill>/scripts/gh-review-hunk restore $RUN <pane>`. Show a table of
-PR, event, and counts sent (or skipped and why). Ask before removing the
-worktrees under `~/.cache/gh-review/worktrees/`
-(`git -C <clone> worktree remove <path>`).
+`bash <skill>/scripts/gh-review-hunk restore $RUN <pane>`, then
+`bash <skill>/scripts/gh-review-cleanup` to remove the review worktrees
+(without asking). Exit 1 means some had changes and were left; name them.
+Show a table of PR, event, and counts sent (or skipped and why).
 
 There is no resume. Running the skill again re-lists everything: PRs you
 reviewed drop out, and come back as reacted once someone responds.
