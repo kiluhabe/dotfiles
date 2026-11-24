@@ -3,6 +3,7 @@ set -euo pipefail
 
 # Collects open PRs updated within the last month where the viewer is a
 # requested reviewer (directly or via a team) or has reviewed before,
+# leaving out dependency updates,
 # classifies them as new/reacted, and writes
 # <run-dir>/list.json plus one markdown description per PR under desc/.
 
@@ -31,7 +32,7 @@ QUERY='query($q: String!, $after: String) {
     pageInfo { hasNextPage endCursor }
     nodes {
       ... on PullRequest {
-        id number title url isDraft body headRefOid baseRefName
+        id number title url isDraft body headRefOid headRefName baseRefName
         repository { nameWithOwner }
         author { login __typename }
         reviewRequests(first: 50) {

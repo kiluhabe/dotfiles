@@ -7,10 +7,18 @@ def is_bot: . != null and (.__typename == "Bot" or (.login // "" | endswith("[bo
 def login_of: if . == null then null else .login end;
 def nodes($c): $c.nodes // [];
 def truncated($c): ($c.pageInfo.hasNextPage // false) or ($c.pageInfo.hasPreviousPage // false);
+# Dependency bots often run under a plain User account, so this looks at
+# what the PR is (Renovate/Dependabot body, branch and title conventions)
+# rather than who opened it.
+def dependency_update:
+  (.body // "" | test("(^|\n)(This PR contains the following updates|Bumps \\[)|Dependabot will"))
+  or (.headRefName // "" | test("^(renovate|dependabot)[/-]"))
+  or (.title // "" | test("^(chore|fix|build)\\(deps(-dev)?\\)|^Bump .+ from .+ to |^Update dependency |^Lock file maintenance|^Pin dependenc"; "i"));
 
 .login as $me
 | [.prs | unique_by(.id)[]
    | select((.isDraft // false) | not)
+   | select(dependency_update | not)
    | select((.author | login_of) != $me)
    | . as $pr
    | [nodes(.reviews)[] | select(.state != "PENDING")] as $valid

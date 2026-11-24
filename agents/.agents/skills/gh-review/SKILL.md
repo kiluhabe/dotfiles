@@ -25,7 +25,7 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 2. If `~/.cache/gh-review/style.md` is missing, or the user asked to refresh
    it, build it (see "Style guide").
 3. `bash <skill>/scripts/gh-review-list $RUN`. It skips PRs with no update
-   for over a month. Exit 2 means gh isn't
+   for over a month and dependency updates. Exit 2 means gh isn't
    authenticated; tell the user to run `! gh auth login`.
 4. `bash <skill>/scripts/gh-review-pick $RUN <pane>`. Exit 1 means nothing
    was picked; stop. Otherwise `$RUN/selected.json` holds the queue.
@@ -48,6 +48,11 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
    then `jq -f <skill>/scripts/lib/threads-to-hunk.jq $RUN/<key>/threads.json | hunk session comment apply --repo <worktree> --stdin`.
    GitHub comment text goes to Hunk only through that pipe, never as a
    command-line argument (it may contain backticks or `$(…)`).
+   In chat, show each thread as it was written: every comment as
+   `@author:` followed by its body verbatim in a `>` blockquote, in order.
+   Put your own reading after the quotes, never in place of them. The
+   user judges the tone from the original words. Skip comments by bots and
+   CI notices.
 4. **Pick the reviewer** and tell the user in one line why:
    - `architect` for design or structural changes, public interfaces,
      schemas or migrations, auth and security, concurrency, large changes
@@ -58,7 +63,8 @@ and tmux write outside the workspace. Pass `$TMUX_PANE` as `<pane>`.
 6. **Into Hunk.**
    `jq --arg agent <reviewer> '{agent: $agent, findings: .findings}' $RUN/<key>/findings.json | jq -f <skill>/scripts/lib/findings-to-hunk.jq | hunk session comment apply --repo <worktree> --stdin --focus`.
    In chat, give the summary, counts per level, `unread_links`, and the
-   reviewer's `thread_responses`.
+   reviewer's `thread_responses`, each under the verbatim quote of the
+   comment it answers.
 7. **Agree.** The user replies on the notes in Hunk ("送る", "削除",
    "書き換え: …", or free text) and/or in chat. Read Hunk replies with
    `hunk session comment list --repo <worktree> --type user --json`.
@@ -131,3 +137,4 @@ reviewed drop out, and come back as reacted once someone responds.
 | Running `hunk diff` in your own shell | It's a TUI; the diff pane gets it via `gh-review-hunk open`. |
 | Reviewing every file of a reacted PR | Review the `range` from checkout; the earlier review covered the rest. |
 | Copying repo or company names into `style.md` | It holds abstract traits only. |
+| Summarizing what the author or other reviewers said | Quote it verbatim; summaries lose the tone. |

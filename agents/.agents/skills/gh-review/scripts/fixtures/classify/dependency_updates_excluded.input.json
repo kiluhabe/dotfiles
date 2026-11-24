@@ -1,0 +1,107 @@
+{
+  "login": "me",
+  "prs": [
+    {
+      "id": "P1",
+      "number": 1,
+      "title": "Update dependency foo to v2",
+      "body": "> [!NOTE]\n> This PR body was truncated.\n\nThis PR contains the following updates:",
+      "headRefName": "topic0",
+      "url": "u1",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "deps-user",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P2",
+      "number": 2,
+      "title": "Bump bar from 1.0.0 to 1.1.0",
+      "body": "Bumps [bar](https://example.com) from 1.0.0 to 1.1.0.",
+      "headRefName": "dependabot/npm_and_yarn/bar-1.1.0",
+      "url": "u2",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "deps-user",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P3",
+      "number": 3,
+      "title": "chore(deps): update baz",
+      "body": "",
+      "headRefName": "topic",
+      "url": "u3",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "deps-user",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P4",
+      "number": 4,
+      "title": "Lock file maintenance",
+      "body": "This PR contains the following updates:",
+      "headRefName": "topic2",
+      "url": "u4",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "deps-user",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P5",
+      "number": 5,
+      "title": "Update the signup flow",
+      "body": "Refactors a dependency between two modules.",
+      "headRefName": "feature/signup",
+      "url": "u5",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "alice",
+        "__typename": "User"
+      }
+    },
+    {
+      "id": "P6",
+      "number": 6,
+      "title": "Update react monorepo to v19",
+      "body": "",
+      "headRefName": "renovate-self-hosted/app/react-monorepo",
+      "url": "u6",
+      "headRefOid": "H",
+      "baseRefName": "main",
+      "repository": {
+        "nameWithOwner": "o/r"
+      },
+      "author": {
+        "login": "deps-user",
+        "__typename": "User"
+      }
+    }
+  ]
+}
