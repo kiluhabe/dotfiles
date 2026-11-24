@@ -1,0 +1,97 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Puts a PR's head into a detached review worktree and prints
+# {"worktree", "range", "base", "head_sha", "fallback_full"} as JSON.
+# The worktree hangs off an existing clone under ~/work or ~/code; with no
+# clone it exits 4 so the caller can ask, then rerun with --clone-into.
+
+usage() {
+  echo "usage: gh-review-checkout <owner/repo> <number> [--since <sha>] [--clone-into <root>]" >&2
+}
+
+die() {
+  echo "gh-review-checkout: $*" >&2
+  exit 2
+}
+
+REPO="${1:-}"
+NUMBER="${2:-}"
+if [ -z "$REPO" ] || [ -z "$NUMBER" ]; then
+  usage
+  exit 2
+fi
+shift 2
+SINCE=""
+CLONE_INTO=""
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --since) SINCE="${2:-}" && shift 2 ;;
+    --clone-into) CLONE_INTO="${2:-}" && shift 2 ;;
+    *) usage && exit 2 ;;
+  esac
+done
+
+ROOTS=("$HOME/work" "$HOME/code")
+WORKTREES="$HOME/.cache/gh-review/worktrees"
+WANT=$(tr '[:upper:]' '[:lower:]' <<<"$REPO")
+
+find_clone() {
+  local root
+  for root in "${ROOTS[@]}"; do
+    [ -d "$root" ] || continue
+    find "$root" -maxdepth 3 -name .git -type d -prune 2>/dev/null
+  done | while IFS= read -r git_dir; do
+    dir=$(dirname "$git_dir")
+    url=$(git -C "$dir" remote get-url origin 2>/dev/null | tr '[:upper:]' '[:lower:]') || continue
+    url="${url%.git}"
+    case "$url" in
+      */"$WANT" | *:"$WANT") echo "$dir" && break ;;
+    esac
+  done
+}
+
+CLONE=$(find_clone)
+if [ -z "$CLONE" ]; then
+  if [ -z "$CLONE_INTO" ]; then
+    echo "gh-review-checkout: no clone of $REPO under ${ROOTS[*]}" >&2
+    exit 4
+  fi
+  CLONE="$CLONE_INTO/${REPO#*/}"
+  [ -e "$CLONE" ] && die "$CLONE already exists but is not a clone of $REPO"
+  gh repo clone "$REPO" "$CLONE" -- --quiet >&2
+fi
+
+BASE=$(gh pr view "$NUMBER" -R "$REPO" --json baseRefName --jq .baseRefName)
+REF="refs/gh-review/pr-$NUMBER"
+# Fetch over HTTPS with gh's token: the clone's origin may be SSH, and the
+# agent's shell often has no SSH agent.
+git -C "$CLONE" -c credential.helper= -c 'credential.helper=!gh auth git-credential' \
+  fetch --quiet "https://github.com/$REPO.git" \
+  "+refs/pull/$NUMBER/head:$REF" "+refs/heads/$BASE:refs/remotes/origin/$BASE"
+
+WT="$WORKTREES/${REPO/\//__}__$NUMBER"
+if [ -d "$WT" ]; then
+  git -C "$WT" checkout --quiet --detach "$REF"
+else
+  mkdir -p "$WORKTREES"
+  git -C "$CLONE" worktree add --quiet --detach "$WT" "$REF"
+fi
+
+RANGE="origin/$BASE...HEAD"
+FALLBACK=false
+# Base-branch merges since the last review would flood SINCE..HEAD with
+# unrelated files, so the incremental diff is limited to the PR's own files.
+PATHS=$(git -C "$WT" diff --name-only "$RANGE" | jq -R . | jq -s .)
+if [ -n "$SINCE" ]; then
+  # A force push can leave the last reviewed commit outside the new history.
+  if git -C "$WT" merge-base --is-ancestor "$SINCE" HEAD 2>/dev/null; then
+    RANGE="$SINCE..HEAD"
+  else
+    FALLBACK=true
+  fi
+fi
+
+jq -n --arg wt "$WT" --arg range "$RANGE" --arg base "$BASE" \
+  --arg head "$(git -C "$WT" rev-parse HEAD)" --argjson fallback "$FALLBACK" --argjson paths "$PATHS" \
+  '{worktree: $wt, range: $range, base: $base, head_sha: $head, fallback_full: $fallback, paths: $paths}'

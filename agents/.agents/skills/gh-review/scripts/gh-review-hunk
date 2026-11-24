@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Hunk refuses to reload a diff from outside the directory it was started in,
+# so each review worktree gets its own Hunk: the diff pane is respawned there.
+# The first open remembers where the pane was so restore can put back the
+# usual `hunk diff --watch`.
+
+usage() {
+  echo "usage: gh-review-hunk open <run-dir> <caller-pane-id> <worktree> <range> [-- <path>...]" >&2
+  echo "       gh-review-hunk restore <run-dir> <caller-pane-id>" >&2
+}
+
+die() { # code message
+  echo "gh-review-hunk: $2" >&2
+  exit "$1"
+}
+
+CMD="${1:-}"
+RUN="${2:-}"
+PANE="${3:-}"
+if [ -z "$CMD" ] || [ -z "$RUN" ] || [ -z "$PANE" ]; then
+  usage
+  exit 2
+fi
+[ -n "${TMUX:-}" ] || die 2 "must be run inside tmux"
+HUNK=$(command -v hunk) || die 2 "hunk is not installed"
+
+WINDOW=$(tmux display-message -p -t "$PANE" '#{window_id}')
+SESSION=$(tmux display-message -p -t "$PANE" '#{session_id}')
+DIFF=$(tmux list-panes -s -t "$SESSION" \
+  -F '#{pane_id}|#{@tmux-default-layout-role}|#{@tmux-default-layout-home}|#{pane_current_path}' |
+  awk -F'|' -v home="$WINDOW" '$2 == "diff" && $3 == home { print $1 "|" $4; exit }')
+[ -n "$DIFF" ] || die 6 "this window has no diff pane (not a txdf window?)"
+DIFF_PANE="${DIFF%%|*}"
+DIFF_PATH="${DIFF#*|}"
+
+# Panes start from the tmux server environment, so hunk is passed by absolute
+# path and its arguments go in as argv, never as keystrokes.
+# shellcheck disable=SC2016 # expands in the spawned bash, not here
+respawn() { # dir hunk-args...
+  local dir="$1"
+  shift
+  tmux respawn-pane -k -t "$DIFF_PANE" -c "$dir" -- \
+    bash -c '"$0" diff "$@"; exec bash --login' "$HUNK" "$@"
+}
+
+case "$CMD" in
+  open)
+    WT="${4:-}"
+    RANGE="${5:-}"
+    if [ -z "$WT" ] || [ -z "$RANGE" ]; then
+      usage
+      exit 2
+    fi
+    shift 5
+    [ -f "$RUN/hunk-origin" ] || printf '%s\n' "$DIFF_PATH" >"$RUN/hunk-origin"
+    respawn "$WT" "$RANGE" "$@"
+    tmux-pane-show diff "$PANE"
+    for _ in $(seq 20); do
+      if hunk session list --json 2>/dev/null |
+        jq -e --arg root "$WT" 'any(.sessions[]; .repoRoot == $root)' >/dev/null; then
+        exit 0
+      fi
+      sleep 0.25
+    done
+    die 7 "no Hunk session for $WT after 5s; diff pane shows: $(tmux capture-pane -p -t "$DIFF_PANE" | grep -v '^$' | tail -3)"
+    ;;
+  restore)
+    [ -f "$RUN/hunk-origin" ] || exit 0
+    respawn "$(cat "$RUN/hunk-origin")" --watch
+    ;;
+  *)
+    usage
+    exit 2
+    ;;
+esac
