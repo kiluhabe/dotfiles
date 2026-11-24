@@ -60,6 +60,19 @@ fi
 tmux join-pane -d -v -s "$SHOW" -t "$HIDE"
 tmux-pane-park "$HIDE"
 
+# glow's TUI leaves the page blank after a resize, and every trip through the
+# parking window is one. Its reload key redraws at the new size, but only once
+# glow has taken in the resize, hence the delay. Only send it while a TUI holds
+# the alternate screen (glow runs under bash, so the command name can't tell);
+# once glow quits, the key would land in the fallback shell as input.
+if [ "$ROLE" = viewer ]; then
+  (
+    sleep 0.3
+    [ "$(tmux display-message -p -t "$SHOW" '#{alternate_on}')" = 1 ] &&
+      tmux send-keys -t "$SHOW" r
+  ) >/dev/null 2>&1 &
+fi
+
 # Switching from elsewhere in the window must not drag the cursor into the
 # slot; only the pane that just got parked has to hand its focus over.
 if [ "$ACTIVE" = "$HIDE" ]; then
