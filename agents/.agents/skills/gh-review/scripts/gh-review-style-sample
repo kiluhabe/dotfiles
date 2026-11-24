@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Writes up to 200 of the viewer's recent review bodies and review comments to
+# <out.json> as {"samples": [text]}, for extracting their writing style.
+# Only the text is kept: no repository names or URLs of the reviewed PRs.
+
+OUT="${1:-}"
+[ -n "$OUT" ] || {
+  echo "usage: gh-review-style-sample <out.json>" >&2
+  exit 2
+}
+
+LOGIN=$(gh api user --jq .login)
+
+# contributionsCollection hides private-org reviews, so PRs are found through
+# search and the viewer's own reviews are read from each.
+# shellcheck disable=SC2016 # GraphQL variables, not shell
+QUERY='query($q: String!, $login: String!, $after: String) {
+  search(query: $q, type: ISSUE, first: 50, after: $after) {
+    pageInfo { hasNextPage endCursor }
+    nodes {
+      ... on PullRequest {
+        reviews(author: $login, last: 10) { nodes { body comments(first: 30) { nodes { body } } } }
+      }
+    }
+  }
+}'
+
+SAMPLES='[]'
+AFTER=""
+for _ in 1 2 3 4 5 6; do
+  PAGE=$(gh api graphql -f query="$QUERY" -f q="is:pr reviewed-by:$LOGIN -author:$LOGIN sort:updated-desc" \
+    -f login="$LOGIN" ${AFTER:+-f after="$AFTER"} --jq .data.search)
+  SAMPLES=$(jq -c --argjson acc "$SAMPLES" '
+    $acc + [.nodes[].reviews.nodes[] | .body, .comments.nodes[].body
+            | select(. != null and (gsub("\\s"; "") | length) > 0)]' <<<"$PAGE")
+  [ "$(jq length <<<"$SAMPLES")" -lt 200 ] || break
+  [ "$(jq .pageInfo.hasNextPage <<<"$PAGE")" = true ] || break
+  AFTER=$(jq -r .pageInfo.endCursor <<<"$PAGE")
+done
+
+jq '{samples: .[0:200]}' <<<"$SAMPLES" >"$OUT"
+
+jq -r '"\(.samples | length) samples written"' "$OUT"
